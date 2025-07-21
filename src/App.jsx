@@ -1,21 +1,37 @@
+// App.jsx
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import AccessAlarmsIcon from "@mui/icons-material/AccessAlarms";
 import HomeIcon from "@mui/icons-material/Home";
-import { useEffect } from "react";
-import Typography from "@mui/material/Typography";
+import { useColorScheme } from "@mui/material/styles";
+import Card from "@mui/material/Card";
 
+function ModeSwitcher() {
+  const { mode, setMode } = useColorScheme();
+
+  if (!mode) return null;
+
+  return (
+    <Button
+      onClick={() => {
+        setMode(mode === "light" ? "dark" : "light");
+      }}
+    >
+      {mode === "light" ? "Turn dark" : "Turn light"}
+    </Button>
+  );
+}
 function App() {
-  useEffect(() => {}, []);
   return (
     <>
-      <div>CONTAINED</div>
+      <ModeSwitcher />
+
       <Typography variant="body2" color="text.secondary">
-        This is a simple example of using Material-UI components in a React app.
+        This is a simple example of using MaterialUI components in a React app.
       </Typography>
       <Button variant="text">Text</Button>
       <Button variant="contained">Contained</Button>
       <Button variant="outlined">Outlined</Button>
-      <br />
       <AccessAlarmsIcon />
       <HomeIcon color="primary" />
     </>
