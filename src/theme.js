@@ -1,13 +1,16 @@
-// theme.js
 import { extendTheme } from "@mui/material/styles";
-import "./theme.css"; // Import the CSS file for color scheme
+import { pink, teal } from "@mui/material/colors";
 const theme = extendTheme({
+  trello: {
+    appBarHeight: "48px",
+    boardBarHeight: "58px",
+  },
   colorSchemes: {
     light: {
       palette: {
         mode: "light",
         primary: {
-          main: "#1976d2",
+          main: teal[500],
         },
       },
     },
@@ -15,7 +18,7 @@ const theme = extendTheme({
       palette: {
         mode: "dark",
         primary: {
-          main: "#90caf9",
+          main: pink[100],
         },
       },
     },
