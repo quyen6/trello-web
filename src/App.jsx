@@ -1,10 +1,10 @@
+import Board from "~/pages/Boards/_id";
+
 // class ErrorBoundary extends React.Component {
 //   constructor(props) {
 //     super(props);
 //     this.state = { hasError: false };
 //   }
-
-import Board from "./pages/Boards/_id";
 
 //   static getDerivedStateFromError(error) {
 //     return { hasError: true };
