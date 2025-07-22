@@ -1,9 +1,4 @@
-// App.jsx
 import React, { useState } from "react";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import AccessAlarmsIcon from "@mui/icons-material/AccessAlarms";
-import HomeIcon from "@mui/icons-material/Home";
 import { useColorScheme } from "@mui/material/styles";
 
 import FormControl from "@mui/material/FormControl";
@@ -14,6 +9,8 @@ import Box from "@mui/material/Box";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
+import Container from "@mui/material/Container";
+import theme from "./theme";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -76,20 +73,43 @@ function ModeSwitcher() {
 }
 function App() {
   return (
-    <>
-      <ErrorBoundary>
-        <ModeSwitcher />
-      </ErrorBoundary>
-
-      <Typography variant="body2" color="text.secondary">
-        This is a simple example of using MaterialUI components in a React app.
-      </Typography>
-      <Button variant="text">Text</Button>
-      <Button variant="contained">Contained</Button>
-      <Button variant="outlined">Outlined</Button>
-      <AccessAlarmsIcon />
-      <HomeIcon color="primary" />
-    </>
+    <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
+      <Box
+        sx={{
+          backgroundColor: "primary.light",
+          width: "100%",
+          height: (theme) => theme.trello.appBarHeight,
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <ErrorBoundary>
+          <ModeSwitcher />
+        </ErrorBoundary>
+      </Box>
+      <Box
+        sx={{
+          backgroundColor: "primary.dark",
+          width: "100%",
+          height: (theme) => theme.trello.boardBarHeight,
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        Box bar
+      </Box>
+      <Box
+        sx={{
+          backgroundColor: "primary.main",
+          display: "flex",
+          alignItems: "center",
+          height: (theme) =>
+            `calc(100vh - ${theme.trello.appBarHeight} - ${theme.trello.boardBarHeight})`,
+        }}
+      >
+        Box Content
+      </Box>
+    </Container>
   );
 }
 
