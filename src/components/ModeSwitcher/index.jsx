@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
+
 const ModeSwitcher = () => {
   const { mode, setMode } = useColorScheme();
   const handleSetMode = (event) => {
@@ -17,7 +18,7 @@ const ModeSwitcher = () => {
   if (!mode) return null;
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+    <FormControl sx={{ m: 0, minWidth: 120 }} size="small">
       <Select
         labelId="demo-select-small-label"
         id="demo-select-small"
