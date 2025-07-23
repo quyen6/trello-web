@@ -10,17 +10,13 @@ const theme = createTheme({
     light: {
       palette: {
         mode: "light",
-        primary: {
-          main: teal[500],
-        },
+        primary: teal,
       },
     },
     dark: {
       palette: {
         mode: "dark",
-        primary: {
-          main: pink[100],
-        },
+        primary: pink,
       },
     },
   },

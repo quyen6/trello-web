@@ -22,6 +22,8 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Profile from "./Menus/Profile";
 import MobileMenuDrawer from "./Menus/MobileMenuDrawer";
 import { useState } from "react";
+
+import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 const AppBar = () => {
   const [open, setOpen] = useState(false);
   const isMdDown = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -76,7 +78,9 @@ const AppBar = () => {
           <Recent />
           <Starred />
           <Templates />
-          <Button variant="outlined">Create</Button>
+          <Button variant="outlined" startIcon={<AddToPhotosIcon />}>
+            Create
+          </Button>
         </Box>
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
