@@ -4,7 +4,13 @@ import AppsIcon from "@mui/icons-material/Apps";
 import TrelloIcon from "~/assets/trello.svg?react";
 
 import SvgIcon from "@mui/material/SvgIcon";
-import { Button, TextField, Tooltip, Typography } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import Workspaces from "./Menus/Workspaces";
 import Recent from "./Menus/Recent";
 import Templates from "./Menus/Templates";
@@ -14,7 +20,12 @@ import Badge from "@mui/material/Badge";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Profile from "./Menus/Profile";
+import MobileMenuDrawer from "./Menus/MobileMenuDrawer";
+import { useState } from "react";
 const AppBar = () => {
+  const [open, setOpen] = useState(false);
+  const isMdDown = useMediaQuery((theme) => theme.breakpoints.down("md"));
+
   return (
     <Box
       px={2}
@@ -25,22 +36,28 @@ const AppBar = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+        gap: 2,
+        overflowX: "auto",
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <AppsIcon sx={{ color: "primary.main" }} size="small" />
-        {/* <img src={TrelloIcon} /> */}
+        <AppsIcon
+          onClick={() => setOpen(true)}
+          sx={{ display: { xs: "block", md: "none" }, color: "primary.main" }}
+          size="small"
+        />
+        <MobileMenuDrawer open={open} setOpen={setOpen} />
         <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
           <SvgIcon
             component={TrelloIcon}
             inheritViewBox
-            fontSize="small"
+            fontSize={!isMdDown === true ? "large" : "small"}
             sx={{ color: "primary.main" }}
           />
           <Typography
             variant="span"
             sx={{
-              fontSize: "1.2rem",
+              fontSize: { xs: "1.2rem", md: "1.4rem" },
               fontWeight: "bold",
               color: "primary.main",
             }}
@@ -48,11 +65,19 @@ const AppBar = () => {
             Trello
           </Typography>
         </Box>
-        <Workspaces />
-        <Recent />
-        <Starred />
-        <Templates />
-        <Button variant="outlined">Create</Button>
+        <Box
+          sx={{
+            display: { xs: "none", md: "flex" },
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <Workspaces />
+          <Recent />
+          <Starred />
+          <Templates />
+          <Button variant="outlined">Create</Button>
+        </Box>
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
         <TextField
@@ -60,16 +85,27 @@ const AppBar = () => {
           label="Search..."
           type="search"
           size="small"
+          sx={{ minWidth: 100 }}
         />
-        <ModeSwitcher />
-        <Tooltip title="Notifications">
-          <Badge color="error" variant="dot" sx={{ cursor: "pointer" }}>
-            <NotificationsNoneIcon sx={{ color: "primary.main" }} />
-          </Badge>
-        </Tooltip>
-        <Tooltip title="Help">
-          <HelpOutlineIcon sx={{ cursor: "pointer", color: "primary.main" }} />
-        </Tooltip>
+        <Box
+          sx={{
+            display: { xs: "none", sm: "flex" },
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <ModeSwitcher />
+          <Tooltip title="Notifications">
+            <Badge color="error" variant="dot" sx={{ cursor: "pointer" }}>
+              <NotificationsNoneIcon sx={{ color: "primary.main" }} />
+            </Badge>
+          </Tooltip>
+          <Tooltip title="Help">
+            <HelpOutlineIcon
+              sx={{ cursor: "pointer", color: "primary.main" }}
+            />
+          </Tooltip>
+        </Box>
         <Profile />
       </Box>
     </Box>

@@ -1,6 +1,6 @@
 // import { extendTheme } from "@mui/material/styles";
 import { createTheme } from "@mui/material/styles";
-import { pink, teal } from "@mui/material/colors";
+import { pink, teal, red } from "@mui/material/colors";
 const theme = createTheme({
   trello: {
     appBarHeight: "58px",
@@ -35,6 +35,23 @@ const theme = createTheme({
         root: {
           // Some CSS
           textTransform: "none",
+        },
+      },
+    },
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          "*::-webkit-scrollbar": {
+            width: 6,
+            height: 6,
+          },
+          "*::-webkit-scrollbar-thumb": {
+            backgroundColor: "#bdc3c7",
+            borderRadius: 4,
+          },
+          "*::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: "#999999",
+          },
         },
       },
     },

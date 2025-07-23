@@ -18,7 +18,7 @@ const ModeSwitcher = () => {
   if (!mode) return null;
 
   return (
-    <FormControl sx={{ m: 0, minWidth: 120 }} size="small">
+    <FormControl sx={{ m: 0, minWidth: 100 }} size="small">
       <Select
         labelId="demo-select-small-label"
         id="demo-select-small"
