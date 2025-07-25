@@ -1,14 +1,15 @@
 import Box from "@mui/material/Box";
 
-const BoardContent = () => {
+const BoardContent = (props) => {
+  const { resolvedMode } = props;
   return (
     <Box
       sx={{
-        backgroundColor: "primary.main",
         display: "flex",
         alignItems: "center",
         height: (theme) =>
           `calc(100vh - ${theme.trello.appBarHeight} - ${theme.trello.boardBarHeight})`,
+        backgroundColor: resolvedMode === "dark" ? "#34495e" : "#f5f7fa",
       }}
     >
       Box Content

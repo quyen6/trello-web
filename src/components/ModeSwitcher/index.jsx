@@ -24,21 +24,56 @@ const ModeSwitcher = () => {
         id="demo-select-small"
         value={mode}
         onChange={handleSetMode}
+        sx={{
+          color: "white",
+          ".MuiOutlinedInput-notchedOutline": {
+            borderColor: "white",
+          },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "white",
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "white",
+          },
+          ".MuiSvgIcon-root": {
+            color: "white",
+          },
+        }}
       >
-        <MenuItem value="dark">
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <DarkModeIcon fontSize="small" /> &nbsp; Dark
+        <MenuItem value="light">
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <LightModeIcon fontSize="small" />
+            &nbsp; <span sx={{ fontSize: "1.2rem" }}>Light</span>
           </Box>
         </MenuItem>
-        <MenuItem value="light">
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <LightModeIcon fontSize="small" />
-            &nbsp; Light
+        <MenuItem value="dark">
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <DarkModeIcon fontSize="small" /> &nbsp;{" "}
+            <span sx={{ fontSize: "1.2rem" }}>Dark</span>
           </Box>
         </MenuItem>
         <MenuItem value="system">
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <SettingsBrightnessIcon fontSize="small" /> &nbsp; System
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <SettingsBrightnessIcon fontSize="small" /> &nbsp;{" "}
+            <span sx={{ fontSize: "1.2rem" }}>System</span>
           </Box>
         </MenuItem>
       </Select>

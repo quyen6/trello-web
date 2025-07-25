@@ -13,7 +13,9 @@ import ContentCopy from "@mui/icons-material/ContentCopy";
 import ContentPaste from "@mui/icons-material/ContentPaste";
 import Cloud from "@mui/icons-material/Cloud";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-const Templates = () => {
+import GridOnIcon from "@mui/icons-material/GridOn";
+const Templates = (props) => {
+  const { isLg1024, isMdDown } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -26,14 +28,15 @@ const Templates = () => {
   return (
     <Box>
       <Button
+        sx={{ color: "white" }}
         id="basic-button-templates"
         aria-controls={open ? "basic-menu-templates" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        endIcon={<KeyboardArrowDownIcon />}
+        endIcon={isLg1024 || !isMdDown ? <KeyboardArrowDownIcon /> : null}
       >
-        Templates
+        {isLg1024 || isMdDown ? "Templates" : <GridOnIcon />}
       </Button>
       <Menu
         id="basic-menu"

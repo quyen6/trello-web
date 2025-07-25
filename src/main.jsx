@@ -8,7 +8,7 @@ import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 
 createRoot(document.getElementById("root")).render(
   <>
-    <InitColorSchemeScript attribute="class" />
+    <InitColorSchemeScript attribute="class" defaultMode="light" />
     <StrictMode>
       <ThemeProvider theme={theme} defaultMode="light" attribute="class">
         <CssBaseline />

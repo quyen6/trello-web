@@ -13,7 +13,9 @@ import ContentCopy from "@mui/icons-material/ContentCopy";
 import ContentPaste from "@mui/icons-material/ContentPaste";
 import Cloud from "@mui/icons-material/Cloud";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-const Starred = () => {
+import StarRateIcon from "@mui/icons-material/StarRate";
+const Starred = (props) => {
+  const { isLg1024, isMdDown } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -26,14 +28,15 @@ const Starred = () => {
   return (
     <Box>
       <Button
+        sx={{ color: "white" }}
         id="basic-button-starred"
         aria-controls={open ? "basic-menu-starred" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        endIcon={<KeyboardArrowDownIcon />}
+        endIcon={isLg1024 || !isMdDown ? <KeyboardArrowDownIcon /> : null}
       >
-        Starred
+        {isLg1024 || isMdDown ? "Starred" : <StarRateIcon />}
       </Button>
       <Menu
         id="basic-menu"
