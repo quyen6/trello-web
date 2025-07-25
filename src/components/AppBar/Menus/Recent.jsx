@@ -10,7 +10,10 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 
 import Check from "@mui/icons-material/Check";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-const Recent = () => {
+
+import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
+const Recent = (props) => {
+  const { isLg1024, isMdDown } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -23,14 +26,15 @@ const Recent = () => {
   return (
     <Box>
       <Button
+        sx={{ color: "white" }}
         id="basic-button-recent"
         aria-controls={open ? "basic-menu-recent" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        endIcon={<KeyboardArrowDownIcon />}
+        endIcon={isLg1024 || !isMdDown ? <KeyboardArrowDownIcon /> : null}
       >
-        Recent
+        {isLg1024 || isMdDown === true ? "Recent" : <WorkHistoryIcon />}
       </Button>
       <Menu
         id="basic-menu"

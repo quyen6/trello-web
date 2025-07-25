@@ -8,16 +8,16 @@ import {
   ListItemText,
   ListItemIcon,
   Typography,
-  useMediaQuery,
 } from "@mui/material";
 import ContentCut from "@mui/icons-material/ContentCut";
 import ContentCopy from "@mui/icons-material/ContentCopy";
 import ContentPaste from "@mui/icons-material/ContentPaste";
 import Cloud from "@mui/icons-material/Cloud";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import WorkspacesIcon from "@mui/icons-material/Workspaces";
+const Workspaces = (props) => {
+  const { isLg1024, isMdDown } = props;
 
-const Workspaces = () => {
-  const isMdUp = useMediaQuery((theme) => theme.breakpoints.up("md"));
   const [anchorEl, setAnchorEl] = useState(null);
   const buttonRef = useRef(); // 🔧 Dùng để khôi phục focus khi đóng Menu
 
@@ -29,26 +29,26 @@ const Workspaces = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
-    setTimeout(() => {
-      buttonRef.current?.focus(); // 🔁 Trả focus về nút sau khi Menu đóng
-    }, 150);
   };
 
   return (
     <Box>
       <Button
+        sx={{
+          color: "white",
+        }}
         ref={buttonRef}
         id="basic-button-workspaces"
         aria-controls={open ? "basic-menu-workspaces" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        endIcon={isMdUp ? <KeyboardArrowDownIcon /> : null}
+        endIcon={isLg1024 || !isMdDown ? <KeyboardArrowDownIcon /> : null}
       >
-        Workspaces
+        {isLg1024 || isMdDown ? "Workspaces" : <WorkspacesIcon />}
       </Button>
 
-      {isMdUp && (
+      {isMdDown && (
         <Menu
           id="basic-menu-workspaces"
           anchorEl={anchorEl}

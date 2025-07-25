@@ -1,25 +1,21 @@
-// import { extendTheme } from "@mui/material/styles";
-import { createTheme } from "@mui/material/styles";
-import { pink, teal, red } from "@mui/material/colors";
-const theme = createTheme({
+import { extendTheme } from "@mui/material/styles";
+const theme = extendTheme({
   trello: {
     appBarHeight: "58px",
     boardBarHeight: "60px",
   },
-  colorSchemes: {
-    light: {
-      palette: {
-        mode: "light",
-        primary: teal,
-      },
-    },
-    dark: {
-      palette: {
-        mode: "dark",
-        primary: pink,
-      },
-    },
-  },
+  // colorSchemes: {
+  //   light: {
+  //     palette: {
+  //       mode: "light",
+  //     },
+  //   },
+  //   dark: {
+  //     palette: {
+  //       mode: "dark",
+  //     },
+  //   },
+  // },
   colorSchemeSelector: "class",
 
   // ... other properties
@@ -42,7 +38,7 @@ const theme = createTheme({
             height: 6,
           },
           "*::-webkit-scrollbar-thumb": {
-            backgroundColor: "#bdc3c7",
+            backgroundColor: "#95afc0",
             borderRadius: 4,
           },
           "*::-webkit-scrollbar-thumb:hover": {
@@ -53,29 +49,26 @@ const theme = createTheme({
     },
     MuiInputLabel: {
       styleOverrides: {
-        root: ({ theme }) => ({
-          color: theme.palette.primary.main,
+        root: {
           fontSize: "0.875rem",
-        }),
+        },
       },
     },
     MuiOutlinedInput: {
       styleOverrides: {
-        root: ({ theme }) => ({
-          color: theme.palette.primary.main,
+        root: {
           fontSize: "0.875rem",
-          ".MuiOutlinedInput-notchedOutline": {
-            borderColor: theme.palette.primary.light,
-          },
-          "&:hover": {
-            ".MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.primary.main,
-            },
-          },
+
           "& fieldset": {
             borderWidth: "1px !important",
           },
-        }),
+          "&:hover fieldset": {
+            borderWidth: "2px !important",
+          },
+          "&.Mui-focused fieldset": {
+            borderWidth: "2px !important",
+          },
+        },
       },
     },
   },
