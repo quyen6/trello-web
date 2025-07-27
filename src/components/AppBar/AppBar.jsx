@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ModeSwitcher from "../ModeSwitcher";
+import ModeSwitcher from "../ModeSwitcher/ModeSwitcher";
 import Workspaces from "./Menus/Workspaces";
 import Recent from "./Menus/Recent";
 import Templates from "./Menus/Templates";

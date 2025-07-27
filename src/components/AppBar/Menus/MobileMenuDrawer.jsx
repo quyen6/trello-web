@@ -3,7 +3,7 @@ import Workspaces from "./Workspaces";
 import Recent from "./Recent";
 import Starred from "./Starred";
 import Templates from "./Templates";
-import ModeSwitcher from "~/components/ModeSwitcher";
+import ModeSwitcher from "~/components/ModeSwitcher/ModeSwitcher";
 
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 const MobileMenuDrawer = (props) => {
