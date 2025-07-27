@@ -17,6 +17,7 @@ const MobileMenuDrawer = (props) => {
         <Drawer
           anchor="left"
           open={open}
+          aria-hidden="false"
           onClose={() => {
             setOpen(false);
           }}
