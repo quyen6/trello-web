@@ -40,7 +40,8 @@ const BoardBar = (props) => {
         justifyContent: "space-between",
         gap: 2,
         overflowX: "auto",
-        borderBottom: "1px solid #00bfa5",
+        // borderBottom: "1px solid #00bfa5",
+        // marginBottom: 1,
         backgroundColor: resolvedMode === "dark" ? "#34495e" : "#f5f7fa",
         "&::-webkit-scrollbar-thumb:hover": {
           backgroundColor: resolvedMode === "dark" ? "#eee" : "#01a3a4",
