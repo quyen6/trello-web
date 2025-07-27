@@ -1,4 +1,4 @@
-import { Button, Chip, Tooltip, useColorScheme } from "@mui/material";
+import { Button, Chip, Tooltip } from "@mui/material";
 import Box from "@mui/material/Box";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PublicIcon from "@mui/icons-material/Public";
@@ -42,6 +42,10 @@ const BoardBar = (props) => {
         overflowX: "auto",
         borderBottom: "1px solid #00bfa5",
         backgroundColor: resolvedMode === "dark" ? "#34495e" : "#f5f7fa",
+        "&::-webkit-scrollbar-thumb:hover": {
+          backgroundColor: resolvedMode === "dark" ? "#eee" : "#01a3a4",
+        },
+        "&::-webkit-scrollbar-track": { m: 2 },
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -151,6 +155,12 @@ const BoardBar = (props) => {
               height: 34,
               fontSize: 16,
               borderColor: resolvedMode === "dark" ? "#bae2e2" : "none",
+              color: "white",
+              cursor: "pointer",
+              "&:first-of-type": {
+                bgcolor:
+                  resolvedMode === "dark" ? "#1c2a40" : "rgb(0, 134, 137)",
+              },
             },
           }}
         >
