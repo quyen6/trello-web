@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Column from "./Column/Column";
 
 const ListColumns = (props) => {
-  const { resolvedMode } = props;
+  const { resolvedMode, columns } = props;
 
   return (
     <Box
@@ -22,8 +22,11 @@ const ListColumns = (props) => {
       }}
     >
       {/* Box Column 01*/}
-      <Column resolvedMode={resolvedMode} />
+      {columns?.map((column) => (
+        <Column resolvedMode={resolvedMode} key={column?._id} column={column} />
+      ))}
 
+      {/* Box Add new column CTA */}
       <Box
         sx={{
           minWidth: "200px",

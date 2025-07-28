@@ -4,6 +4,7 @@ import AppBar from "~/components/AppBar/AppBar";
 import BoardBar from "./BoardBar/BoardBar";
 import BoardContent from "./BoardContent/BoardContent";
 import { useColorScheme } from "@mui/material";
+import { mockData } from "~/apis/mock-data";
 
 const Board = () => {
   const { mode } = useColorScheme();
@@ -16,8 +17,8 @@ const Board = () => {
   return (
     <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
       <AppBar resolvedMode={resolvedMode} />
-      <BoardBar resolvedMode={resolvedMode} />
-      <BoardContent resolvedMode={resolvedMode} />
+      <BoardBar resolvedMode={resolvedMode} board={mockData?.board} />
+      <BoardContent resolvedMode={resolvedMode} board={mockData?.board} />
     </Container>
   );
 };

@@ -11,6 +11,8 @@ import AvatarGroup from "@mui/material/AvatarGroup";
 
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
+import { capitalizeFirstLetter } from "~/utils/formatter";
+
 const MENU_STYLES = {
   color: "#000",
   bgcolor: "#bae2e2",
@@ -27,7 +29,7 @@ const MENU_STYLES = {
 };
 
 const BoardBar = (props) => {
-  const { resolvedMode } = props;
+  const { resolvedMode, board } = props;
   return (
     <Box
       px={2}
@@ -65,7 +67,7 @@ const BoardBar = (props) => {
             //     : "rgba(0, 0, 0, 0.2) 0px 0px 7px 0px",
           }}
           icon={<DashboardIcon />}
-          label="Quinn MERN Stack Board"
+          label={board?.title}
           clickable
         />
         <Chip
@@ -82,7 +84,7 @@ const BoardBar = (props) => {
             //     : "rgba(0, 0, 0, 0.2) 0px 0px 7px 0px",
           }}
           icon={<PublicIcon />}
-          label="Public/Private Workspace"
+          label={capitalizeFirstLetter(board?.type)}
           clickable
         />
         <Chip

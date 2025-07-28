@@ -2,7 +2,7 @@ import Card from "./Card/Card";
 
 import Box from "@mui/material/Box";
 const ListCards = (props) => {
-  const { resolvedMode } = props;
+  const { resolvedMode, cards } = props;
   return (
     <Box
       sx={{
@@ -23,10 +23,9 @@ const ListCards = (props) => {
         },
       }}
     >
-      <Card />
-      <Card temporaryHideMedia />
-      <Card temporaryHideMedia />
-      <Card temporaryHideMedia />
+      {cards?.map((card) => (
+        <Card key={card._id} card={card} />
+      ))}
     </Box>
   );
 };
