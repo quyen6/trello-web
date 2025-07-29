@@ -8,8 +8,27 @@ import Button from "@mui/material/Button";
 import GroupIcon from "@mui/icons-material/Group";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import ModeCommentIcon from "@mui/icons-material/ModeComment";
+
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 const Card = (props) => {
   const { card } = props;
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: card._id, data: { ...card } });
+
+  // Fix bug: transform
+  const dndKitCardStyles = {
+    // touchAction: "none", // Dành cho sensor default dạng PointerSensor
+    transform: CSS.Translate.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : undefined,
+  };
 
   const shouldShowCardActions = () => {
     return (
@@ -22,6 +41,10 @@ const Card = (props) => {
   return (
     <>
       <MuiCard
+        ref={setNodeRef}
+        style={dndKitCardStyles}
+        {...attributes}
+        {...listeners}
         sx={{
           cursor: "pointer",
           // boxShadow: "0 1px 1px rgba(0,0,0,0.2)",

@@ -23,14 +23,23 @@ import { CSS } from "@dnd-kit/utilities";
 const Column = (props) => {
   const { resolvedMode, column } = props;
 
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: column._id, data: { ...column } });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: column._id, data: { ...column } });
 
   // Fix bug: transform
   const dndKitColumnStyles = {
     // touchAction: "none", // Dành cho sensor default dạng PointerSensor
     transform: CSS.Translate.toString(transform),
     transition,
+    // Chiều cao phải luôn max 100% vì nếu không sẽ lỗi lúc kéo column ngắn qua 1 column dài thì phải kéo ở khu vực giữa giữa rất khó chịu. Lúc này phải kết hợp {...listeners} nằm ở Box chứ k phải div ở ngoài cùng
+    height: "100%",
+    opacity: isDragging ? 0.5 : undefined,
   };
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -46,138 +55,138 @@ const Column = (props) => {
     setAnchorEl(null);
   };
   return (
-    <Box
-      ref={setNodeRef}
-      style={dndKitColumnStyles}
-      {...attributes}
-      {...listeners}
-      sx={{
-        minWidth: "300px",
-        maxWidth: "300px",
-        bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#bae2e2",
-        color: resolvedMode === "dark" ? "white" : "#000",
-        ml: 2,
-        borderRadius: "6px",
-        height: "fit-content",
-        maxHeight: (theme) =>
-          `calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)})`,
-      }}
-    >
-      {/* Column Header */}
+    // Bọc div ngoài cùng đẻ fix lỗi lúc kéo column ngắn qua 1 column dài
+    <div ref={setNodeRef} style={dndKitColumnStyles} {...attributes}>
       <Box
+        {...listeners}
         sx={{
-          height: (theme) => theme.trello.columnHeaderHeight,
-          p: 2,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
+          minWidth: "300px",
+          maxWidth: "300px",
+          bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#bae2e2",
+          color: resolvedMode === "dark" ? "white" : "#000",
+          ml: 2,
+          borderRadius: "6px",
+          height: "fit-content",
+          maxHeight: (theme) =>
+            `calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)})`,
         }}
       >
-        <Typography
-          variant="h6"
+        {/* Column Header */}
+        <Box
           sx={{
-            fontSize: "1rem",
-            fontWeight: "bold",
-            cursor: "pointer",
-            textOverflow: "ellipsis",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            maxWidth: "85%",
+            height: (theme) => theme.trello.columnHeaderHeight,
+            p: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
-          component="div"
         >
-          {column?.title}
-        </Typography>
-        <Box>
-          <Tooltip title="More options">
-            <KeyboardArrowDownIcon
-              sx={{
-                cursor: "pointer",
-                color: resolvedMode === "dark" ? "white" : "#000",
-              }}
-              id="basic-column-dropdown"
-              aria-controls={open ? "basic-menu-column-dropdown" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-            />
-          </Tooltip>
+          <Typography
+            variant="h6"
+            sx={{
+              fontSize: "1rem",
+              fontWeight: "bold",
+              cursor: "pointer",
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              maxWidth: "85%",
+            }}
+            component="div"
+          >
+            {column?.title}
+          </Typography>
+          <Box>
+            <Tooltip title="More options">
+              <KeyboardArrowDownIcon
+                sx={{
+                  cursor: "pointer",
+                  color: resolvedMode === "dark" ? "white" : "#000",
+                }}
+                id="basic-column-dropdown"
+                aria-controls={open ? "basic-menu-column-dropdown" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+              />
+            </Tooltip>
 
-          <Menu
-            id="basic-menu-column-dropdown"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            aria-hidden="false"
-            slotProps={{
-              list: {
-                "aria-labelledby": "basic-column-dropdown",
+            <Menu
+              id="basic-menu-column-dropdown"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              aria-hidden="false"
+              slotProps={{
+                list: {
+                  "aria-labelledby": "basic-column-dropdown",
+                },
+              }}
+            >
+              <MenuItem>
+                <ListItemIcon>
+                  <AddCardIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Add new card</ListItemText>
+              </MenuItem>
+              <MenuItem>
+                <ListItemIcon>
+                  <ContentCut fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Cut</ListItemText>
+              </MenuItem>
+              <MenuItem>
+                <ListItemIcon>
+                  <ContentPaste fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Paste</ListItemText>
+              </MenuItem>
+              <Divider />
+              <MenuItem>
+                <ListItemIcon>
+                  <DeleteIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Remove this column</ListItemText>
+              </MenuItem>
+              <MenuItem>
+                <ListItemIcon>
+                  <Cloud fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Archive this column</ListItemText>
+              </MenuItem>
+            </Menu>
+          </Box>
+        </Box>
+
+        {/* List Card */}
+        <ListCards resolvedMode={resolvedMode} cards={orderedCards} />
+
+        {/* Column Footer */}
+        <Box
+          sx={{
+            height: (theme) => theme.trello.columnFooterHeight,
+            p: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Button
+            sx={{
+              "&.MuiButton-text": {
+                color: resolvedMode === "dark" ? "white" : "",
               },
             }}
+            startIcon={<AddCardIcon />}
           >
-            <MenuItem>
-              <ListItemIcon>
-                <AddCardIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Add new card</ListItemText>
-            </MenuItem>
-            <MenuItem>
-              <ListItemIcon>
-                <ContentCut fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Cut</ListItemText>
-            </MenuItem>
-            <MenuItem>
-              <ListItemIcon>
-                <ContentPaste fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Paste</ListItemText>
-            </MenuItem>
-            <Divider />
-            <MenuItem>
-              <ListItemIcon>
-                <DeleteIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Remove this column</ListItemText>
-            </MenuItem>
-            <MenuItem>
-              <ListItemIcon>
-                <Cloud fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Archive this column</ListItemText>
-            </MenuItem>
-          </Menu>
+            Add new card
+          </Button>
+          <Tooltip title="Drag to move">
+            <DragHandleIcon sx={{ cursor: "pointer" }} />
+          </Tooltip>
         </Box>
       </Box>
-
-      {/* List Card */}
-      <ListCards resolvedMode={resolvedMode} cards={orderedCards} />
-
-      {/* Column Footer */}
-      <Box
-        sx={{
-          height: (theme) => theme.trello.columnFooterHeight,
-          p: 2,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Button
-          sx={{
-            "&.MuiButton-text": {
-              color: resolvedMode === "dark" ? "white" : "",
-            },
-          }}
-          startIcon={<AddCardIcon />}
-        >
-          Add new card
-        </Button>
-        <Tooltip title="Drag to move">
-          <DragHandleIcon sx={{ cursor: "pointer" }} />
-        </Tooltip>
-      </Box>
-    </Box>
+    </div>
   );
 };
 
