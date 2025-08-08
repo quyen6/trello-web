@@ -4,7 +4,7 @@ import AppBar from "~/components/AppBar/AppBar";
 import BoardBar from "./BoardBar/BoardBar";
 import BoardContent from "./BoardContent/BoardContent";
 import { useColorScheme } from "@mui/material";
-import { mockData } from "~/apis/mock-data";
+// import { mockData } from "~/apis/mock-data";
 import { useEffect, useState } from "react";
 import { fetchBoardDetailsAPI } from "~/apis";
 
@@ -12,7 +12,7 @@ const Board = () => {
   const [board, setBoard] = useState(null);
   useEffect(() => {
     // Tạm thời fix cứng boardId
-    const boardId = "68957580e7b952e57f6470b2";
+    const boardId = "6895d82b215dae5ac43ed80f";
 
     // call api
     fetchBoardDetailsAPI(boardId).then((board) => {

@@ -52,24 +52,26 @@ const BoardBar = (props) => {
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <Chip
-          sx={{
-            ...MENU_STYLES,
-            bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#bae2e2",
-            color: resolvedMode === "dark" ? "white" : "#000",
+        <Tooltip title={board?.description}>
+          <Chip
+            sx={{
+              ...MENU_STYLES,
+              bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#bae2e2",
+              color: resolvedMode === "dark" ? "white" : "#000",
 
-            "& .MuiSvgIcon-root": {
-              color: resolvedMode === "dark" ? "#fff" : "rgb(0, 134, 137)",
-            },
-            // boxShadow:
-            //   resolvedMode === "dark"
-            //     ? "rgba(255, 255, 255, 0.4) 0px 0px 7px 0px"
-            //     : "rgba(0, 0, 0, 0.2) 0px 0px 7px 0px",
-          }}
-          icon={<DashboardIcon />}
-          label={board?.title}
-          clickable
-        />
+              "& .MuiSvgIcon-root": {
+                color: resolvedMode === "dark" ? "#fff" : "rgb(0, 134, 137)",
+              },
+              // boxShadow:
+              //   resolvedMode === "dark"
+              //     ? "rgba(255, 255, 255, 0.4) 0px 0px 7px 0px"
+              //     : "rgba(0, 0, 0, 0.2) 0px 0px 7px 0px",
+            }}
+            icon={<DashboardIcon />}
+            label={board?.title}
+            clickable
+          />
+        </Tooltip>
         <Chip
           sx={{
             ...MENU_STYLES,
