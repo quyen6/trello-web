@@ -11,7 +11,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Check from "@mui/icons-material/Check";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
 const Recent = (props) => {
   const { isLg1024, isMdDown } = props;
   const [anchorEl, setAnchorEl] = useState(null);
@@ -34,7 +33,7 @@ const Recent = (props) => {
         onClick={handleClick}
         endIcon={isLg1024 || !isMdDown ? <KeyboardArrowDownIcon /> : null}
       >
-        {isLg1024 || isMdDown === true ? "Recent" : <WorkHistoryIcon />}
+        Recent
       </Button>
       {isLg1024 && (
         <Menu

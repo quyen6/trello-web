@@ -12,7 +12,7 @@ import ContentCopy from "@mui/icons-material/ContentCopy";
 import ContentPaste from "@mui/icons-material/ContentPaste";
 import Cloud from "@mui/icons-material/Cloud";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import WorkspacesIcon from "@mui/icons-material/Workspaces";
+
 const Workspaces = (props) => {
   const { isLg1024, isMdDown } = props;
 
@@ -41,7 +41,7 @@ const Workspaces = (props) => {
         onClick={handleClick}
         endIcon={isLg1024 || !isMdDown ? <KeyboardArrowDownIcon /> : null}
       >
-        {isLg1024 || isMdDown ? "Workspaces" : <WorkspacesIcon />}
+        Workspaces
       </Button>
 
       {isLg1024 && (

@@ -13,7 +13,7 @@ import ContentCopy from "@mui/icons-material/ContentCopy";
 import ContentPaste from "@mui/icons-material/ContentPaste";
 import Cloud from "@mui/icons-material/Cloud";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import StarRateIcon from "@mui/icons-material/StarRate";
+
 const Starred = (props) => {
   const { isLg1024, isMdDown } = props;
   const [anchorEl, setAnchorEl] = useState(null);
@@ -36,7 +36,7 @@ const Starred = (props) => {
         onClick={handleClick}
         endIcon={isLg1024 || !isMdDown ? <KeyboardArrowDownIcon /> : null}
       >
-        {isLg1024 || isMdDown ? "Starred" : <StarRateIcon />}
+        Starred
       </Button>
       {isLg1024 && (
         <Menu

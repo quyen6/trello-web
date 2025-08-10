@@ -13,7 +13,7 @@ import ContentCopy from "@mui/icons-material/ContentCopy";
 import ContentPaste from "@mui/icons-material/ContentPaste";
 import Cloud from "@mui/icons-material/Cloud";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import GridOnIcon from "@mui/icons-material/GridOn";
+
 const Templates = (props) => {
   const { isLg1024, isMdDown } = props;
   const [anchorEl, setAnchorEl] = useState(null);
@@ -36,7 +36,7 @@ const Templates = (props) => {
         onClick={handleClick}
         endIcon={isLg1024 || !isMdDown ? <KeyboardArrowDownIcon /> : null}
       >
-        {isLg1024 || isMdDown ? "Templates" : <GridOnIcon />}
+        Templates
       </Button>
       {isLg1024 && (
         <Menu

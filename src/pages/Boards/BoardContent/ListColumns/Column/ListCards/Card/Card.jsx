@@ -12,7 +12,7 @@ import ModeCommentIcon from "@mui/icons-material/ModeComment";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 const Card = (props) => {
-  const { card } = props;
+  const { card, resolvedMode } = props;
   const {
     attributes,
     listeners,
@@ -51,6 +51,10 @@ const Card = (props) => {
           // boxShadow: "0 1px 1px rgba(0,0,0,0.2)",
           overflow: "unset",
           display: card?.FE_PlaceholderCard ? "none" : "block",
+          border: "2px solid transparent",
+          "&:hover": {
+            borderColor: resolvedMode === "dark" ? "pink" : "rgb(0,137,134)",
+          },
         }}
       >
         {card?.cover && <CardMedia sx={{ height: 140 }} image={card.cover} />}
