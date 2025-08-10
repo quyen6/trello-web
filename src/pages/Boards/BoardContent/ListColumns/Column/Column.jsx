@@ -20,6 +20,11 @@ import { mapOrder } from "~/utils/sorts";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
 const Column = (props) => {
   const { resolvedMode, column } = props;
 
@@ -53,6 +58,23 @@ const Column = (props) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const [openNewCardForm, setOpenNewCardForm] = useState(false);
+  const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm);
+  const [newCardTitle, setNewCardTitle] = useState("");
+  const addNewCard = () => {
+    if (!newCardTitle) {
+      // console.error("Please enter Card Title");
+
+      return;
+    }
+    // console.log(newCardTitle);
+    // Gọi API ở đây
+
+    // Đóng lại trạng thái thêm Card mới và Clear Input
+    toggleOpenNewCardForm();
+    setNewCardTitle("");
   };
   return (
     // Bọc div ngoài cùng đẻ fix lỗi lúc kéo column ngắn qua 1 column dài
@@ -165,25 +187,126 @@ const Column = (props) => {
         <Box
           sx={{
             height: (theme) => theme.trello.columnFooterHeight,
-            p: 2,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
+            p: "8px 16px 16px 16px",
           }}
         >
-          <Button
-            sx={{
-              "&.MuiButton-text": {
-                color: resolvedMode === "dark" ? "white" : "",
-              },
-            }}
-            startIcon={<AddCardIcon />}
-          >
-            Add new card
-          </Button>
-          <Tooltip title="Drag to move">
-            <DragHandleIcon sx={{ cursor: "pointer" }} />
-          </Tooltip>
+          {!openNewCardForm ? (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Button
+                sx={{
+                  "&.MuiButton-text": {
+                    color: resolvedMode === "dark" ? "white" : "",
+                  },
+                }}
+                startIcon={<AddCardIcon />}
+                onClick={toggleOpenNewCardForm}
+              >
+                Add new card
+              </Button>
+              <Tooltip title="Drag to move">
+                <DragHandleIcon sx={{ cursor: "pointer" }} />
+              </Tooltip>
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <TextField
+                label="Enter card title..."
+                type="text"
+                size="small"
+                variant="outlined"
+                autoFocus
+                value={newCardTitle}
+                onChange={(e) => setNewCardTitle(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon
+                        sx={{
+                          color: resolvedMode === "dark" ? "white" : "#000",
+                        }}
+                      />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {/* <HighlightOffIcon
+                      sx={{
+                        // color: searchValue ? "white" : "transparent",
+                        fontSize: "medium",
+                        cursor: "pointer",
+                        color: resolvedMode === "dark" ? "white" : "#000",
+                      }}
+                    /> */}
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  minWidth: 100,
+                  "& label": {
+                    color: resolvedMode === "dark" ? "white" : "#000",
+                  },
+                  "& input": {
+                    color: resolvedMode === "dark" ? "white" : "#000",
+                  },
+                  "& label.Mui-focused": {
+                    color: resolvedMode === "dark" ? "white" : "#000",
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor:
+                        resolvedMode === "dark" ? "#ffffff3d" : "#01a3a4",
+                      // borderWidth: "0.5px !important",
+                    },
+                    "&:hover fieldset": {
+                      borderColor:
+                        resolvedMode === "dark" ? "#ffffff3d" : "#01a3a4",
+                      // borderWidth: "1px !important",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor:
+                        resolvedMode === "dark" ? "#ffffff3d" : "#01a3a4",
+                      // borderWidth: "1px !important",
+                    },
+                  },
+                }}
+              />
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Button
+                  onClick={() => addNewCard()}
+                  variant="contained"
+                  size="small"
+                  sx={{
+                    boxShadow: "none",
+                    border: " 0.5px solid #ffffff3d",
+                    bgcolor: resolvedMode === "dark" ? "#34495e" : "#01a3a4",
+                  }}
+                >
+                  Add
+                </Button>
+                <CloseIcon
+                  onClick={toggleOpenNewCardForm}
+                  sx={{
+                    color: resolvedMode === "dark" ? "white" : "#000",
+                    fontSize: "large",
+                    cursor: "pointer",
+                  }}
+                />
+              </Box>
+            </Box>
+          )}
         </Box>
       </Box>
     </div>

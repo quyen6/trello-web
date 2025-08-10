@@ -118,7 +118,7 @@ const AppBar = (props) => {
               </InputAdornment>
             ),
             endAdornment: (
-              <InputAdornment position="start">
+              <InputAdornment position="end">
                 <HighlightOffIcon
                   onClick={() => setSearchValue("")}
                   sx={{

@@ -14,7 +14,7 @@ const ListCards = (props) => {
     >
       <Box
         sx={{
-          p: "0 5px",
+          p: "0 5px 5px 5px",
           m: "0 5px",
           display: "flex",
           flexDirection: "column",
@@ -32,7 +32,7 @@ const ListCards = (props) => {
         }}
       >
         {cards?.map((card) => (
-          <Card key={card._id} card={card} />
+          <Card key={card._id} card={card} resolvedMode={resolvedMode} />
         ))}
       </Box>
     </SortableContext>

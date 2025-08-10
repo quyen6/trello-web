@@ -4,7 +4,7 @@ import AppBar from "~/components/AppBar/AppBar";
 import BoardBar from "./BoardBar/BoardBar";
 import BoardContent from "./BoardContent/BoardContent";
 import { useColorScheme } from "@mui/material";
-// import { mockData } from "~/apis/mock-data";
+import { mockData } from "~/apis/mock-data";
 import { useEffect, useState } from "react";
 import { fetchBoardDetailsAPI } from "~/apis";
 
@@ -37,8 +37,8 @@ const Board = () => {
   return (
     <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
       <AppBar resolvedMode={resolvedMode} />
-      <BoardBar resolvedMode={resolvedMode} board={board} />
-      <BoardContent resolvedMode={resolvedMode} board={board} />
+      <BoardBar resolvedMode={resolvedMode} board={mockData.board} />
+      <BoardContent resolvedMode={resolvedMode} board={mockData.board} />
     </Container>
   );
 };
