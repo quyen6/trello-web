@@ -25,6 +25,7 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
+import { toast } from "react-toastify";
 const Column = (props) => {
   const { resolvedMode, column } = props;
 
@@ -68,7 +69,7 @@ const Column = (props) => {
   const [newCardTitle, setNewCardTitle] = useState("");
   const addNewCard = () => {
     if (!newCardTitle) {
-      // console.error("Please enter Card Title");
+      toast.error("Please enter Card Title!", { position: "bottom-right" });
 
       return;
     }
