@@ -15,8 +15,10 @@ import CloseIcon from "@mui/icons-material/Close";
 const ListColumns = (props) => {
   const { resolvedMode, columns } = props;
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
-  const toggleOpenNewColumnForm = () =>
+  const toggleOpenNewColumnForm = () => {
     setOpenNewColumnForm(!openNewColumnForm);
+    setNewColumnTitle("");
+  };
   const [newColumnTitle, setNewColumnTitle] = useState("");
   const addNewColumn = () => {
     if (!newColumnTitle) {
@@ -107,6 +109,7 @@ const ListColumns = (props) => {
               size="small"
               variant="outlined"
               autoFocus
+              // data-no-dnd="true"
               value={newColumnTitle}
               onChange={(e) => setNewColumnTitle(e.target.value)}
               InputProps={{
