@@ -61,7 +61,10 @@ const Column = (props) => {
   };
 
   const [openNewCardForm, setOpenNewCardForm] = useState(false);
-  const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm);
+  const toggleOpenNewCardForm = () => {
+    setOpenNewCardForm(!openNewCardForm);
+    setNewCardTitle("");
+  };
   const [newCardTitle, setNewCardTitle] = useState("");
   const addNewCard = () => {
     if (!newCardTitle) {
@@ -228,6 +231,7 @@ const Column = (props) => {
                 size="small"
                 variant="outlined"
                 autoFocus
+                data-no-dnd="true"
                 value={newCardTitle}
                 onChange={(e) => setNewCardTitle(e.target.value)}
                 InputProps={{
