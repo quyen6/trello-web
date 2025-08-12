@@ -6,14 +6,29 @@ import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./theme";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 createRoot(document.getElementById("root")).render(
   <>
     <InitColorSchemeScript attribute="class" defaultMode="light" />
-    <StrictMode>
-      <ThemeProvider theme={theme} defaultMode="light" attribute="class">
-        <CssBaseline />
-        <App />
-      </ThemeProvider>
-    </StrictMode>
+    {/* <StrictMode> */}
+    <ThemeProvider theme={theme} attribute="class">
+      <CssBaseline />
+      <App />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+    </ThemeProvider>
+    {/* </StrictMode> */}
   </>
 );

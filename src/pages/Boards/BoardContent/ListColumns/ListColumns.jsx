@@ -12,6 +12,8 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
+import { toast } from "react-toastify";
+
 const ListColumns = (props) => {
   const { resolvedMode, columns } = props;
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
@@ -21,18 +23,16 @@ const ListColumns = (props) => {
   };
   const [newColumnTitle, setNewColumnTitle] = useState("");
   const addNewColumn = () => {
-    if (!newColumnTitle) {
-      // console.error("Please enter Column Title");
-
-      return;
+    if (!newColumnTitle.trim()) {
+      toast.error("Please enter Column Title!", { position: "bottom-left" });
+      return; // không làm gì thêm
     }
-    // console.log(newColumnTitle);
-    // Gọi API ở đây
 
-    // Đóng lại trạng thái thêm Column mới và Clear Input
+    // Thêm cột mới hoặc gọi API...
     toggleOpenNewColumnForm();
     setNewColumnTitle("");
   };
+
   return (
     // SortableContext dữ liệu truyền vào là mảng dạng ["id-1", "id-2"] chứ không phải dạng [{id:"id-1"},{id:"id-2"}]
     <SortableContext
