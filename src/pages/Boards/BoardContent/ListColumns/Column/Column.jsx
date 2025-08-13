@@ -27,7 +27,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
 const Column = (props) => {
-  const { resolvedMode, column } = props;
+  const { resolvedMode, column, createNewCard } = props;
 
   const {
     attributes,
@@ -67,15 +67,18 @@ const Column = (props) => {
     setNewCardTitle("");
   };
   const [newCardTitle, setNewCardTitle] = useState("");
-  const addNewCard = () => {
+  const addNewCard = async () => {
     if (!newCardTitle) {
       toast.error("Please enter Card Title!", { position: "bottom-right" });
 
       return;
     }
-    // console.log(newCardTitle);
+    const newCardData = {
+      title: newCardTitle,
+      columnId: column._id,
+    };
     // Gọi API ở đây
-
+    await createNewCard(newCardData);
     // Đóng lại trạng thái thêm Card mới và Clear Input
     toggleOpenNewCardForm();
     setNewCardTitle("");
