@@ -15,20 +15,25 @@ import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
 
 const ListColumns = (props) => {
-  const { resolvedMode, columns } = props;
+  const { resolvedMode, columns, createNewColumn, createNewCard } = props;
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
   const toggleOpenNewColumnForm = () => {
     setOpenNewColumnForm(!openNewColumnForm);
     setNewColumnTitle("");
   };
   const [newColumnTitle, setNewColumnTitle] = useState("");
-  const addNewColumn = () => {
+  const addNewColumn = async () => {
     if (!newColumnTitle.trim()) {
       toast.error("Please enter Column Title!", { position: "bottom-left" });
       return; // không làm gì thêm
     }
 
-    // Thêm cột mới hoặc gọi API...
+    // Tạo dữ liệu Column để gọi API
+    const newColumnData = {
+      title: newColumnTitle,
+    };
+    // Gọi API...
+    await createNewColumn(newColumnData);
     toggleOpenNewColumnForm();
     setNewColumnTitle("");
   };
@@ -59,6 +64,7 @@ const ListColumns = (props) => {
             resolvedMode={resolvedMode}
             key={column?._id}
             column={column}
+            createNewCard={createNewCard}
           />
         ))}
 
