@@ -10,11 +10,20 @@ import {
   fetchBoardDetailsAPI,
   createNewColumnAPI,
   createNewCardAPI,
+  updateBoardDetailsAPI,
 } from "~/apis";
 import { generatePlaceholderCard } from "~/utils/formatter";
 import { isEmpty } from "lodash";
 const Board = () => {
+  const { mode } = useColorScheme();
+  const resolvedMode =
+    mode === "system"
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light"
+      : mode;
   const [board, setBoard] = useState(null);
+
   useEffect(() => {
     // Tạm thời fix cứng boardId
     const boardId = "689b5a2f5a34f634e2fe9c8d";
@@ -66,13 +75,19 @@ const Board = () => {
     }
     setBoard(newBoard);
   };
-  const { mode } = useColorScheme();
-  const resolvedMode =
-    mode === "system"
-      ? window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light"
-      : mode;
+  // Gọi API và xử lí khi kéo thả Column xong xuôi
+  const moveColumns = async (dndOrderedColumns) => {
+    //Update cho chuẩn dữ liệu state board
+    const dndOrderedColumnsIds = dndOrderedColumns.map((c) => c._id);
+    const newBoard = { ...board };
+    newBoard.columns = dndOrderedColumns;
+    newBoard.columnOrderIds = dndOrderedColumnsIds;
+    setBoard(newBoard);
+    // Gọi API Update Board
+    await updateBoardDetailsAPI(newBoard._id, {
+      columnOrderIds: newBoard.columnOrderIds,
+    });
+  };
   return (
     <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
       <AppBar resolvedMode={resolvedMode} />
@@ -82,6 +97,7 @@ const Board = () => {
         board={board}
         createNewColumn={createNewColumn}
         createNewCard={createNewCard}
+        moveColumns={moveColumns}
       />
     </Container>
   );
