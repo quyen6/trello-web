@@ -67,7 +67,7 @@ const Column = (props) => {
     setNewCardTitle("");
   };
   const [newCardTitle, setNewCardTitle] = useState("");
-  const addNewCard = async () => {
+  const addNewCard = () => {
     if (!newCardTitle) {
       toast.error("Please enter Card Title!", { position: "bottom-right" });
 
@@ -78,7 +78,7 @@ const Column = (props) => {
       columnId: column._id,
     };
     // Gọi API ở đây
-    await createNewCard(newCardData);
+    createNewCard(newCardData);
     // Đóng lại trạng thái thêm Card mới và Clear Input
     toggleOpenNewCardForm();
     setNewCardTitle("");
