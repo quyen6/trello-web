@@ -22,7 +22,7 @@ const ListColumns = (props) => {
     setNewColumnTitle("");
   };
   const [newColumnTitle, setNewColumnTitle] = useState("");
-  const addNewColumn = async () => {
+  const addNewColumn = () => {
     if (!newColumnTitle.trim()) {
       toast.error("Please enter Column Title!", { position: "bottom-left" });
       return; // không làm gì thêm
@@ -33,7 +33,7 @@ const ListColumns = (props) => {
       title: newColumnTitle,
     };
     // Gọi API...
-    await createNewColumn(newColumnData);
+    createNewColumn(newColumnData);
     toggleOpenNewColumnForm();
     setNewColumnTitle("");
   };

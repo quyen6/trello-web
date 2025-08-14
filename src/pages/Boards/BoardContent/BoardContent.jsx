@@ -32,8 +32,14 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 };
 
 const BoardContent = (props) => {
-  const { resolvedMode, board, createNewColumn, createNewCard, moveColumns } =
-    props;
+  const {
+    resolvedMode,
+    board,
+    createNewColumn,
+    createNewCard,
+    moveColumns,
+    moveCardInTheSameColumn,
+  } = props;
 
   const [orderedColumns, setOrderedColumns] = useState([]);
 
@@ -237,6 +243,7 @@ const BoardContent = (props) => {
       if (!activeColumn || !overColumn) return;
 
       // Kéo thả Card qua 2 Column khác nhau
+
       // Phải dùng tới activeDragItemData.columnId hoặc oldColumnDataWhenDraggingCard (set vào state từ bước handleStartStart) chứ không phải activeData trong scope handleDragEnd này vì sau khi đi qua onDagOver tới đây state của Card đã bị cập nhật một lần
 
       if (oldColumnDataWhenDraggingCard._id !== overColumn._id) {
@@ -267,6 +274,8 @@ const BoardContent = (props) => {
           oldCardIndex,
           newCardIndex
         );
+        const dndOrderedCardIds = dndOrderedCards.map((c) => c._id);
+
         setOrderedColumns((prevColumns) => {
           const nextColumns = _.cloneDeep(prevColumns);
 
@@ -277,10 +286,16 @@ const BoardContent = (props) => {
 
           // Cập nhật 2gias trị cards và cardOrderIds trong cái targetColumn
           targetColumn.cards = dndOrderedCards;
-          targetColumn.cardOrderIds = dndOrderedCards.map((c) => c._id);
+          targetColumn.cardOrderIds = dndOrderedCardIds;
 
           return nextColumns;
         });
+        //
+        moveCardInTheSameColumn(
+          dndOrderedCards,
+          dndOrderedCardIds,
+          oldColumnDataWhenDraggingCard._id
+        );
       }
     }
 
@@ -303,6 +318,9 @@ const BoardContent = (props) => {
           newColumnIndex
         );
 
+        // Vẫn gọi update state để tránh delay hoặc flickering
+        setOrderedColumns(dndOrderedColumns);
+
         /**
          * Gọi lên props function moveColumns nằm ở component cha cao nhất (boards/_id.jsx)
          * Lưu ý: Về sau ở học phần MERN Stack Advance nâng cao học trực tiếp mình sẽ với mình thì chúng ta sẽ đưa dữ liệu Board ra ngoài Redux Global Store
@@ -310,9 +328,6 @@ const BoardContent = (props) => {
          * Với việc sử dụng Redux như vậy thì code sẽ Clean chuẩn chỉnh hơn rất  nhiều.
          */
         moveColumns(dndOrderedColumns);
-
-        // Vẫn gọi update state để tránh delay hoặc flickering
-        setOrderedColumns(dndOrderedColumns);
       }
     }
 
