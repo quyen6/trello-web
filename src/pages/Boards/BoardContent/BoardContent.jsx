@@ -32,7 +32,8 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 };
 
 const BoardContent = (props) => {
-  const { resolvedMode, board, createNewColumn, createNewCard } = props;
+  const { resolvedMode, board, createNewColumn, createNewCard, moveColumns } =
+    props;
 
   const [orderedColumns, setOrderedColumns] = useState([]);
 
@@ -301,12 +302,16 @@ const BoardContent = (props) => {
           oldColumnIndex,
           newColumnIndex
         );
-        // console.log("🚀 ~ handleDragEnd ~ dndOrderedColumns:", dndOrderedColumns);
-        // const dndOrderedColumnsIds = dndOrderedColumns.map((c) => c._id);
-        // console.log(
-        //   "🚀 ~ handleDragEnd ~ dndOrderedColumnsIds:",
-        //   dndOrderedColumnsIds
-        // );
+
+        /**
+         * Gọi lên props function moveColumns nằm ở component cha cao nhất (boards/_id.jsx)
+         * Lưu ý: Về sau ở học phần MERN Stack Advance nâng cao học trực tiếp mình sẽ với mình thì chúng ta sẽ đưa dữ liệu Board ra ngoài Redux Global Store
+         * và lúc này chúng ta có thể gọi luôn API ở đây là xong thay vì phải lần lượt gọi ngược lên những component cha phía bên trên. (Đổi với component con nằm càng sâu thì càng khổ :D)
+         * Với việc sử dụng Redux như vậy thì code sẽ Clean chuẩn chỉnh hơn rất  nhiều.
+         */
+        moveColumns(dndOrderedColumns);
+
+        // Vẫn gọi update state để tránh delay hoặc flickering
         setOrderedColumns(dndOrderedColumns);
       }
     }
