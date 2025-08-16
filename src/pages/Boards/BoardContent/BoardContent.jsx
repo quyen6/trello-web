@@ -39,6 +39,7 @@ const BoardContent = (props) => {
     createNewCard,
     moveColumns,
     moveCardInTheSameColumn,
+    moveCardToDifferentColumn,
   } = props;
 
   const [orderedColumns, setOrderedColumns] = useState([]);
@@ -90,7 +91,8 @@ const BoardContent = (props) => {
     over,
     activeColumn,
     activeDraggingCardId,
-    activeDraggingCardData
+    activeDraggingCardData,
+    triggerFrom
   ) => {
     setOrderedColumns((prevColumns) => {
       // Tìm vị trí index của cái overCard trong column đích nơi card sắp được thả
@@ -166,6 +168,16 @@ const BoardContent = (props) => {
         );
       }
 
+      // Nếu func này được gọi từ handleDragEnd nghia là đã kéo thả xong, lúc này mới xử lý gọi API 1 lần ở đây
+      if (triggerFrom === "handleDragEnd") {
+        moveCardToDifferentColumn(
+          activeDraggingCardId,
+          oldColumnDataWhenDraggingCard._id,
+          nextOverColumn._id,
+          nextColumns
+        );
+      }
+
       return nextColumns;
     });
   };
@@ -216,7 +228,8 @@ const BoardContent = (props) => {
         over,
         activeColumn,
         activeDraggingCardId,
-        activeDraggingCardData
+        activeDraggingCardData,
+        "handleDragOver"
       );
     }
   };
@@ -254,7 +267,8 @@ const BoardContent = (props) => {
           over,
           activeColumn,
           activeDraggingCardId,
-          activeDraggingCardData
+          activeDraggingCardData,
+          "handleDragEnd"
         );
       } else {
         // Kéo thả Card trong 1 Column

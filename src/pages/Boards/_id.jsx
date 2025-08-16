@@ -12,6 +12,7 @@ import {
   createNewCardAPI,
   updateBoardDetailsAPI,
   updateColumnDetailsAPI,
+  moveCardToDifferentColumnAPI,
 } from "~/apis";
 import { generatePlaceholderCard } from "~/utils/formatter";
 import { isEmpty } from "lodash";
@@ -37,7 +38,7 @@ const Board = () => {
           column.cardOrderIds = [generatePlaceholderCard(column)._id];
         }
       });
-      console.log("🚀 ~ Board ~ board:", board);
+      // console.log("🚀 ~ Board ~ board:", board);
       setBoard(board);
     });
   }, []);
@@ -71,9 +72,17 @@ const Board = () => {
       (c) => c._id === createdCard.columnId
     );
     if (columnToUpdate) {
-      columnToUpdate.cards.push(createdCard);
-      columnToUpdate.cardOrderIds.push(createdCard._id);
+      // Nếu column rỗng bản chất là đang chứa một cái Placeholder card
+      if (columnToUpdate.cards.some((c) => c.FE_PlaceholderCard)) {
+        columnToUpdate.cards = [createdCard];
+        columnToUpdate.cardOrderIds = [createdCard._id];
+      } else {
+        // Ngược lại Column đã có data thì push vào cuối mảng
+        columnToUpdate.cards.push(createdCard);
+        columnToUpdate.cardOrderIds.push(createdCard._id);
+      }
     }
+    console.log("🚀 ~ createNewCard ~ columnToUpdate:", columnToUpdate);
     setBoard(newBoard);
   };
   // Gọi API và xử lí khi kéo thả Column xong xuôi
@@ -105,9 +114,46 @@ const Board = () => {
     setBoard(newBoard);
     // Gọi API Update Column
 
-    // updateColumnDetailsAPI(columnToUpdate._id, {
-    //   cardOrderIds: dndOrderedCardIds,
-    // });
+    updateColumnDetailsAPI(columnToUpdate._id, {
+      cardOrderIds: dndOrderedCardIds,
+    });
+  };
+
+  /**
+   * Khi di chuyển card sang Column khác:
+   * B1: Cập nhật mảng cardOrderIds của Column ban đầu chứa nó (Hiểu bản chất là xóa cái id của Card ra khỏi mảng)
+   * B2: Cập nhật mảng cardOrderIds của Column tiếp theo (Hiểu bản chất là thêm id của Card vào mảng)
+   * B3: Cập nhật lại trường columnId mới của cái Card đã kéo
+   * => Làm một API support riêng.
+   */
+  const moveCardToDifferentColumn = (
+    curentCardId,
+    prevColumnId,
+    nextColumnId,
+    dndOrderedColumns
+  ) => {
+    const dndOrderedColumnsIds = dndOrderedColumns.map((c) => c._id);
+    const newBoard = { ...board };
+    newBoard.columns = dndOrderedColumns;
+    newBoard.columnOrderIds = dndOrderedColumnsIds;
+    setBoard(newBoard);
+
+    // Gọi API
+    let prevCardOrderIds = dndOrderedColumns.find(
+      (c) => c._id === prevColumnId
+    )?.cardOrderIds;
+    // Xử lí vấn đề khi kéo Card cuối cùng ra khỏi Column, Column rỗng có placeholder-card cần xóa nó đi trước khi gửi dữ liệu lên BE
+    if (prevCardOrderIds[0].includes("placeholder-card")) {
+      prevCardOrderIds = [];
+    }
+    moveCardToDifferentColumnAPI({
+      curentCardId,
+      prevColumnId,
+      prevCardOrderIds,
+      nextColumnId,
+      nextCardOrderIds: dndOrderedColumns.find((c) => c._id === nextColumnId)
+        ?.cardOrderIds,
+    });
   };
 
   return (
@@ -121,6 +167,7 @@ const Board = () => {
         createNewCard={createNewCard}
         moveColumns={moveColumns}
         moveCardInTheSameColumn={moveCardInTheSameColumn}
+        moveCardToDifferentColumn={moveCardToDifferentColumn}
       />
     </Container>
   );
