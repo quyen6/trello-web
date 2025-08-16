@@ -15,7 +15,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
 
 const ListColumns = (props) => {
-  const { resolvedMode, columns, createNewColumn, createNewCard } = props;
+  const {
+    resolvedMode,
+    columns,
+    createNewColumn,
+    createNewCard,
+    deleteColumnDetails,
+  } = props;
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
   const toggleOpenNewColumnForm = () => {
     setOpenNewColumnForm(!openNewColumnForm);
@@ -65,6 +71,7 @@ const ListColumns = (props) => {
             key={column?._id}
             column={column}
             createNewCard={createNewCard}
+            deleteColumnDetails={deleteColumnDetails}
           />
         ))}
 
