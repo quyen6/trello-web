@@ -13,6 +13,7 @@ import {
   updateBoardDetailsAPI,
   updateColumnDetailsAPI,
   moveCardToDifferentColumnAPI,
+  deleteColumnDetailsAPI,
 } from "~/apis";
 import { generatePlaceholderCard } from "~/utils/formatter";
 import { isEmpty } from "lodash";
@@ -38,7 +39,6 @@ const Board = () => {
           column.cardOrderIds = [generatePlaceholderCard(column)._id];
         }
       });
-      // console.log("🚀 ~ Board ~ board:", board);
       setBoard(board);
     });
   }, []);
@@ -156,6 +156,13 @@ const Board = () => {
     });
   };
 
+  // Xử lý xóa 1 Column
+  const deleteColumnDetails = async (columnId) => {
+    await deleteColumnDetailsAPI(columnId).then((res) => {
+      console.log("🚀 ~ deleteColumnDetails ~ res:", res);
+    });
+  };
+
   return (
     <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
       <AppBar resolvedMode={resolvedMode} />
@@ -168,6 +175,7 @@ const Board = () => {
         moveColumns={moveColumns}
         moveCardInTheSameColumn={moveCardInTheSameColumn}
         moveCardToDifferentColumn={moveCardToDifferentColumn}
+        deleteColumnDetails={deleteColumnDetails}
       />
     </Container>
   );

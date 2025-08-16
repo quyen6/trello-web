@@ -40,6 +40,7 @@ const BoardContent = (props) => {
     moveColumns,
     moveCardInTheSameColumn,
     moveCardToDifferentColumn,
+    deleteColumnDetails,
   } = props;
 
   const [orderedColumns, setOrderedColumns] = useState([]);
@@ -429,6 +430,7 @@ const BoardContent = (props) => {
           columns={orderedColumns}
           createNewColumn={createNewColumn}
           createNewCard={createNewCard}
+          deleteColumnDetails={deleteColumnDetails}
         />
         <DragOverlay dropAnimation={customDropAnimation}>
           {activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN &&
