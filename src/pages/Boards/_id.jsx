@@ -17,6 +17,7 @@ import {
 } from "~/apis";
 import { generatePlaceholderCard } from "~/utils/formatter";
 import { isEmpty } from "lodash";
+import { toast } from "react-toastify";
 const Board = () => {
   const { mode } = useColorScheme();
   const resolvedMode =
@@ -82,7 +83,6 @@ const Board = () => {
         columnToUpdate.cardOrderIds.push(createdCard._id);
       }
     }
-    console.log("🚀 ~ createNewCard ~ columnToUpdate:", columnToUpdate);
     setBoard(newBoard);
   };
   // Gọi API và xử lí khi kéo thả Column xong xuôi
@@ -158,8 +158,15 @@ const Board = () => {
 
   // Xử lý xóa 1 Column
   const deleteColumnDetails = async (columnId) => {
+    // Update cho chuẩn dữ liệu state Board
+    const newBoard = { ...board };
+    newBoard.columns = newBoard.columns.filter((c) => c._id !== columnId);
+    newBoard.columnOrderIds = newBoard.columnOrderIds.filter(
+      (_id) => _id !== columnId
+    );
+    setBoard(newBoard);
     await deleteColumnDetailsAPI(columnId).then((res) => {
-      console.log("🚀 ~ deleteColumnDetails ~ res:", res);
+      toast.success(res?.deleteResult);
     });
   };
 
