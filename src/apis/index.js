@@ -2,11 +2,12 @@ import axios from "axios";
 import { API_ROOT } from "~/utils/constants";
 
 /* Boards */
-export const fetchBoardDetailsAPI = async (boardId) => {
-  const respone = await axios.get(`${API_ROOT}/v1/boards/${boardId}`);
+// Đã move vào Redux
+// export const fetchBoardDetailsAPI = async (boardId) => {
+//   const respone = await axios.get(`${API_ROOT}/v1/boards/${boardId}`);
 
-  return respone.data;
-};
+//   return respone.data;
+// };
 export const updateBoardDetailsAPI = async (boardId, updateData) => {
   const respone = await axios.put(
     `${API_ROOT}/v1/boards/${boardId}`,

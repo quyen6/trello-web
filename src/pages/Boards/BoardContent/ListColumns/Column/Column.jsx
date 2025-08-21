@@ -27,9 +27,18 @@ import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
 import { useConfirm } from "material-ui-confirm";
+import { createNewCardAPI, deleteColumnDetailsAPI } from "~/apis";
+import { cloneDeep } from "lodash";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectorCurrentActiveBoard,
+  updateCurrentActiveBoard,
+} from "~/redux/activeBoard/activeBoardSlice";
 const Column = (props) => {
-  const { resolvedMode, column, createNewCard, deleteColumnDetails } = props;
-
+  const { resolvedMode, column } = props;
+  const dispatch = useDispatch();
+  // Không dùng State của component nữa mà chuyển qua State của Redux
+  const board = useSelector(selectorCurrentActiveBoard);
   const {
     attributes,
     listeners,
@@ -68,7 +77,7 @@ const Column = (props) => {
     setNewCardTitle("");
   };
   const [newCardTitle, setNewCardTitle] = useState("");
-  const addNewCard = () => {
+  const addNewCard = async () => {
     if (!newCardTitle) {
       toast.error("Please enter Card Title!", { position: "bottom-right" });
 
@@ -78,8 +87,31 @@ const Column = (props) => {
       title: newCardTitle,
       columnId: column._id,
     };
-    // Gọi API ở đây
-    createNewCard(newCardData);
+    // Gọi API tạo mới Card và làm lại dữ liệu State Board
+    const createdCard = await createNewCardAPI({
+      ...newCardData,
+      boardId: board._id,
+    });
+
+    // Cập nhật lại state board
+    //Tương tự createNewColumn dùng cloneDeep
+    const newBoard = cloneDeep(board);
+    const columnToUpdate = newBoard.columns.find(
+      (c) => c._id === createdCard.columnId
+    );
+    if (columnToUpdate) {
+      // Nếu column rỗng bản chất là đang chứa một cái Placeholder card
+      if (columnToUpdate.cards.some((c) => c.FE_PlaceholderCard)) {
+        columnToUpdate.cards = [createdCard];
+        columnToUpdate.cardOrderIds = [createdCard._id];
+      } else {
+        // Ngược lại Column đã có data thì push vào cuối mảng
+        columnToUpdate.cards.push(createdCard);
+        columnToUpdate.cardOrderIds.push(createdCard._id);
+      }
+    }
+
+    dispatch(updateCurrentActiveBoard(newBoard));
     // Đóng lại trạng thái thêm Card mới và Clear Input
     toggleOpenNewCardForm();
     setNewCardTitle("");
@@ -99,8 +131,16 @@ const Column = (props) => {
       // confirmationButtonProps: { color: "error", variant: "outlined" },
       // cancellationButtonProps: { color: "inherit" },
     })
-      .then(() => {
-        deleteColumnDetails(column._id);
+      .then(async () => {
+        const newBoard = { ...board };
+        newBoard.columns = newBoard.columns.filter((c) => c._id !== column._id);
+        newBoard.columnOrderIds = newBoard.columnOrderIds.filter(
+          (_id) => _id !== column._id
+        );
+        dispatch(updateCurrentActiveBoard(newBoard));
+        await deleteColumnDetailsAPI(column._id).then((res) => {
+          toast.success(res?.deleteResult);
+        });
       })
       .catch(() => {});
   };

@@ -13,22 +13,26 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
-
+import { generatePlaceholderCard } from "~/utils/formatter";
+import { createNewColumnAPI } from "~/apis";
+import { cloneDeep } from "lodash";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateCurrentActiveBoard,
+  selectorCurrentActiveBoard,
+} from "~/redux/activeBoard/activeBoardSlice";
 const ListColumns = (props) => {
-  const {
-    resolvedMode,
-    columns,
-    createNewColumn,
-    createNewCard,
-    deleteColumnDetails,
-  } = props;
+  const dispatch = useDispatch();
+  // Không dùng State của component nữa mà chuyển qua State của Redux
+  const board = useSelector(selectorCurrentActiveBoard);
+  const { resolvedMode, columns } = props;
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
   const toggleOpenNewColumnForm = () => {
     setOpenNewColumnForm(!openNewColumnForm);
     setNewColumnTitle("");
   };
   const [newColumnTitle, setNewColumnTitle] = useState("");
-  const addNewColumn = () => {
+  const addNewColumn = async () => {
     if (!newColumnTitle.trim()) {
       toast.error("Please enter Column Title!", { position: "bottom-left" });
       return; // không làm gì thêm
@@ -38,8 +42,30 @@ const ListColumns = (props) => {
     const newColumnData = {
       title: newColumnTitle,
     };
-    // Gọi API...
-    createNewColumn(newColumnData);
+    //  Gọi API tạo mới Column và làm lại dữ liệu State Board
+    const createdColumn = await createNewColumnAPI({
+      ...newColumnData,
+      boardId: board._id,
+    });
+    // Khi tạo mới Column thì nó sẽ chưa có Card, cần xử lý vấn đề kéo thả vào 1 column rỗng
+    createdColumn.cards = [generatePlaceholderCard(createdColumn)];
+    createdColumn.cardOrderIds = [generatePlaceholderCard(createdColumn)._id];
+
+    /**
+     * Đoạn này sẽ dính lỗi object is not extensible bởi dù đã copy/clone ra giá tri newBoard nhưng bản chất của spread operator là Shallow Copy/Clone, nên dính phải rules Immutability trong Redux Toolkit không dùng được hàm PUSH (sửa giá trị mảng trực tiếp), cách đơn giản nhanh gọn nhất ở trường hợp này của chúng ta là dùng tới Deep Copy/Clone toàn bộ cái Board cho dễ hiểu và code ngắn gọn.
+     * https://redux-toolkit.js.org/usage/immer-reducers
+     * Tài liệu thêm về Shallow và Deep Copy Object trong JS:
+     * https://www.javascripttutorial.net/object/3-ways-to-copy-objects-in-javascript/
+     *
+     *****************Ngoài ra nếu không muốn dùng cloneDeep thì thay push = concat*********************
+     */
+    // Cập nhật lại state board
+    const newBoard = cloneDeep(board);
+    newBoard.columns.push(createdColumn);
+    newBoard.columnOrderIds.push(createdColumn._id);
+
+    // Cập nhật lại dữ liệu Board trong Redux Store
+    dispatch(updateCurrentActiveBoard(newBoard));
     toggleOpenNewColumnForm();
     setNewColumnTitle("");
   };
@@ -70,8 +96,6 @@ const ListColumns = (props) => {
             resolvedMode={resolvedMode}
             key={column?._id}
             column={column}
-            createNewCard={createNewCard}
-            deleteColumnDetails={deleteColumnDetails}
           />
         ))}
 

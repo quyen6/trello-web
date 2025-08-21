@@ -35,12 +35,9 @@ const BoardContent = (props) => {
   const {
     resolvedMode,
     board,
-    createNewColumn,
-    createNewCard,
     moveColumns,
     moveCardInTheSameColumn,
     moveCardToDifferentColumn,
-    deleteColumnDetails,
   } = props;
 
   const [orderedColumns, setOrderedColumns] = useState([]);
@@ -425,13 +422,7 @@ const BoardContent = (props) => {
           p: "10px 0",
         }}
       >
-        <ListColumns
-          resolvedMode={resolvedMode}
-          columns={orderedColumns}
-          createNewColumn={createNewColumn}
-          createNewCard={createNewCard}
-          deleteColumnDetails={deleteColumnDetails}
-        />
+        <ListColumns resolvedMode={resolvedMode} columns={orderedColumns} />
         <DragOverlay dropAnimation={customDropAnimation}>
           {activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN &&
             activeDragItemData && (
