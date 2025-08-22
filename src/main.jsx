@@ -9,41 +9,45 @@ import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ConfirmProvider } from "material-ui-confirm";
+// Cấu hình Redux
 import { Provider } from "react-redux";
 import { store } from "~/redux/store.js";
-
+// Cấu hình react-router-dom với BrowserRouter
+import { BrowserRouter } from "react-router-dom";
 createRoot(document.getElementById("root")).render(
   <>
     <InitColorSchemeScript attribute="class" defaultMode="light" />
-    <Provider store={store}>
-      <ThemeProvider theme={theme} attribute="class">
-        <ConfirmProvider
-          defaultOptions={{
-            allowClose: false,
-            confirmationText: "OK",
-            cancellationText: "CANCLE",
-            confirmationButtonProps: { color: "error", variant: "outlined" },
-            cancellationButtonProps: { color: "inherit" },
-          }}
-        >
-          <CssBaseline />
+    <BrowserRouter basename="/" future={{ v7_startTransition: true }}>
+      <Provider store={store}>
+        <ThemeProvider theme={theme} attribute="class">
+          <ConfirmProvider
+            defaultOptions={{
+              allowClose: false,
+              confirmationText: "OK",
+              cancellationText: "CANCLE",
+              confirmationButtonProps: { color: "error", variant: "outlined" },
+              cancellationButtonProps: { color: "inherit" },
+            }}
+          >
+            <CssBaseline />
 
-          <App />
+            <App />
 
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick={false}
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-          />
-        </ConfirmProvider>
-      </ThemeProvider>
-    </Provider>
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick={false}
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="colored"
+            />
+          </ConfirmProvider>
+        </ThemeProvider>
+      </Provider>
+    </BrowserRouter>
   </>
 );
