@@ -19,6 +19,7 @@ import {
 } from "~/redux/activeBoard/activeBoardSlice";
 
 import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 const Board = () => {
   const dispatch = useDispatch();
   // Không dùng State của component nữa mà chuyển qua State của Redux
@@ -32,13 +33,12 @@ const Board = () => {
         : "light"
       : mode;
 
-  useEffect(() => {
-    // Tạm thời fix cứng boardId
-    const boardId = "689b5a2f5a34f634e2fe9c8d";
+  const { boardId } = useParams();
 
+  useEffect(() => {
     // call api
     dispatch(fetchBoardDetailsAPI(boardId));
-  }, [dispatch]);
+  }, [dispatch, boardId]);
 
   // Gọi API và xử lí khi kéo thả Column xong xuôi
   const moveColumns = (dndOrderedColumns) => {
