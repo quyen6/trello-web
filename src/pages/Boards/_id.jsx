@@ -3,7 +3,7 @@ import Container from "@mui/material/Container";
 import AppBar from "~/components/AppBar/AppBar";
 import BoardBar from "./BoardBar/BoardBar";
 import BoardContent from "./BoardContent/BoardContent";
-import { CircularProgress, useColorScheme } from "@mui/material";
+import { useColorScheme } from "@mui/material";
 // import { mockData } from "~/apis/mock-data";
 import { useEffect } from "react";
 import {
@@ -20,6 +20,7 @@ import {
 
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import PageLoadingSpinner from "~/components/Loading/PageLoadingSpinner";
 const Board = () => {
   const dispatch = useDispatch();
   // Không dùng State của component nữa mà chuyển qua State của Redux
@@ -122,17 +123,7 @@ const Board = () => {
 
       {!board || isEmpty(board) ? (
         // Loading UI
-        <div
-          style={{
-            height: "80vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <CircularProgress sx={{ mr: 2 }} />
-          <i>Loading Board ...</i>
-        </div>
+        <PageLoadingSpinner caption="Loading Board..." />
       ) : (
         <>
           <BoardBar resolvedMode={resolvedMode} board={board} />
