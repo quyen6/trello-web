@@ -74,7 +74,7 @@ export const registerUserAPI = async (data) => {
 };
 export const verifyUserAPI = async (data) => {
   const response = await authorizedAxiosInstance.put(
-    `${API_ROOT}/v1/users/register`,
+    `${API_ROOT}/v1/users/verify`,
     data
   );
   toast.success(
