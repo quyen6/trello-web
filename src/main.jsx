@@ -14,39 +14,50 @@ import { Provider } from "react-redux";
 import { store } from "~/redux/store.js";
 // Cấu hình react-router-dom với BrowserRouter
 import { BrowserRouter } from "react-router-dom";
+
+// Cấu hình Redux-Persist
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
+let persistor = persistStore(store);
+
 createRoot(document.getElementById("root")).render(
   <>
     <InitColorSchemeScript attribute="class" defaultMode="light" />
     <BrowserRouter basename="/" future={{ v7_startTransition: true }}>
       <Provider store={store}>
-        <ThemeProvider theme={theme} attribute="class">
-          <ConfirmProvider
-            defaultOptions={{
-              allowClose: false,
-              confirmationText: "OK",
-              cancellationText: "CANCLE",
-              confirmationButtonProps: { color: "error", variant: "outlined" },
-              cancellationButtonProps: { color: "inherit" },
-            }}
-          >
-            <CssBaseline />
+        <PersistGate persistor={persistor}>
+          <ThemeProvider theme={theme} attribute="class">
+            <ConfirmProvider
+              defaultOptions={{
+                allowClose: false,
+                confirmationText: "OK",
+                cancellationText: "CANCLE",
+                confirmationButtonProps: {
+                  color: "error",
+                  variant: "outlined",
+                },
+                cancellationButtonProps: { color: "inherit" },
+              }}
+            >
+              <CssBaseline />
 
-            <App />
+              <App />
 
-            <ToastContainer
-              position="top-right"
-              autoClose={3000}
-              hideProgressBar={false}
-              newestOnTop={true}
-              closeOnClick={false}
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="colored"
-            />
-          </ConfirmProvider>
-        </ThemeProvider>
+              <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={true}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+              />
+            </ConfirmProvider>
+          </ThemeProvider>
+        </PersistGate>
       </Provider>
     </BrowserRouter>
   </>
