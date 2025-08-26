@@ -1,5 +1,5 @@
 // TrungQuanDev: https://youtube.com/@trungquandev
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
@@ -20,8 +20,15 @@ import {
   PASSWORD_RULE_MESSAGE,
 } from "~/utils/validators";
 import FieldErrorAlert from "~/components/Form/FieldErrorAlert";
+import { useDispatch } from "react-redux";
+import { loginUserAPI } from "~/redux/user/userSlice";
+import { toast } from "react-toastify";
 
 function LoginForm() {
+  const dispatch = useDispatch();
+  // Không dùng State của component nữa mà chuyển qua State của Redux
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -30,8 +37,19 @@ function LoginForm() {
   const [searchParams] = useSearchParams();
   const registeredEmail = searchParams.get("registeredEmail");
   const verifiedEmail = searchParams.get("verifiedEmail");
+
   const submitLogIn = (data) => {
-    console.log("🚀 ~ submitLogIn ~ data:", data);
+    const { email, password } = data;
+    toast
+      .promise(dispatch(loginUserAPI({ email, password })), {
+        pending: "Logging in...",
+      })
+      .then((res) => {
+        // console.log("🚀 ~ submitLogIn ~ res:", res);
+
+        // Đoạn này phải kiểm tra không có lỗi thì mới redirect về route /
+        if (!res.error) navigate("/"); // Login thành công
+      });
   };
   return (
     <form onSubmit={handleSubmit(submitLogIn)}>
@@ -142,7 +160,7 @@ function LoginForm() {
           </Box>
           <CardActions sx={{ padding: "0 1em 1em 1em" }}>
             <Button
-              className="interceptor-loading"
+              // className="interceptor-loading"
               type="submit"
               variant="contained"
               color="primary"

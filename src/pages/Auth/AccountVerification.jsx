@@ -17,7 +17,7 @@ const AccountVerification = () => {
 
   // Gọi API để verify tài khoản
   useEffect(() => {
-    if (!email && !token) {
+    if (email && token) {
       verifyUserAPI({ email, token }).then(() => setVerified(true));
     }
   }, [email, token]);

@@ -44,6 +44,7 @@ export const activeBoardSlice = createSlice({
       let board = action.payload;
 
       board.columns.forEach((column) => {
+        // Khi f5 trang web thì cần xử lý vấn đề kéo thả vào 1 column rỗng
         if (isEmpty(column.cards)) {
           column.cards = [generatePlaceholderCard(column)];
           column.cardOrderIds = [generatePlaceholderCard(column)._id];
