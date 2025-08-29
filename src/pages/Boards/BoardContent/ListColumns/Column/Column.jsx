@@ -34,8 +34,10 @@ import {
   selectorCurrentActiveBoard,
   updateCurrentActiveBoard,
 } from "~/redux/activeBoard/activeBoardSlice";
+import { useOutletContext } from "react-router-dom";
 const Column = (props) => {
-  const { resolvedMode, column } = props;
+  const { column } = props;
+  const { resolvedMode } = useOutletContext();
   const dispatch = useDispatch();
   // Không dùng State của component nữa mà chuyển qua State của Redux
   const board = useSelector(selectorCurrentActiveBoard);
@@ -273,7 +275,7 @@ const Column = (props) => {
         </Box>
 
         {/* List Card */}
-        <ListCards resolvedMode={resolvedMode} cards={orderedCards} />
+        <ListCards cards={orderedCards} />
 
         {/* Column Footer */}
         <Box

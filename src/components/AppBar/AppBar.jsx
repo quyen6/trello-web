@@ -26,6 +26,7 @@ import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 import SearchIcon from "@mui/icons-material/Search";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Link } from "react-router-dom";
 
 const AppBar = (props) => {
   const { resolvedMode } = props;
@@ -65,24 +66,26 @@ const AppBar = (props) => {
           resolvedMode={resolvedMode}
           isMdDown={isMdDown}
         />
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-          <SvgIcon
-            component={TrelloIcon}
-            inheritViewBox
-            fontSize="medium"
-            sx={{ color: "white" }}
-          />
-          <Typography
-            variant="span"
-            sx={{
-              fontSize: "1.4rem",
-              fontWeight: "bold",
-              color: "white",
-            }}
-          >
-            Trello
-          </Typography>
-        </Box>
+        <Link to="/">
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+            <SvgIcon
+              component={TrelloIcon}
+              inheritViewBox
+              fontSize="medium"
+              sx={{ color: "white" }}
+            />
+            <Typography
+              variant="span"
+              sx={{
+                fontSize: "1.4rem",
+                fontWeight: "bold",
+                color: "white",
+              }}
+            >
+              Trello
+            </Typography>
+          </Box>
+        </Link>
         <Box
           sx={{
             display: { xs: "none", md: "flex" },

@@ -5,8 +5,10 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { useOutletContext } from "react-router-dom";
 const ListCards = (props) => {
-  const { resolvedMode, cards } = props;
+  const { cards } = props;
+  const { resolvedMode } = useOutletContext();
   return (
     <SortableContext
       items={cards?.map((c) => c._id)}
@@ -32,7 +34,7 @@ const ListCards = (props) => {
         }}
       >
         {cards?.map((card) => (
-          <Card key={card._id} card={card} resolvedMode={resolvedMode} />
+          <Card key={card._id} card={card} />
         ))}
       </Box>
     </SortableContext>
