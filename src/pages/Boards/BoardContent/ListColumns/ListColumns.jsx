@@ -21,11 +21,13 @@ import {
   updateCurrentActiveBoard,
   selectorCurrentActiveBoard,
 } from "~/redux/activeBoard/activeBoardSlice";
+import { useOutletContext } from "react-router-dom";
 const ListColumns = (props) => {
   const dispatch = useDispatch();
   // Không dùng State của component nữa mà chuyển qua State của Redux
   const board = useSelector(selectorCurrentActiveBoard);
-  const { resolvedMode, columns } = props;
+  const { columns } = props;
+  const { resolvedMode } = useOutletContext();
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
   const toggleOpenNewColumnForm = () => {
     setOpenNewColumnForm(!openNewColumnForm);

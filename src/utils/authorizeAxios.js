@@ -68,6 +68,7 @@ authorizedAxiosInstance.interceptors.response.use(
     }
 
     // Trường hợp 2: Nếu nhận mã 410 từ BE, thì sẽ gọi api refresh token để làm mới lại accessToken
+    // https://www.thedutchlab.com/inzichten/using-axios-interceptors-for-refreshing-your-api-token
     // Đầu tiên lấy được các request API đang bị lỗi thông qua error.config
     const originalRequests = error.config;
     // console.log("🚀 ~ originalRequests:", originalRequests);

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Navigate, useSearchParams } from "react-router-dom";
 import { verifyUserAPI } from "~/apis";
 import PageLoadingSpinner from "~/components/Loading/PageLoadingSpinner";
-import NotFound from "~/pages/404/NotFound";
 
 const AccountVerification = () => {
   // Lấy giá trị email, token từ URL

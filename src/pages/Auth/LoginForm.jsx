@@ -75,9 +75,11 @@ function LoginForm() {
               />
             </Avatar>
           </Box>
-          <Box sx={{ textAlign: "center", mb: -2, fontSize: "12px" }}>
-            <i>Email: 2151150056@ut.edu.vn | Password: 12345678a</i>
-          </Box>
+          {!registeredEmail && !verifiedEmail ? (
+            <Box sx={{ textAlign: "center", mb: -2, fontSize: "12px" }}>
+              <i>Email: 2151150056@ut.edu.vn | Password: 12345678a</i>
+            </Box>
+          ) : null}
           <Box
             sx={{
               marginTop: "1em",

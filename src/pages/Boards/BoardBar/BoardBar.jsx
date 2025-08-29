@@ -13,6 +13,7 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
 import { capitalizeFirstLetter } from "~/utils/formatter";
 import avatar from "~/assets/react.svg";
+import { useOutletContext } from "react-router-dom";
 const MENU_STYLES = {
   color: "#000",
   bgcolor: "#bae2e2",
@@ -29,7 +30,8 @@ const MENU_STYLES = {
 };
 
 const BoardBar = (props) => {
-  const { resolvedMode, board } = props;
+  const { board } = props;
+  const { resolvedMode } = useOutletContext();
   return (
     <Box
       px={2}

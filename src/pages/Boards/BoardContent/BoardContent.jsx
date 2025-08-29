@@ -25,6 +25,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { arrayMove } from "@dnd-kit/sortable";
 import _, { isEmpty } from "lodash";
 import { generatePlaceholderCard } from "~/utils/formatter";
+import { useOutletContext } from "react-router-dom";
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: "ACTIVE_DRAG_ITEM_TYPE_COLUMN",
@@ -33,13 +34,12 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 
 const BoardContent = (props) => {
   const {
-    resolvedMode,
     board,
     moveColumns,
     moveCardInTheSameColumn,
     moveCardToDifferentColumn,
   } = props;
-
+  const { resolvedMode } = useOutletContext();
   const [orderedColumns, setOrderedColumns] = useState([]);
 
   // cùng 1 thời điểm thì chỉ có 1 phần tử đc kéo (column hoặc card)
@@ -422,12 +422,10 @@ const BoardContent = (props) => {
           p: "10px 0",
         }}
       >
-        <ListColumns resolvedMode={resolvedMode} columns={orderedColumns} />
+        <ListColumns columns={orderedColumns} />
         <DragOverlay dropAnimation={customDropAnimation}>
           {activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN &&
-            activeDragItemData && (
-              <Column column={activeDragItemData} resolvedMode={resolvedMode} />
-            )}
+            activeDragItemData && <Column column={activeDragItemData} />}
           {activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD &&
             activeDragItemData && <Card card={activeDragItemData} />}
         </DragOverlay>

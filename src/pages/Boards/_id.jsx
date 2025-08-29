@@ -3,7 +3,7 @@ import Container from "@mui/material/Container";
 import AppBar from "~/components/AppBar/AppBar";
 import BoardBar from "./BoardBar/BoardBar";
 import BoardContent from "./BoardContent/BoardContent";
-import { useColorScheme } from "@mui/material";
+
 // import { mockData } from "~/apis/mock-data";
 import { useEffect } from "react";
 import {
@@ -21,18 +21,12 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import PageLoadingSpinner from "~/components/Loading/PageLoadingSpinner";
+import { Box } from "@mui/material";
 const Board = () => {
   const dispatch = useDispatch();
   // Không dùng State của component nữa mà chuyển qua State của Redux
   const board = useSelector(selectorCurrentActiveBoard);
   // const [board, setBoard] = useState(null);
-  const { mode } = useColorScheme();
-  const resolvedMode =
-    mode === "system"
-      ? window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light"
-      : mode;
 
   const { boardId } = useParams();
 
@@ -118,17 +112,14 @@ const Board = () => {
   };
 
   return (
-    <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
-      <AppBar resolvedMode={resolvedMode} />
-
+    <Box>
       {!board || isEmpty(board) ? (
         // Loading UI
         <PageLoadingSpinner caption="Loading Board..." />
       ) : (
         <>
-          <BoardBar resolvedMode={resolvedMode} board={board} />
+          <BoardBar board={board} />
           <BoardContent
-            resolvedMode={resolvedMode}
             board={board}
             // 3 cái trường hợp move dưới đây thì giữ nguyên để code xử lý kéo thả ở phần BoardContent không bị quá dài mất kiểm soát khi đọc code, aintain
             moveColumns={moveColumns}
@@ -137,7 +128,7 @@ const Board = () => {
           />
         </>
       )}
-    </Container>
+    </Box>
   );
 };
 export default Board;
