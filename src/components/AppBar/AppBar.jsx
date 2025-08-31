@@ -66,7 +66,7 @@ const AppBar = (props) => {
           resolvedMode={resolvedMode}
           isMdDown={isMdDown}
         />
-        <Link to="/">
+        <Link to="/boards">
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
             <SvgIcon
               component={TrelloIcon}
