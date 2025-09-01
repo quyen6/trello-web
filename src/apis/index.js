@@ -34,6 +34,16 @@ export const fetchBoardsAPI = async (searchPath) => {
   return respone.data;
 };
 
+export const createNewBoardAPI = async (data) => {
+  const respone = await authorizedAxiosInstance.post(
+    `${API_ROOT}/v1/boards`,
+    data
+  );
+  toast.success("Board created successfully!");
+
+  return respone.data;
+};
+
 /* Columns */
 export const createNewColumnAPI = async (newColumnData) => {
   const respone = await authorizedAxiosInstance.post(

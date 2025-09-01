@@ -63,7 +63,10 @@ function Boards() {
    * Nhắc lại kiến thức cơ bản hàm parseInt cần tham số thứ 2 là Hệ thập phân (hệ đếm cơ số 10) để đảm bảo chuẩn số cho phân trang
    */
   const page = parseInt(query.get("page") || "1", 10);
-
+  const updateStateData = (res) => {
+    setBoards(res.boards || []);
+    setTotalBoards(res.totalBoards || 0);
+  };
   useEffect(() => {
     // // Fake tạm 16 cái item thay cho boards
     // // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
@@ -73,11 +76,13 @@ function Boards() {
 
     // Gọi API lấy danh sách boards ở đây...
     // ...
-    fetchBoardsAPI(location.search).then((res) => {
-      setBoards(res.boards || []);
-      setTotalBoards(res.totalBoards || 0);
-    });
+    fetchBoardsAPI(location.search).then(updateStateData);
   }, [location.search]);
+
+  const afterCreateNewBoard = () => {
+    // Fetch lại danh sách board trong useEffect
+    fetchBoardsAPI(location.search).then(updateStateData);
+  };
 
   // Lúc chưa tồn tại boards > đang chờ gọi api thì hiện loading
   if (!boards) {
@@ -118,7 +123,9 @@ function Boards() {
               }}
             />
             <Stack direction="column" spacing={1}>
-              <SidebarCreateBoardModal />
+              <SidebarCreateBoardModal
+                afterCreateNewBoard={afterCreateNewBoard}
+              />
             </Stack>
           </Grid>
 
