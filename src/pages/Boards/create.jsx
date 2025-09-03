@@ -42,7 +42,7 @@ function SidebarCreateBoardModal({ afterCreateNewBoard }) {
     borderRadius: "8px",
     "&:hover": {
       backgroundColor:
-        resolvedMode === "dark" ? "#33485D" : theme.palette.grey[300],
+        resolvedMode === "dark" ? "#576c816a" : theme.palette.grey[300],
     },
     "&.active": {
       color: resolvedMode === "dark" ? "#90caf9" : "#0c66e4",

@@ -1,6 +1,4 @@
 // Board Details
-import Container from "@mui/material/Container";
-import AppBar from "~/components/AppBar/AppBar";
 import BoardBar from "./BoardBar/BoardBar";
 import BoardContent from "./BoardContent/BoardContent";
 
@@ -22,12 +20,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import PageLoadingSpinner from "~/components/Loading/PageLoadingSpinner";
 import { Box } from "@mui/material";
+import ActiveCard from "~/components/Modal/ActiveCard/ActiveCard";
+import { selectorActiveCard } from "~/redux/activeCard/activeCardSlice";
 const Board = () => {
   const dispatch = useDispatch();
   // Không dùng State của component nữa mà chuyển qua State của Redux
-  const board = useSelector(selectorCurrentActiveBoard);
   // const [board, setBoard] = useState(null);
-
+  const board = useSelector(selectorCurrentActiveBoard);
+  const activeCard = useSelector(selectorActiveCard);
   const { boardId } = useParams();
 
   useEffect(() => {
@@ -118,6 +118,9 @@ const Board = () => {
         <PageLoadingSpinner caption="Loading Board..." />
       ) : (
         <>
+          {/* Modal Active Card, check đóng/mở dựa theo điều kiện có tồn tại data activeCard lưu trong Redux hay không thì mới render. Mỗi thời điểm chỉ tồn tại một cái Modal Card đang Active */}
+          {activeCard && <ActiveCard />}
+
           <BoardBar board={board} />
           <BoardContent
             board={board}

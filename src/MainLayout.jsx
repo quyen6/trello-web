@@ -10,12 +10,14 @@ const MainLayout = () => {
         ? "dark"
         : "light"
       : mode;
+  const colorTextMain = resolvedMode === "dark" ? "white" : "#000000";
+
   return (
     <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
       {/* AppBar xuất hiện xuyên suốt */}
       <AppBar resolvedMode={resolvedMode} />
       {/* Chỗ này render các page con */}
-      <Outlet context={{ resolvedMode }} />
+      <Outlet context={{ resolvedMode, colorTextMain }} />
     </Container>
   );
 };

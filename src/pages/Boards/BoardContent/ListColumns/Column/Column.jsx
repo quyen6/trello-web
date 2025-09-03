@@ -41,7 +41,7 @@ import { useOutletContext } from "react-router-dom";
 import ToggleFocusInput from "~/components/Form/ToggleFocusInput";
 const Column = (props) => {
   const { column } = props;
-  const { resolvedMode } = useOutletContext();
+  const { resolvedMode, colorTextMain } = useOutletContext();
   const dispatch = useDispatch();
   // Không dùng State của component nữa mà chuyển qua State của Redux
   const board = useSelector(selectorCurrentActiveBoard);
@@ -174,7 +174,7 @@ const Column = (props) => {
           minWidth: "300px",
           maxWidth: "300px",
           bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#bae2e2",
-          color: resolvedMode === "dark" ? "white" : "#000",
+          color: colorTextMain,
           ml: 2,
           borderRadius: "6px",
           height: "fit-content",
@@ -202,7 +202,7 @@ const Column = (props) => {
               <KeyboardArrowDownIcon
                 sx={{
                   cursor: "pointer",
-                  color: resolvedMode === "dark" ? "white" : "#000",
+                  color: colorTextMain,
                 }}
                 id="basic-column-dropdown"
                 aria-controls={open ? "basic-menu-column-dropdown" : undefined}
@@ -339,7 +339,7 @@ const Column = (props) => {
                     <InputAdornment position="start">
                       <SearchIcon
                         sx={{
-                          color: resolvedMode === "dark" ? "white" : "#000",
+                          color: colorTextMain,
                         }}
                       />
                     </InputAdornment>
@@ -351,7 +351,7 @@ const Column = (props) => {
                         // color: searchValue ? "white" : "transparent",
                         fontSize: "medium",
                         cursor: "pointer",
-                        color: resolvedMode === "dark" ? "white" : "#000",
+                        color: colorTextMain,
                       }}
                     /> */}
                     </InputAdornment>
@@ -360,13 +360,13 @@ const Column = (props) => {
                 sx={{
                   minWidth: 100,
                   "& label": {
-                    color: resolvedMode === "dark" ? "white" : "#000",
+                    color: colorTextMain,
                   },
                   "& input": {
-                    color: resolvedMode === "dark" ? "white" : "#000",
+                    color: colorTextMain,
                   },
                   "& label.Mui-focused": {
-                    color: resolvedMode === "dark" ? "white" : "#000",
+                    color: colorTextMain,
                   },
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
@@ -404,7 +404,7 @@ const Column = (props) => {
                 <CloseIcon
                   onClick={toggleOpenNewCardForm}
                   sx={{
-                    color: resolvedMode === "dark" ? "white" : "#000",
+                    color: colorTextMain,
                     fontSize: "large",
                     cursor: "pointer",
                   }}

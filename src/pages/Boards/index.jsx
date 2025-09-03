@@ -25,7 +25,7 @@ import { fetchBoardsAPI } from "~/apis";
 import { DEFAULT_ITEM_PER_PAGE, DEFAULT_PAGE } from "~/utils/constants";
 
 function Boards() {
-  const { resolvedMode } = useOutletContext();
+  const { resolvedMode, colorTextMain } = useOutletContext();
   // Styles của mấy cái Sidebar item menu, anh gom lại ra đây cho gọn.
   const SidebarItem = styled(Box)(({ theme }) => ({
     display: "flex",
@@ -33,12 +33,12 @@ function Boards() {
     gap: "8px",
     cursor: "pointer",
     backgroundColor: resolvedMode === "dark" ? "#1A2027" : "#fff",
-    color: resolvedMode === "dark" ? "white" : "#000",
+    color: colorTextMain,
     padding: "12px 16px",
     borderRadius: "8px",
     "&:hover": {
       backgroundColor:
-        resolvedMode === "dark" ? "#33485D" : theme.palette.grey[300],
+        resolvedMode === "dark" ? "#576c816a" : theme.palette.grey[300],
     },
     "&.active": {
       color: resolvedMode === "dark" ? "#000" : "#0c66e4",
@@ -94,8 +94,8 @@ function Boards() {
       disableGutters
       maxWidth={false}
       sx={{
-        backgroundColor: resolvedMode === "dark" ? "#1c2a40" : "#fff",
-        color: resolvedMode === "dark" ? "white" : "#000",
+        backgroundColor: resolvedMode === "dark" ? "#34495e" : "#fff",
+        color: colorTextMain,
       }}
     >
       <Box sx={{ paddingX: 2, py: 4 }}>
