@@ -12,7 +12,10 @@ import ModeCommentIcon from "@mui/icons-material/ModeComment";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useOutletContext } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { updateCurrentActiveCard } from "~/redux/activeCard/activeCardSlice";
 const Card = (props) => {
+  const dispatch = useDispatch();
   const { card } = props;
   const { resolvedMode } = useOutletContext();
   const {
@@ -41,6 +44,10 @@ const Card = (props) => {
     );
   };
 
+  // Cập nhật data cho activeCard trong Redux
+  const setActiveCard = () => {
+    dispatch(updateCurrentActiveCard(card));
+  };
   return (
     <>
       <MuiCard
@@ -48,6 +55,7 @@ const Card = (props) => {
         style={dndKitCardStyles}
         {...attributes}
         {...listeners}
+        onClick={setActiveCard}
         sx={{
           cursor: "pointer",
           // boxShadow: "0 1px 1px rgba(0,0,0,0.2)",

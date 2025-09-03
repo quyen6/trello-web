@@ -6,14 +6,12 @@ import AddToDriveIcon from "@mui/icons-material/AddToDrive";
 import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
 import FilterListIcon from "@mui/icons-material/FilterList";
 
-import Avatar from "@mui/material/Avatar";
-import AvatarGroup from "@mui/material/AvatarGroup";
-
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
 import { capitalizeFirstLetter } from "~/utils/formatter";
-import avatar from "~/assets/react.svg";
+
 import { useOutletContext } from "react-router-dom";
+import BoardUserGroup from "./BoardUserGroup";
 const MENU_STYLES = {
   color: "#000",
   bgcolor: "#bae2e2",
@@ -31,7 +29,7 @@ const MENU_STYLES = {
 
 const BoardBar = (props) => {
   const { board } = props;
-  const { resolvedMode } = useOutletContext();
+  const { resolvedMode, colorTextMain } = useOutletContext();
   return (
     <Box
       px={2}
@@ -59,7 +57,7 @@ const BoardBar = (props) => {
             sx={{
               ...MENU_STYLES,
               bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#bae2e2",
-              color: resolvedMode === "dark" ? "white" : "#000",
+              color: colorTextMain,
 
               "& .MuiSvgIcon-root": {
                 color: resolvedMode === "dark" ? "#fff" : "rgb(0, 134, 137)",
@@ -78,7 +76,7 @@ const BoardBar = (props) => {
           sx={{
             ...MENU_STYLES,
             bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#bae2e2",
-            color: resolvedMode === "dark" ? "white" : "#000",
+            color: colorTextMain,
             "& .MuiSvgIcon-root": {
               color: resolvedMode === "dark" ? "#fff" : "rgb(0, 134, 137)",
             },
@@ -95,7 +93,7 @@ const BoardBar = (props) => {
           sx={{
             ...MENU_STYLES,
             bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#bae2e2",
-            color: resolvedMode === "dark" ? "white" : "#000",
+            color: colorTextMain,
             "& .MuiSvgIcon-root": {
               color: resolvedMode === "dark" ? "#fff" : "rgb(0, 134, 137)",
             },
@@ -112,7 +110,7 @@ const BoardBar = (props) => {
           sx={{
             ...MENU_STYLES,
             bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#bae2e2",
-            color: resolvedMode === "dark" ? "white" : "#000",
+            color: colorTextMain,
             "& .MuiSvgIcon-root": {
               color: resolvedMode === "dark" ? "#fff" : "rgb(0, 134, 137)",
             },
@@ -129,7 +127,7 @@ const BoardBar = (props) => {
           sx={{
             ...MENU_STYLES,
             bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#bae2e2",
-            color: resolvedMode === "dark" ? "white" : "#000",
+            color: colorTextMain,
             "& .MuiSvgIcon-root": {
               color: resolvedMode === "dark" ? "#fff" : "rgb(0, 134, 137)",
             },
@@ -154,36 +152,8 @@ const BoardBar = (props) => {
         >
           Invite
         </Button>
-        <AvatarGroup
-          max={3}
-          sx={{
-            "& .MuiAvatar-root": {
-              width: 34,
-              height: 34,
-              fontSize: 16,
-              borderColor: resolvedMode === "dark" ? "#bae2e2" : "none",
-              color: "white",
-              cursor: "pointer",
-              "&:first-of-type": {
-                bgcolor:
-                  resolvedMode === "dark" ? "#1c2a40" : "rgb(0, 134, 137)",
-              },
-            },
-          }}
-        >
-          <Tooltip title="miquyen">
-            <Avatar alt="myquyen" src={avatar} />
-          </Tooltip>
-          <Tooltip title="miquyen">
-            <Avatar alt="myquyen" src={avatar} />
-          </Tooltip>
-          <Tooltip title="miquyen">
-            <Avatar alt="myquyen" src={avatar} />
-          </Tooltip>
-          <Tooltip title="miquyen">
-            <Avatar alt="myquyen" src={avatar} />
-          </Tooltip>
-        </AvatarGroup>
+        {/* Xử ly hiển thị danh sách thành viên của board */}
+        <BoardUserGroup boardUsers={board?.FE_allUsers} />
       </Box>
     </Box>
   );

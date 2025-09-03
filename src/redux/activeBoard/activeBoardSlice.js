@@ -35,6 +35,29 @@ export const activeBoardSlice = createSlice({
       // Update lại dữ liệu của currentActiveBoard
       state.currentActiveBoard = board;
     },
+
+    // Cập nhật Card trong Board
+    // https://redux-toolkit.js.org/usage/immer-reducers#updating-nested-data
+    updateCardInBoard: (state, action) => {
+      // Update nested data
+      const imcomingCard = action.payload;
+      // Tìm dần từ Board > Column > Card
+      const column = state.currentActiveBoard.columns.find(
+        (i) => i._id === imcomingCard.columnId
+      );
+      if (column) {
+        const card = column.cards.find((i) => i._id === imcomingCard._id);
+        if (card) {
+          // card.title = imcomingCard.title;
+          // card.["title"] = imcomingCard.["title"];
+
+          // Object.keys sẽ lấy toàn bộ các properties (keys) của imcomingCard về 1 Array rồi forEach ra
+          Object.keys(imcomingCard).forEach((key) => {
+            card[key] = imcomingCard[key];
+          });
+        }
+      }
+    },
   },
 
   // extraReducers: Nơi xử lý dữ liệu bất đồng bộ
@@ -42,6 +65,9 @@ export const activeBoardSlice = createSlice({
     builder.addCase(fetchBoardDetailsAPI.fulfilled, (state, action) => {
       // action.payload ở đây chính là respone.data trả về bởi fetchBoardDetailsAPI
       let board = action.payload;
+
+      // Thành viên trong Board là tất cả thành viên từ 2 mảng owners và members
+      board.FE_allUsers = board.owners.concat(board.members);
 
       board.columns.forEach((column) => {
         // Khi f5 trang web thì cần xử lý vấn đề kéo thả vào 1 column rỗng
@@ -60,7 +86,8 @@ export const activeBoardSlice = createSlice({
 // Action creators are generated for each case reducer function
 // Actions: là nơi dành cho các components bên dưới gọi bằng dispatch() tới nó để cặp nhật lại dữ liệu thông qua reducer (chạy đồng bộ)
 // Để ý ở trên thì không thấy properties actions đâu cả, bởi vì những cái actions này đơn giản là được thằng redux tạo tự động theo tên của reducer
-export const { updateCurrentActiveBoard } = activeBoardSlice.actions;
+export const { updateCurrentActiveBoard, updateCardInBoard } =
+  activeBoardSlice.actions;
 
 // Selectors: Là nơi dành cho các components bên dưới gọi bằng hook ueSelector() để lấy dữ liệu từ trong kho redux store ra sử dụng
 export const selectorCurrentActiveBoard = (state) => {

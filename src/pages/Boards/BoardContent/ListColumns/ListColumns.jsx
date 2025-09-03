@@ -27,7 +27,7 @@ const ListColumns = (props) => {
   // Không dùng State của component nữa mà chuyển qua State của Redux
   const board = useSelector(selectorCurrentActiveBoard);
   const { columns } = props;
-  const { resolvedMode } = useOutletContext();
+  const { resolvedMode, colorTextMain } = useOutletContext();
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
   const toggleOpenNewColumnForm = () => {
     setOpenNewColumnForm(!openNewColumnForm);
@@ -154,9 +154,7 @@ const ListColumns = (props) => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon
-                      sx={{ color: resolvedMode === "dark" ? "white" : "#000" }}
-                    />
+                    <SearchIcon sx={{ color: colorTextMain }} />
                   </InputAdornment>
                 ),
                 endAdornment: (
@@ -166,7 +164,7 @@ const ListColumns = (props) => {
                         // color: searchValue ? "white" : "transparent",
                         fontSize: "medium",
                         cursor: "pointer",
-                        color: resolvedMode === "dark" ? "white" : "#000",
+                        color: colorTextMain,
                       }}
                     /> */}
                   </InputAdornment>
@@ -175,13 +173,13 @@ const ListColumns = (props) => {
               sx={{
                 minWidth: 100,
                 "& label": {
-                  color: resolvedMode === "dark" ? "white" : "#000",
+                  color: colorTextMain,
                 },
                 "& input": {
-                  color: resolvedMode === "dark" ? "white" : "#000",
+                  color: colorTextMain,
                 },
                 "& label.Mui-focused": {
-                  color: resolvedMode === "dark" ? "white" : "#000",
+                  color: colorTextMain,
                 },
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": {
@@ -219,7 +217,7 @@ const ListColumns = (props) => {
               <CloseIcon
                 onClick={toggleOpenNewColumnForm}
                 sx={{
-                  color: resolvedMode === "dark" ? "white" : "#000",
+                  color: colorTextMain,
                   fontSize: "large",
                   cursor: "pointer",
                 }}
