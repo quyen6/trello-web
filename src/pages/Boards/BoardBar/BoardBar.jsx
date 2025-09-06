@@ -1,4 +1,4 @@
-import { Button, Chip, Tooltip } from "@mui/material";
+import { Chip, Tooltip } from "@mui/material";
 import Box from "@mui/material/Box";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PublicIcon from "@mui/icons-material/Public";
@@ -6,12 +6,11 @@ import AddToDriveIcon from "@mui/icons-material/AddToDrive";
 import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
 import FilterListIcon from "@mui/icons-material/FilterList";
 
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-
 import { capitalizeFirstLetter } from "~/utils/formatter";
 
 import { useOutletContext } from "react-router-dom";
 import BoardUserGroup from "./BoardUserGroup";
+import InviteBoardUser from "./InviteBoardUser";
 const MENU_STYLES = {
   color: "#000",
   bgcolor: "#bae2e2",
@@ -26,10 +25,10 @@ const MENU_STYLES = {
     backgroundColor: "primary.50",
   },
 };
-
 const BoardBar = (props) => {
   const { board } = props;
   const { resolvedMode, colorTextMain } = useOutletContext();
+
   return (
     <Box
       px={2}
@@ -142,16 +141,9 @@ const BoardBar = (props) => {
         />
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <Button
-          variant="outlined"
-          startIcon={<PersonAddAlt1Icon />}
-          sx={{
-            color: resolvedMode === "dark" ? "white" : "rgb(0, 134, 137)",
-            borderColor: resolvedMode === "dark" ? "white" : "rgb(0, 134, 137)",
-          }}
-        >
-          Invite
-        </Button>
+        {/*  Xử lý mời user vào làm thành viên của board */}
+        <InviteBoardUser boardId={board._id} />
+
         {/* Xử ly hiển thị danh sách thành viên của board */}
         <BoardUserGroup boardUsers={board?.FE_allUsers} />
       </Box>

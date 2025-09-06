@@ -21,13 +21,12 @@ import { useParams } from "react-router-dom";
 import PageLoadingSpinner from "~/components/Loading/PageLoadingSpinner";
 import { Box } from "@mui/material";
 import ActiveCard from "~/components/Modal/ActiveCard/ActiveCard";
-import { selectorActiveCard } from "~/redux/activeCard/activeCardSlice";
 const Board = () => {
   const dispatch = useDispatch();
   // Không dùng State của component nữa mà chuyển qua State của Redux
   // const [board, setBoard] = useState(null);
   const board = useSelector(selectorCurrentActiveBoard);
-  const activeCard = useSelector(selectorActiveCard);
+  console.log("🚀 ~ Board ~ board:", board);
   const { boardId } = useParams();
 
   useEffect(() => {
@@ -50,7 +49,7 @@ const Board = () => {
       columnOrderIds: newBoard.columnOrderIds,
     });
   };
-  /* Khi di chuyển Card trong cùng 1 Cloumn, chỉ cần gọi API để cập nhật cardOrderIds của Column chứa nó  */
+  /* Khi di chuyển Card trong cùng 1 Column, chỉ cần gọi API để cập nhật cardOrderIds của Column chứa nó  */
   const moveCardInTheSameColumn = (
     dndOrderedCards,
     dndOrderedCardIds,
@@ -118,8 +117,8 @@ const Board = () => {
         <PageLoadingSpinner caption="Loading Board..." />
       ) : (
         <>
-          {/* Modal Active Card, check đóng/mở dựa theo điều kiện có tồn tại data activeCard lưu trong Redux hay không thì mới render. Mỗi thời điểm chỉ tồn tại một cái Modal Card đang Active */}
-          {activeCard && <ActiveCard />}
+          {/* Modal Active Card, check đóng/mở dựa theo State isShowModalActiveCard lưu trong Redux . Mỗi thời điểm chỉ tồn tại một cái Modal Card đang Active */}
+          <ActiveCard />
 
           <BoardBar board={board} />
           <BoardContent
