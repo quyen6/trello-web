@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
@@ -37,8 +36,9 @@ import { styled } from "@mui/material/styles";
 import { useOutletContext } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  clearCurrentActiveCard,
+  clearAndHideCurrentActiveCard,
   selectorActiveCard,
+  selectorIsShowModalActiveCard,
   updateCurrentActiveCard,
 } from "~/redux/activeCard/activeCardSlice";
 import { updateCardDetailsAPI } from "~/apis";
@@ -50,6 +50,7 @@ import { updateCardInBoard } from "~/redux/activeBoard/activeBoardSlice";
 function ActiveCard() {
   const dispatch = useDispatch();
   const activeCard = useSelector(selectorActiveCard);
+  const isShowModalActiveCard = useSelector(selectorIsShowModalActiveCard);
   const { resolvedMode, colorTextMain } = useOutletContext();
   const SidebarItem = styled(Box)(({ theme }) => ({
     display: "flex",
@@ -72,11 +73,11 @@ function ActiveCard() {
     },
   }));
 
-  // Khoong dungf State để quản lý đóng mở Modal nữa, đã check bên Boards/_id
+  // Khoong dungf State để quản lý đóng mở Modal nữa, đã check bên isShowModalActiveCard trong Redux
   // const [isOpen, setIsOpen] = useState(true);
   // const handleOpenModal = () => setIsOpen(true);
   const handleCloseModal = () => {
-    dispatch(clearCurrentActiveCard());
+    dispatch(clearAndHideCurrentActiveCard());
   };
 
   // Func dùng chung cho các trường hợp update title, cover, comment,...
@@ -100,7 +101,6 @@ function ActiveCard() {
   };
 
   const onUploadCardCover = (event) => {
-    console.log(event.target?.files[0]);
     const error = singleFileValidator(event.target?.files[0]);
     if (error) {
       toast.error(error);
@@ -116,10 +116,15 @@ function ActiveCard() {
     );
   };
 
+  // Dùng async await ở đây để component cont CardActivitySection chờ và nếu thành công thì clear thẻ input comment
+  const onAddCardComment = async (commentToAdd) => {
+    await callApiUpdateCard({ commentToAdd });
+  };
+
   return (
     <Modal
       disableScrollLock
-      open={true}
+      open={isShowModalActiveCard}
       onClose={handleCloseModal} // Sử dụng onClose trong trường hợp muốn đóng Modal bằng nút ESC hoặc click ra ngoài Modal
       sx={{ overflowY: "auto" }}
     >
@@ -248,7 +253,10 @@ function ActiveCard() {
               </Box>
 
               {/* Feature 04: Xử lý các hành động, ví dụ comment vào Card */}
-              <CardActivitySection />
+              <CardActivitySection
+                cardComments={activeCard?.comments}
+                onAddCardComment={onAddCardComment}
+              />
             </Box>
           </Grid>
 
