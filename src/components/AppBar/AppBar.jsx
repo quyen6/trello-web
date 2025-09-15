@@ -17,16 +17,15 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
 
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 import SearchIcon from "@mui/icons-material/Search";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
+import Notifications from "./Notifications/Notifications";
 
 const AppBar = (props) => {
   const { resolvedMode } = props;
@@ -161,12 +160,10 @@ const AppBar = (props) => {
             gap: 1,
           }}
         >
+          {/* Dark-Light Mode */}
           <ModeSwitcher />
-          <Tooltip title="Notifications">
-            <Badge color="warning" variant="dot" sx={{ cursor: "pointer" }}>
-              <NotificationsNoneIcon sx={{ color: "white" }} />
-            </Badge>
-          </Tooltip>
+          {/* xử lý hiển thị notifications */}
+          <Notifications />
           <Tooltip title="Help">
             <HelpOutlineIcon sx={{ cursor: "pointer", color: "white" }} />
           </Tooltip>

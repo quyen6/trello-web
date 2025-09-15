@@ -26,7 +26,6 @@ const Board = () => {
   // Không dùng State của component nữa mà chuyển qua State của Redux
   // const [board, setBoard] = useState(null);
   const board = useSelector(selectorCurrentActiveBoard);
-  console.log("🚀 ~ Board ~ board:", board);
   const { boardId } = useParams();
 
   useEffect(() => {

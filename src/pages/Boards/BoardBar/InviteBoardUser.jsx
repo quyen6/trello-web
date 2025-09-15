@@ -15,10 +15,10 @@ import {
 import FieldErrorAlert from "~/components/Form/FieldErrorAlert";
 import { useOutletContext } from "react-router-dom";
 import { inviteUserToBoardAPI } from "~/apis";
+import { socketIoInstane } from "~/main";
 
 function InviteBoardUser({ boardId }) {
-  console.log("🚀 ~ InviteBoardUser ~ boardId:", boardId);
-  const { resolvedMode, colorTextMain } = useOutletContext();
+  const { resolvedMode } = useOutletContext();
   /**
    * Xử lý Popover để ẩn hoặc hiện một popup nhỏ, tương tự docs để tham khảo ở đây:
    * https://mui.com/material-ui/react-popover/
@@ -42,12 +42,13 @@ function InviteBoardUser({ boardId }) {
     // console.log("inviteeEmail:", inviteeEmail);
 
     // Goị API mời người dùng nào đó làm thành viên của Board
-    inviteUserToBoardAPI({ inviteeEmail, boardId }).then(() => {
+    inviteUserToBoardAPI({ inviteeEmail, boardId }).then((invitation) => {
       // Clear thẻ input sử dụng react-hook-form bằng setValue
       setValue("inviteeEmail", null);
       setAnchorPopoverElement(null);
 
-      // Mời một người dùng vào board xong thì sẽ gửi /emit sự kiện socket lên server (real-time)
+      // Mời một người dùng vào board xong thì sẽ gửi/emit sự kiện socket lên server (real-time)
+      socketIoInstane.emit("FE_USER_INVITED_TO_BOARD", invitation);
     });
   };
 

@@ -13,6 +13,7 @@ import storage from "redux-persist/lib/storage";
 import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 import { activeCardReducer } from "./activeCard/activeCardSlice";
+import { notificationsReducer } from "./notifications/notificationsSlice";
 
 // Cấu hình persist
 const rootPersistConfig = {
@@ -26,6 +27,7 @@ const reducers = combineReducers({
   activeBoard: activeBoardReducer,
   user: userReducer,
   activeCard: activeCardReducer,
+  notifications: notificationsReducer,
 });
 // Thực hiện persist Reducer
 const persistedReducers = persistReducer(rootPersistConfig, reducers);
