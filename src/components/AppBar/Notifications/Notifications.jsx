@@ -20,7 +20,7 @@ import {
   selectorCurrentNotifications,
   updateBoardInvitationAPI,
 } from "~/redux/notifications/notificationsSlice";
-import { socketIoInstane } from "~/main";
+import { socketIoInstane } from "~/socketClient";
 import { selectorCurrentUser } from "~/redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 

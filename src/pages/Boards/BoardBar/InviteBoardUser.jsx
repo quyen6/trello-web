@@ -15,7 +15,7 @@ import {
 import FieldErrorAlert from "~/components/Form/FieldErrorAlert";
 import { useOutletContext } from "react-router-dom";
 import { inviteUserToBoardAPI } from "~/apis";
-import { socketIoInstane } from "~/main";
+import { socketIoInstane } from "~/socketClient";
 
 function InviteBoardUser({ boardId }) {
   const { resolvedMode } = useOutletContext();
