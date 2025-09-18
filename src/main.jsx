@@ -25,11 +25,6 @@ const persistor = persistStore(store);
 import { injectStore } from "./utils/authorizeAxios.js";
 injectStore(store);
 
-// Cấu hình Socket io phía client
-import { io } from "socket.io-client";
-import { API_ROOT } from "./utils/constants.js";
-export const socketIoInstane = io(API_ROOT);
-
 createRoot(document.getElementById("root")).render(
   <>
     <InitColorSchemeScript attribute="class" defaultMode="light" />
