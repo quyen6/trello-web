@@ -96,6 +96,7 @@ function Boards() {
       sx={{
         backgroundColor: resolvedMode === "dark" ? "#34495e" : "#fff",
         color: colorTextMain,
+        height: (theme) => `calc(100vh - ${theme.trello.appBarHeight})`,
       }}
     >
       <Box sx={{ paddingX: 2, py: 4 }}>

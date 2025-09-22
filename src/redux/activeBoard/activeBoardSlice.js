@@ -35,6 +35,9 @@ export const activeBoardSlice = createSlice({
       // Update lại dữ liệu của currentActiveBoard
       state.currentActiveBoard = board;
     },
+    clearCurrentActiveBoard: (state) => {
+      state.currentActiveBoard = null;
+    },
 
     // Cập nhật Card trong Board
     // https://redux-toolkit.js.org/usage/immer-reducers#updating-nested-data
@@ -86,8 +89,11 @@ export const activeBoardSlice = createSlice({
 // Action creators are generated for each case reducer function
 // Actions: là nơi dành cho các components bên dưới gọi bằng dispatch() tới nó để cặp nhật lại dữ liệu thông qua reducer (chạy đồng bộ)
 // Để ý ở trên thì không thấy properties actions đâu cả, bởi vì những cái actions này đơn giản là được thằng redux tạo tự động theo tên của reducer
-export const { updateCurrentActiveBoard, updateCardInBoard } =
-  activeBoardSlice.actions;
+export const {
+  updateCurrentActiveBoard,
+  clearCurrentActiveBoard,
+  updateCardInBoard,
+} = activeBoardSlice.actions;
 
 // Selectors: Là nơi dành cho các components bên dưới gọi bằng hook ueSelector() để lấy dữ liệu từ trong kho redux store ra sử dụng
 export const selectorCurrentActiveBoard = (state) => {
