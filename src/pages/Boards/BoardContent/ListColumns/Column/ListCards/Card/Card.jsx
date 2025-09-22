@@ -1,4 +1,4 @@
-import { Card as MuiCard } from "@mui/material";
+import { Checkbox, Card as MuiCard } from "@mui/material";
 
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
@@ -29,7 +29,7 @@ const Card = (props) => {
     transition,
     isDragging,
   } = useSortable({ id: card._id, data: { ...card } });
-
+  const label = { inputProps: { "aria-label": "Checkbox demo" } };
   // Fix bug: transform
   const dndKitCardStyles = {
     // touchAction: "none", // Dành cho sensor default dạng PointerSensor
@@ -79,8 +79,29 @@ const Card = (props) => {
             "&:last-child": {
               p: 1.5,
             },
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            // position: "relative",
+            "&:hover .hover-actions": {
+              display: "block",
+            },
           }}
         >
+          <Checkbox
+            className="hover-actions"
+            {...label}
+            defaultChecked
+            color="success"
+            size="small"
+            sx={{
+              "&.MuiCheckbox-root": {
+                padding: 0,
+              },
+              display: "none",
+              transition: "display 0.2s ease",
+            }}
+          />
           <Typography>{card?.title}</Typography>
         </CardContent>
         {shouldShowCardActions() && (

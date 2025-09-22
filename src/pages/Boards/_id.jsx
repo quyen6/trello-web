@@ -14,6 +14,7 @@ import {
   fetchBoardDetailsAPI,
   updateCurrentActiveBoard,
   selectorCurrentActiveBoard,
+  clearCurrentActiveBoard,
 } from "~/redux/activeBoard/activeBoardSlice";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -31,6 +32,11 @@ const Board = () => {
   useEffect(() => {
     // call api
     dispatch(fetchBoardDetailsAPI(boardId));
+
+    //
+    return () => {
+      dispatch(clearCurrentActiveBoard());
+    };
   }, [dispatch, boardId]);
 
   // Gọi API và xử lí khi kéo thả Column xong xuôi
