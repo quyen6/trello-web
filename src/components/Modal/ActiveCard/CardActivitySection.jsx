@@ -63,7 +63,10 @@ function CardActivitySection({ cardComments = [], onAddCardComment }) {
                 borderColor: resolvedMode === "dark" ? "#ccc" : "#666", // border mặc định
               },
               "&:hover fieldset": {
-                borderColor: resolvedMode === "dark" ? "#fff" : "#000", // khi hover
+                borderColor:
+                  resolvedMode === "dark"
+                    ? (theme) => theme.trello.mainColorDark
+                    : "#000", // khi hover
               },
               "&.Mui-focused fieldset": {
                 borderColor: resolvedMode === "dark" ? "#90caf9" : "#1976d2", // khi focus

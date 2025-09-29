@@ -1,18 +1,32 @@
 import { extendTheme } from "@mui/material/styles";
 
 const APP_BAR_HEIGHT = "58px";
+const INTRODUCTION_HEADER_HEIGHT = "56px";
 const BOARD_BAR_HEIGHT = "60px";
 const BOARD_CONTENT_HEIGHT = `calc(100vh - ${APP_BAR_HEIGHT} - ${BOARD_BAR_HEIGHT})`;
 const COLUMN_HEADER_HEIGHT = "50px";
 const COLUMN_FOOTER_HEIGHT = "56px";
+const MAIN_COLOR_LIGHT = "rgb(0, 134, 137)";
+const SUB_COLOR_LIGHT = "#01a3a4";
+const MAIN_COLOR_DARK = "#fff";
+const SUB_COLOR_DARK = "#1c2a4094";
+//
+const MOBILE_INTRODUCTION_CONTENT_HEIGHT = `calc(100vh - ${INTRODUCTION_HEADER_HEIGHT})`;
 
 const theme = extendTheme({
   trello: {
     appBarHeight: APP_BAR_HEIGHT,
+    introductionHeaderHeight: INTRODUCTION_HEADER_HEIGHT,
     boardBarHeight: BOARD_BAR_HEIGHT,
     boardContentHeight: BOARD_CONTENT_HEIGHT,
     columnHeaderHeight: COLUMN_HEADER_HEIGHT,
     columnFooterHeight: COLUMN_FOOTER_HEIGHT,
+    mainColorLight: MAIN_COLOR_LIGHT,
+    subColorLight: SUB_COLOR_LIGHT,
+    mainColorDark: MAIN_COLOR_DARK,
+    subColorDark: SUB_COLOR_DARK,
+    //
+    mobileIntroductionContentHeight: MOBILE_INTRODUCTION_CONTENT_HEIGHT,
   },
   // colorSchemes: {
   //   light: {

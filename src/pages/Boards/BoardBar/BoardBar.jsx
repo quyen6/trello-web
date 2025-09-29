@@ -19,7 +19,7 @@ const MENU_STYLES = {
   paddingX: "5px",
   borderRadius: "4px",
   "& .MuiSvgIcon-root": {
-    color: "rgb(0, 134, 137)",
+    color: (theme) => theme.trello.mainColorLight,
   },
   "&:hover": {
     backgroundColor: "primary.50",
@@ -45,7 +45,10 @@ const BoardBar = (props) => {
         // marginBottom: 1,
         backgroundColor: resolvedMode === "dark" ? "#34495e" : "#f5f7fa",
         "&::-webkit-scrollbar-thumb:hover": {
-          backgroundColor: resolvedMode === "dark" ? "#eee" : "#01a3a4",
+          backgroundColor:
+            resolvedMode === "dark"
+              ? "#eee"
+              : (theme) => theme.trello.subColorLight,
         },
         "&::-webkit-scrollbar-track": { m: 2 },
       }}
@@ -55,11 +58,17 @@ const BoardBar = (props) => {
           <Chip
             sx={{
               ...MENU_STYLES,
-              bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#bae2e2",
+              bgcolor:
+                resolvedMode === "dark"
+                  ? (theme) => theme.trello.subColorDark
+                  : "#bae2e2",
               color: colorTextMain,
 
               "& .MuiSvgIcon-root": {
-                color: resolvedMode === "dark" ? "#fff" : "rgb(0, 134, 137)",
+                color:
+                  resolvedMode === "dark"
+                    ? (theme) => theme.trello.mainColorDark
+                    : (theme) => theme.trello.mainColorLight,
               },
               // boxShadow:
               //   resolvedMode === "dark"
@@ -74,10 +83,16 @@ const BoardBar = (props) => {
         <Chip
           sx={{
             ...MENU_STYLES,
-            bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#bae2e2",
+            bgcolor:
+              resolvedMode === "dark"
+                ? (theme) => theme.trello.subColorDark
+                : "#bae2e2",
             color: colorTextMain,
             "& .MuiSvgIcon-root": {
-              color: resolvedMode === "dark" ? "#fff" : "rgb(0, 134, 137)",
+              color:
+                resolvedMode === "dark"
+                  ? (theme) => theme.trello.mainColorDark
+                  : (theme) => theme.trello.mainColorLight,
             },
             // boxShadow:
             //   resolvedMode === "dark"
@@ -91,10 +106,16 @@ const BoardBar = (props) => {
         <Chip
           sx={{
             ...MENU_STYLES,
-            bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#bae2e2",
+            bgcolor:
+              resolvedMode === "dark"
+                ? (theme) => theme.trello.subColorDark
+                : "#bae2e2",
             color: colorTextMain,
             "& .MuiSvgIcon-root": {
-              color: resolvedMode === "dark" ? "#fff" : "rgb(0, 134, 137)",
+              color:
+                resolvedMode === "dark"
+                  ? (theme) => theme.trello.mainColorDark
+                  : (theme) => theme.trello.mainColorLight,
             },
             // boxShadow:
             //   resolvedMode === "dark"
@@ -108,10 +129,16 @@ const BoardBar = (props) => {
         <Chip
           sx={{
             ...MENU_STYLES,
-            bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#bae2e2",
+            bgcolor:
+              resolvedMode === "dark"
+                ? (theme) => theme.trello.subColorDark
+                : "#bae2e2",
             color: colorTextMain,
             "& .MuiSvgIcon-root": {
-              color: resolvedMode === "dark" ? "#fff" : "rgb(0, 134, 137)",
+              color:
+                resolvedMode === "dark"
+                  ? (theme) => theme.trello.mainColorDark
+                  : (theme) => theme.trello.mainColorLight,
             },
             // boxShadow:
             //   resolvedMode === "dark"
@@ -125,10 +152,16 @@ const BoardBar = (props) => {
         <Chip
           sx={{
             ...MENU_STYLES,
-            bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#bae2e2",
+            bgcolor:
+              resolvedMode === "dark"
+                ? (theme) => theme.trello.subColorDark
+                : "#bae2e2",
             color: colorTextMain,
             "& .MuiSvgIcon-root": {
-              color: resolvedMode === "dark" ? "#fff" : "rgb(0, 134, 137)",
+              color:
+                resolvedMode === "dark"
+                  ? (theme) => theme.trello.mainColorDark
+                  : (theme) => theme.trello.mainColorLight,
             },
             // boxShadow:
             //   resolvedMode === "dark"

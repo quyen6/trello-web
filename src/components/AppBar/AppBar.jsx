@@ -1,9 +1,6 @@
 import { useState } from "react";
 import ModeSwitcher from "../ModeSwitcher/ModeSwitcher";
-import Workspaces from "./Menus/Workspaces";
-import Recent from "./Menus/Recent";
-import Templates from "./Menus/Templates";
-import Starred from "./Menus/Starred";
+
 import Profile from "./Menus/Profile";
 import MobileMenuDrawer from "./Menus/MobileMenuDrawer";
 import TrelloIcon from "~/assets/trello.svg?react";
@@ -13,7 +10,7 @@ import { Button, Tooltip, Typography, useMediaQuery } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
 import Notifications from "./Notifications/Notifications";
@@ -35,9 +32,11 @@ const AppBar = (props) => {
         alignItems: "center",
         justifyContent: "space-between",
         gap: 2,
-        overflowX: "auto",
+        // overflowX: "auto",
         backgroundColor:
-          resolvedMode === "dark" ? "#1c2a40" : "rgb(0, 134, 137)",
+          resolvedMode === "dark"
+            ? "#1c2a40"
+            : (theme) => theme.trello.mainColorLight,
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -76,43 +75,30 @@ const AppBar = (props) => {
             </Typography>
           </Box>
         </Link>
-        <Box
-          sx={{
-            display: { xs: "none", md: "flex" },
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          <Workspaces isLg1024={isLg1024} isMdDown={isMdDown} />
-          <Recent isLg1024={isLg1024} />
-          <Starred isLg1024={isLg1024} />
-          <Templates isLg1024={isLg1024} />
-          <Button
-            sx={{ color: "white", border: "none" }}
-            variant="outlined"
-            startIcon={<AddToPhotosIcon />}
-          >
-            Create
-          </Button>
-        </Box>
       </Box>
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 1,
+        }}
+      >
         <AutoCompleteSearchBoard />
-        <Box
-          sx={{
-            display: { xs: "none", sm: "flex" },
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          {/* Dark-Light Mode */}
-          <ModeSwitcher />
-          {/* xử lý hiển thị notifications */}
-          <Notifications />
-          <Tooltip title="Help">
-            <HelpOutlineIcon sx={{ cursor: "pointer", color: "white" }} />
-          </Tooltip>
-        </Box>
+      </Box>
+      <Box
+        sx={{
+          display: { xs: "none", sm: "flex" },
+          alignItems: "center",
+          gap: 1,
+        }}
+      >
+        {/* Dark-Light Mode */}
+        <ModeSwitcher />
+        {/* xử lý hiển thị notifications */}
+        <Notifications />
+        <Tooltip title="Help">
+          <HelpOutlineIcon sx={{ cursor: "pointer", color: "white" }} />
+        </Tooltip>
         <Profile />
       </Box>
     </Box>

@@ -61,8 +61,14 @@ function InviteBoardUser({ boardId }) {
           variant="outlined"
           startIcon={<PersonAddIcon />}
           sx={{
-            color: resolvedMode === "dark" ? "white" : "rgb(0, 134, 137)",
-            borderColor: resolvedMode === "dark" ? "white" : "rgb(0, 134, 137)",
+            color:
+              resolvedMode === "dark"
+                ? "white"
+                : (theme) => theme.trello.mainColorLight,
+            borderColor:
+              resolvedMode === "dark"
+                ? "white"
+                : (theme) => theme.trello.mainColorLight,
             // "&:hover": { borderColor: "white" },
           }}
         >

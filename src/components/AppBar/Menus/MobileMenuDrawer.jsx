@@ -1,8 +1,4 @@
 import { Box, Drawer, Button, useMediaQuery } from "@mui/material";
-import Workspaces from "./Workspaces";
-import Recent from "./Recent";
-import Starred from "./Starred";
-import Templates from "./Templates";
 import ModeSwitcher from "~/components/ModeSwitcher/ModeSwitcher";
 
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
@@ -31,14 +27,12 @@ const MobileMenuDrawer = (props) => {
               flexDirection: "column",
               gap: 1,
               backgroundColor:
-                resolvedMode === "light" ? "rgb(0, 134, 137)" : "#2d3436",
+                resolvedMode === "light"
+                  ? (theme) => theme.trello.mainColorLight
+                  : "#2d3436",
             }}
             onClick={() => setOpen(false)}
           >
-            <Workspaces isMdDown={isMdDown} />
-            <Recent isMdDown={isMdDown} />
-            <Starred isMdDown={isMdDown} />
-            <Templates isMdDown={isMdDown} />
             <Button
               variant="outlined"
               sx={{

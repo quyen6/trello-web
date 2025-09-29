@@ -1,5 +1,10 @@
 // TrungQuanDev: https://youtube.com/@trungquandev
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
@@ -28,12 +33,20 @@ function LoginForm() {
   const dispatch = useDispatch();
   // Không dùng State của component nữa mà chuyển qua State của Redux
   const navigate = useNavigate();
+  const location = useLocation();
+  const emailFromSignup = location.state?.registeredEmail || "";
+  const emailWantToRegister = location.state?.emailWantToRegister || "";
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+    watch,
+  } = useForm({
+    defaultValues: {
+      email: emailFromSignup || emailWantToRegister,
+    },
+  });
   const [searchParams] = useSearchParams();
   const registeredEmail = searchParams.get("registeredEmail");
   const verifiedEmail = searchParams.get("verifiedEmail");
@@ -177,7 +190,11 @@ function LoginForm() {
           </CardActions>
           <Box sx={{ padding: "0 1em 1em 1em", textAlign: "center" }}>
             <Typography>New to Trello MERN Stack Advanced?</Typography>
-            <Link to="/register" style={{ textDecoration: "none" }}>
+            <Link
+              to="/register"
+              state={{ emailWantToRegister: watch("email") }}
+              style={{ textDecoration: "none" }}
+            >
               <Typography
                 sx={{ color: "primary.main", "&:hover": { color: "#ffbb39" } }}
               >

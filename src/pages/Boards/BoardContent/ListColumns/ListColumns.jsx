@@ -88,7 +88,10 @@ const ListColumns = (props) => {
           overflowY: "hidden",
           "&::-webkit-scrollbar-track": { m: 2 },
           "&::-webkit-scrollbar-thumb:hover": {
-            backgroundColor: resolvedMode === "dark" ? "#eee" : "#01a3a4",
+            backgroundColor:
+              resolvedMode === "dark"
+                ? "#eee"
+                : (theme) => theme.trello.subColorLight,
           },
         }}
       >
@@ -111,7 +114,10 @@ const ListColumns = (props) => {
               mx: 2,
               borderRadius: "4px",
               height: "fit-content",
-              bgcolor: resolvedMode === "dark" ? "#ffffff3d" : "#01a3a4",
+              bgcolor:
+                resolvedMode === "dark"
+                  ? "#ffffff3d"
+                  : (theme) => theme.trello.subColorLight,
             }}
           >
             <Button
@@ -184,17 +190,23 @@ const ListColumns = (props) => {
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": {
                     borderColor:
-                      resolvedMode === "dark" ? "#ffffff3d" : "#01a3a4",
+                      resolvedMode === "dark"
+                        ? "#ffffff3d"
+                        : (theme) => theme.trello.subColorLight,
                     // borderWidth: "0.5px !important",
                   },
                   "&:hover fieldset": {
                     borderColor:
-                      resolvedMode === "dark" ? "#ffffff3d" : "#01a3a4",
+                      resolvedMode === "dark"
+                        ? "#ffffff3d"
+                        : (theme) => theme.trello.subColorLight,
                     // borderWidth: "1px !important",
                   },
                   "&.Mui-focused fieldset": {
                     borderColor:
-                      resolvedMode === "dark" ? "#ffffff3d" : "#01a3a4",
+                      resolvedMode === "dark"
+                        ? "#ffffff3d"
+                        : (theme) => theme.trello.subColorLight,
                     // borderWidth: "1px !important",
                   },
                 },
@@ -209,7 +221,10 @@ const ListColumns = (props) => {
                 sx={{
                   boxShadow: "none",
                   border: " 0.5px solid #ffffff3d",
-                  bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#01a3a4",
+                  bgcolor:
+                    resolvedMode === "dark"
+                      ? (theme) => theme.trello.subColorDark
+                      : (theme) => theme.trello.subColorLight,
                 }}
               >
                 Add Column

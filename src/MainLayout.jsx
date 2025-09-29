@@ -10,7 +10,8 @@ const MainLayout = () => {
         ? "dark"
         : "light"
       : mode;
-  const colorTextMain = resolvedMode === "dark" ? "white" : "#000000";
+  const colorTextMain =
+    resolvedMode === "dark" ? (theme) => theme.trello.mainColorDark : "#000000";
 
   return (
     <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>

@@ -29,7 +29,10 @@ const ListCards = (props) => {
                 ${theme.trello.columnHeaderHeight} - 
                 ${theme.trello.columnFooterHeight})`,
           "&::-webkit-scrollbar-thumb:hover": {
-            backgroundColor: resolvedMode === "dark" ? "#eee" : "#01a3a4",
+            backgroundColor:
+              resolvedMode === "dark"
+                ? "#eee"
+                : (theme) => theme.trello.subColorLight,
           },
         }}
       >

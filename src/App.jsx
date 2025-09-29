@@ -14,6 +14,7 @@ import { selectorCurrentUser } from "~/redux/user/userSlice";
 import Settings from "./pages/Settings/Settings";
 import MainLayout from "./MainLayout";
 import Boards from "./pages/Boards";
+import Introduction from "./pages/Introduction/Introduction";
 
 /**
  * Giải pháp Clean Code trong việc xác định các route nào cần đăng nhập tài khoản xong thì mới cho truy cập
@@ -32,17 +33,20 @@ function App() {
   const currentUser = useSelector(selectorCurrentUser);
   return (
     <Routes>
+      {/* Trang Introduction mới đầu vào */}
+      <Route path="/" element={<Introduction />} />
       {/* Layout bọc AppBar */}
       <Route element={<MainLayout />}>
         {/* Redirect Route */}
-        <Route
-          path="/"
-          element={
-            // Ở đây cần replace giá trị true để nó thay thế route /, có thể hiểu là route / sẽ không còn nằm trong history của Browser
-            // Thực hành dễ hiều hơn bằng cách nhấn Go Home từ trang 404 xong thử quay lại bằng nút back của trình duyệt giữa 2 trường hợp có replace hoặc không có
-            <Navigate to="/boards" replace={true} />
-          }
-        />
+        {/* <Route element={<ProtectedRoute user={currentUser} />}>
+          <Route
+            element={
+              // Ở đây cần replace giá trị true để nó thay thế route /, có thể hiểu là route / sẽ không còn nằm trong history của Browser
+              // Thực hành dễ hiều hơn bằng cách nhấn Go Home từ trang 404 xong thử quay lại bằng nút back của trình duyệt giữa 2 trường hợp có replace hoặc không có
+              <Navigate to="/boards" replace={true} />
+            }
+          />
+       </Route> */}
         {/* ProtectedRoute (Hiểu đơn giản trong dự án của chúng ta là những route chỉ cho truy cập sau khi đã login) */}
         <Route element={<ProtectedRoute user={currentUser} />}>
           {/* <Outlet /> của react router dom sẽ chạy vào các child route trong này */}

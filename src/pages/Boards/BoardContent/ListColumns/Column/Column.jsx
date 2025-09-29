@@ -173,7 +173,7 @@ const Column = (props) => {
         sx={{
           minWidth: "300px",
           maxWidth: "300px",
-          bgcolor: resolvedMode === "dark" ? "#1c2a4094" : "#bae2e2",
+          bgcolor: resolvedMode === "dark" ? (theme)=>theme.trello.subColorDark : "#bae2e2",
           color: colorTextMain,
           ml: 2,
           borderRadius: "6px",
@@ -371,17 +371,23 @@ const Column = (props) => {
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
                       borderColor:
-                        resolvedMode === "dark" ? "#ffffff3d" : "#01a3a4",
+                        resolvedMode === "dark"
+                          ? "#ffffff3d"
+                          : (theme) => theme.trello.subColorLight,
                       // borderWidth: "0.5px !important",
                     },
                     "&:hover fieldset": {
                       borderColor:
-                        resolvedMode === "dark" ? "#ffffff3d" : "#01a3a4",
+                        resolvedMode === "dark"
+                          ? "#ffffff3d"
+                          : (theme) => theme.trello.subColorLight,
                       // borderWidth: "1px !important",
                     },
                     "&.Mui-focused fieldset": {
                       borderColor:
-                        resolvedMode === "dark" ? "#ffffff3d" : "#01a3a4",
+                        resolvedMode === "dark"
+                          ? "#ffffff3d"
+                          : (theme) => theme.trello.subColorLight,
                       // borderWidth: "1px !important",
                     },
                   },
@@ -396,7 +402,10 @@ const Column = (props) => {
                   sx={{
                     boxShadow: "none",
                     border: " 0.5px solid #ffffff3d",
-                    bgcolor: resolvedMode === "dark" ? "#34495e" : "#01a3a4",
+                    bgcolor:
+                      resolvedMode === "dark"
+                        ? "#34495e"
+                        : (theme) => theme.trello.subColorLight,
                   }}
                 >
                   Add
