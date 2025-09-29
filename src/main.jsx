@@ -25,62 +25,50 @@ const persistor = persistStore(store);
 import { injectStore } from "./utils/authorizeAxios.js";
 injectStore(store);
 
-// Auth0 - SSO
-import { Auth0Provider } from "@auth0/auth0-react";
-import { CLIENTID, DOMAIN_AUTH0 } from "./utils/constants.js";
-
 createRoot(document.getElementById("root")).render(
   <>
     <InitColorSchemeScript attribute="class" defaultMode="light" />
-    <Auth0Provider
-      domain={DOMAIN_AUTH0}
-      clientId={CLIENTID}
-      authorizationParams={{
-        redirect_uri: window.location.origin,
-      }}
-    >
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <BrowserRouter basename="/" future={{ v7_startTransition: true }}>
-            <ThemeProvider theme={theme} attribute="class">
-              <ConfirmProvider
-                defaultOptions={{
-                  allowClose: false,
-                  confirmationText: "OK",
-                  cancellationText: "CANCLE",
-                  confirmationButtonProps: {
-                    color: "error",
-                    variant: "outlined",
-                  },
-                  cancellationButtonProps: { color: "inherit" },
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <BrowserRouter basename="/" future={{ v7_startTransition: true }}>
+          <ThemeProvider theme={theme} attribute="class">
+            <ConfirmProvider
+              defaultOptions={{
+                allowClose: false,
+                confirmationText: "OK",
+                cancellationText: "CANCLE",
+                confirmationButtonProps: {
+                  color: "error",
+                  variant: "outlined",
+                },
+                cancellationButtonProps: { color: "inherit" },
+              }}
+            >
+              <GlobalStyles
+                styles={{
+                  a: { textDecoration: "none" },
                 }}
-              >
-                <GlobalStyles
-                  styles={{
-                    a: { textDecoration: "none" },
-                  }}
-                />
-                <CssBaseline />
+              />
+              <CssBaseline />
 
-                <App />
+              <App />
 
-                <ToastContainer
-                  position="bottom-right"
-                  autoClose={3000}
-                  hideProgressBar={false}
-                  newestOnTop={true}
-                  closeOnClick={false}
-                  rtl={false}
-                  pauseOnFocusLoss
-                  draggable
-                  pauseOnHover
-                  theme="colored"
-                />
-              </ConfirmProvider>
-            </ThemeProvider>
-          </BrowserRouter>
-        </PersistGate>
-      </Provider>
-    </Auth0Provider>
+              <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={true}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+              />
+            </ConfirmProvider>
+          </ThemeProvider>
+        </BrowserRouter>
+      </PersistGate>
+    </Provider>
   </>
 );

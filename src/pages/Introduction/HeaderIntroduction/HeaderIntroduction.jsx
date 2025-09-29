@@ -12,18 +12,15 @@ import ModalHeader from "./ModalHeader";
 import MobileModalHeader from "./MobileModalHeader";
 import { useSelector } from "react-redux";
 import { selectorCurrentUser } from "~/redux/user/userSlice";
-import { useAuth0 } from "@auth0/auth0-react";
+
 const HeaderIntroduction = ({
   boxShadowHeaderIntroduction,
   setBoxShadowHeaderIntroduction,
 }) => {
-  // const user = useSelector(selectorCurrentUser);
-  const { user } = useAuth0();
-  // console.log("🚀 ~ HeaderIntroduction ~ user:", user);
+  const user = useSelector(selectorCurrentUser);
   const [open, setOpen] = useState(null);
   const [value, setValue] = useState(false);
   const [mobileHeader, setMobileHeader] = useState(false);
-  const { loginWithRedirect } = useAuth0();
 
   const handleOpen = (tabValue) => {
     setOpen(true);
@@ -197,23 +194,8 @@ const HeaderIntroduction = ({
               }}
             >
               {/* Login */}
-              <Button
-                onClick={() => loginWithRedirect()}
-                disableRipple
-                sx={{
-                  height: "100%",
-                  padding: "0.5rem 1.5rem",
-                  fontSize: "1.2rem",
-                  color: "#091e42",
-                  "&:hover": {
-                    bgcolor: "#fff",
-                  },
-                }}
-              >
-                Login
-              </Button>
 
-              {/* <Link to="/login">
+              <Link to="/login">
                 <Box
                   sx={{
                     height: "100%",
@@ -226,17 +208,10 @@ const HeaderIntroduction = ({
                 >
                   Login
                 </Box>
-              </Link> */}
+              </Link>
 
               {/* Free */}
               <Box
-                onClick={() =>
-                  loginWithRedirect({
-                    authorizationParams: {
-                      screen_hint: "signup", //  ép mở thẳng tab Sign up
-                    },
-                  })
-                }
                 sx={{
                   height: "100%",
                   display: {
@@ -252,16 +227,15 @@ const HeaderIntroduction = ({
                   "&:hover": { bgcolor: "#017273", cursor: "pointer" },
                 }}
               >
-                Get Trello for free
-                {/* <Link to="/register" sx={{ display: "block" }}> */}
-                {/* <Box
+                <Link to="/register" sx={{ display: "block" }}>
+                  <Box
                     sx={{
                       color: "white",
                     }}
                   >
-                    
-                  </Box> */}
-                {/* </Link> */}
+                    Get Trello for free
+                  </Box>
+                </Link>
               </Box>
             </Box>
           ) : (
