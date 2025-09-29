@@ -17,6 +17,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import styled from "@emotion/styled";
 import { ArrowForwardIos } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectorCurrentUser } from "~/redux/user/userSlice";
 
 const style = {
   position: "absolute",
@@ -30,6 +32,7 @@ const style = {
   zIndex: 2,
 };
 const MobileModalHeader = ({ mobileHeader, setMobileHeader, handleClose }) => {
+  const user = useSelector(selectorCurrentUser);
   const toggleDrawer = (newOpen) => (event) => {
     if (
       event.type === "keydown" &&
@@ -98,7 +101,7 @@ const MobileModalHeader = ({ mobileHeader, setMobileHeader, handleClose }) => {
             <Box>
               {["Inbox", "Starred", "Send email", "Drafts"].map(
                 (text, index) => (
-                  <>
+                  <Box key={index}>
                     <Divider />
                     <ListItem
                       key={text}
@@ -117,6 +120,7 @@ const MobileModalHeader = ({ mobileHeader, setMobileHeader, handleClose }) => {
                           sx={{
                             "& span": {
                               fontSize: "1.2rem !important",
+                              color: "#091e42",
                             },
                           }}
                         />
@@ -129,39 +133,93 @@ const MobileModalHeader = ({ mobileHeader, setMobileHeader, handleClose }) => {
                         </ListItemIcon>
                       </ListItemButton>
                     </ListItem>
-                  </>
+                  </Box>
                 )
               )}
               <Divider />
             </Box>
-            <Box
-              sx={{
-                height: "100%",
-                display: {
-                  xs: "block",
-                  md: "none",
-                },
-                textAlign: "center",
-                padding: "1rem",
-                bgcolor: (theme) => theme.trello.subColorLight,
-                fontSize: "1.2rem",
-                transition: "all 0.3s linear",
-                "&:hover": {
-                  opacity: 0.8,
-                  cursor: "pointer",
-                },
-              }}
-            >
-              <Link to="/boards" sx={{ display: "block" }}>
+            {!user ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column-reverse",
+                  height: "100%",
+                  gap: 1.5,
+                }}
+              >
+                {/* Login */}
+
+                <Link to="/login">
+                  <Box
+                    sx={{
+                      height: "100%",
+                      padding: "1rem",
+                      fontSize: "1.2rem",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      color: "#091e42",
+                      border: "1px solid",
+                      borderColor: (theme) => theme.trello.subColorLight,
+                    }}
+                  >
+                    Login
+                  </Box>
+                </Link>
+
+                {/* Free */}
                 <Box
                   sx={{
-                    color: "white",
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: "1rem",
+                    fontSize: "1.2rem",
+                    transition: "all 0.3s linear",
+                    bgcolor: (theme) => theme.trello.subColorLight,
+                    color: (theme) => theme.trello.mainColorDark,
+                    "&:hover": { bgcolor: "#017273", cursor: "pointer" },
                   }}
                 >
-                  Go to your board
+                  <Link to="/register" sx={{ display: "block" }}>
+                    <Box
+                      sx={{
+                        color: "white",
+                      }}
+                    >
+                      Get Trello for free
+                    </Box>
+                  </Link>
                 </Box>
-              </Link>
-            </Box>
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "0.5rem 1.5rem",
+                  bgcolor: "#024647",
+                  fontSize: "1.2rem",
+                  transition: "all 0.3s linear",
+                  "&:hover": {
+                    opacity: 0.9,
+                    cursor: "pointer",
+                  },
+                }}
+              >
+                <Link to="/boards" sx={{ display: "block" }}>
+                  <Box
+                    sx={{
+                      color: "white",
+                    }}
+                  >
+                    Go to your board
+                  </Box>
+                </Link>
+              </Box>
+            )}
           </List>
         </Box>
       </Drawer>

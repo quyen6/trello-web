@@ -63,7 +63,7 @@ const ContentHeader = () => {
             sx={{
               display: "flex",
               flexDirection: "column",
-              padding: { xs: "3rem 2rem 2rem 2rem", md: "7.5rem 0 3rem 2rem" },
+              padding: { xs: "3rem 2rem 2rem 2rem", md: "8rem 1rem" },
             }}
           >
             <Box
@@ -159,7 +159,7 @@ const ContentHeader = () => {
               flex: 1,
               width: { xs: "80%", md: "50%" },
               height: "60%",
-              mt: { xs: 4, md: 10, lg: 2 },
+              mt: { xs: 4, md: 10 },
               margin: {
                 xs: "0 auto",
                 md: "",

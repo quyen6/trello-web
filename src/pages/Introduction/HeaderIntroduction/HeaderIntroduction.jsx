@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, useMediaQuery } from "@mui/material";
 import { Link } from "react-router-dom";
 import * as React from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -21,7 +21,7 @@ const HeaderIntroduction = ({
   const [open, setOpen] = useState(null);
   const [value, setValue] = useState(false);
   const [mobileHeader, setMobileHeader] = useState(false);
-
+  const isMdDown = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const handleOpen = (tabValue) => {
     setOpen(true);
     setValue(tabValue);
@@ -122,7 +122,7 @@ const HeaderIntroduction = ({
                   height: "100%",
                 },
                 "& .MuiTabs-indicator": {
-                  bgcolor: "green",
+                  bgcolor: (theme) => theme.trello.subColorLight,
                 },
                 display: {
                   xs: "none",
@@ -153,22 +153,28 @@ const HeaderIntroduction = ({
                   onClick={() => handleOpen(tab.value)}
                   sx={{
                     height: "100%",
-                    color: value === tab.value ? "green" : "black",
+                    color:
+                      value === tab.value
+                        ? (theme) => theme.trello.subColorLight
+                        : "black",
                     fontWeight: 400,
                     transition: "color 0.3s linear",
                     bgcolor: "transparent",
                     textTransform: "none",
                     "& svg": {
-                      color: value === tab.value ? "green" : "black",
+                      color:
+                        value === tab.value
+                          ? (theme) => theme.trello.subColorLight
+                          : "black",
                       transition: "color 0.3s linear",
                     },
                     "&.Mui-selected": {
-                      color: "green",
+                      color: (theme) => theme.trello.subColorLight,
                     },
                     "&:hover": {
-                      color: "green",
+                      color: (theme) => theme.trello.subColorLight,
                       "& svg": {
-                        color: "green",
+                        color: (theme) => theme.trello.subColorLight,
                       },
                     },
                   }}
@@ -190,7 +196,10 @@ const HeaderIntroduction = ({
           {!user ? (
             <Box
               sx={{
-                display: "flex",
+                display: {
+                  xs: "none",
+                  md: "flex",
+                },
               }}
             >
               {/* Login */}
@@ -301,11 +310,13 @@ const HeaderIntroduction = ({
               }}
             />
           )}
-          <MobileModalHeader
-            mobileHeader={mobileHeader}
-            setMobileHeader={setMobileHeader}
-            handleClose={() => setMobileHeader(false)}
-          />
+          {isMdDown && (
+            <MobileModalHeader
+              mobileHeader={mobileHeader}
+              setMobileHeader={setMobileHeader}
+              handleClose={() => setMobileHeader(false)}
+            />
+          )}
         </Box>
       </Box>
     </Box>
