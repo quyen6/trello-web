@@ -56,18 +56,20 @@ const ContentHeader = () => {
           margin: "0 auto",
         }}
       >
-        <Typography
-          variant="h5"
-          sx={{
-            textAlign: "center",
-            fontWeight: 600,
-            padding: "4rem 0 0 0",
+        {user && (
+          <Typography
+            variant="h5"
+            sx={{
+              textAlign: "center",
+              fontWeight: 600,
+              padding: "4rem 0 0 0",
 
-            color: (theme) => theme.trello.textColorPrimary,
-          }}
-        >
-          🎉 Welcome {user?.displayName}
-        </Typography>
+              color: (theme) => theme.trello.textColorPrimary,
+            }}
+          >
+            🎉 Welcome {user?.displayName}
+          </Typography>
+        )}
         <Box
           sx={{
             display: "flex",

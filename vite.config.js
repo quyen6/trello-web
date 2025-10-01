@@ -6,6 +6,7 @@ export default defineConfig({
   // define: {
   //   "process.env": process.env
   // },
+  base: "/", // 👈 cần cái này để Netlify serve assets đúng
   server: {
     host: true, // 👈 cần dòng này
     port: 5173,
