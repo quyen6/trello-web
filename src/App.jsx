@@ -15,6 +15,7 @@ import Settings from "./pages/Settings/Settings";
 import MainLayout from "./MainLayout";
 import Boards from "./pages/Boards";
 import Introduction from "./pages/Introduction/Introduction";
+import AuthSuccess from "./pages/Auth/AuthSuccess";
 
 /**
  * Giải pháp Clean Code trong việc xác định các route nào cần đăng nhập tài khoản xong thì mới cho truy cập
@@ -36,6 +37,7 @@ function App() {
       {/* Trang Introduction mới đầu vào */}
       <Route path="/" element={<Introduction />} />
       {/* Layout bọc AppBar */}
+
       <Route element={<MainLayout />}>
         {/* Redirect Route */}
         {/* <Route element={<ProtectedRoute user={currentUser} />}>
@@ -70,6 +72,7 @@ function App() {
       <Route path="/login" element={<Auth />} />
       <Route path="/register" element={<Auth />} />
       <Route path="/account/verification" element={<AccountVerification />} />
+      <Route path="/login/oauth-success" element={<AuthSuccess />} />
     </Routes>
   );
 }

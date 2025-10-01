@@ -31,7 +31,7 @@ const style = {
   p: "0 1rem 1rem",
   zIndex: 2,
 };
-const MobileModalHeader = ({ mobileHeader, setMobileHeader, handleClose }) => {
+const MobileModalHeader = ({ mobileHeader, setMobileHeader }) => {
   const user = useSelector(selectorCurrentUser);
   const toggleDrawer = (newOpen) => (event) => {
     if (
@@ -120,7 +120,7 @@ const MobileModalHeader = ({ mobileHeader, setMobileHeader, handleClose }) => {
                           sx={{
                             "& span": {
                               fontSize: "1.2rem !important",
-                              color: "#091e42",
+                              color: (theme) => theme.trello.textColorPrimary,
                             },
                           }}
                         />
@@ -158,7 +158,7 @@ const MobileModalHeader = ({ mobileHeader, setMobileHeader, handleClose }) => {
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                      color: "#091e42",
+                      color: (theme) => theme.trello.textColorPrimary,
                       border: "1px solid",
                       borderColor: (theme) => theme.trello.subColorLight,
                     }}
@@ -197,12 +197,16 @@ const MobileModalHeader = ({ mobileHeader, setMobileHeader, handleClose }) => {
               <Box
                 sx={{
                   height: "100%",
+                  padding: "1rem",
                   display: "flex",
                   alignItems: "center",
-                  padding: "0.5rem 1.5rem",
+                  justifyContent: "center",
                   bgcolor: "#024647",
                   fontSize: "1.2rem",
                   transition: "all 0.3s linear",
+                  color: (theme) => theme.trello.textColorPrimary,
+                  border: "1px solid",
+                  borderColor: (theme) => theme.trello.subColorLight,
                   "&:hover": {
                     opacity: 0.9,
                     cursor: "pointer",

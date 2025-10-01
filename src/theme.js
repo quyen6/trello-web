@@ -10,6 +10,7 @@ const MAIN_COLOR_LIGHT = "rgb(0, 134, 137)";
 const SUB_COLOR_LIGHT = "#01a3a4";
 const MAIN_COLOR_DARK = "#fff";
 const SUB_COLOR_DARK = "#1c2a4094";
+const TEXT_COLOR_PRIMARY = "#091e42";
 //
 const MOBILE_INTRODUCTION_CONTENT_HEIGHT = `calc(100vh - ${INTRODUCTION_HEADER_HEIGHT})`;
 
@@ -25,6 +26,7 @@ const theme = extendTheme({
     subColorLight: SUB_COLOR_LIGHT,
     mainColorDark: MAIN_COLOR_DARK,
     subColorDark: SUB_COLOR_DARK,
+    textColorPrimary: TEXT_COLOR_PRIMARY,
     //
     mobileIntroductionContentHeight: MOBILE_INTRODUCTION_CONTENT_HEIGHT,
   },
