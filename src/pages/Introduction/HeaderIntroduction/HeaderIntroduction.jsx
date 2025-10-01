@@ -212,7 +212,7 @@ const HeaderIntroduction = ({
                     fontSize: "1.2rem",
                     display: "flex",
                     alignItems: "center",
-                    color: "#091e42",
+                    color: (theme) => theme.trello.textColorPrimary,
                   }}
                 >
                   Login

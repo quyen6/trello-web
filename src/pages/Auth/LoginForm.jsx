@@ -1,4 +1,3 @@
-// TrungQuanDev: https://youtube.com/@trungquandev
 import {
   Link,
   useLocation,
@@ -10,7 +9,7 @@ import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import LockIcon from "@mui/icons-material/Lock";
 import Typography from "@mui/material/Typography";
-import { Card as MuiCard, SvgIcon } from "@mui/material";
+import { Divider, Card as MuiCard, SvgIcon } from "@mui/material";
 import TrelloIcon from "~/assets/trello.svg?react";
 import CardActions from "@mui/material/CardActions";
 import TextField from "@mui/material/TextField";
@@ -28,7 +27,9 @@ import FieldErrorAlert from "~/components/Form/FieldErrorAlert";
 import { useDispatch } from "react-redux";
 import { loginUserAPI } from "~/redux/user/userSlice";
 import { toast } from "react-toastify";
-
+import GgIcon from "~/assets/auth/icon-google.svg?react";
+import GhIcon from "~/assets/auth/icon-github.svg?react";
+import { API_ROOT } from "~/utils/constants";
 function LoginForm() {
   const dispatch = useDispatch();
   // Không dùng State của component nữa mà chuyển qua State của Redux
@@ -64,10 +65,30 @@ function LoginForm() {
         if (!res.error) navigate("/"); // Login thành công
       });
   };
+
+  const socialLogins = [
+    {
+      label: "Google",
+      url: `${API_ROOT}/v1/auth/google`,
+      icon: GgIcon,
+    },
+    {
+      label: "GitHub",
+      url: `${API_ROOT}/v1/auth/github`,
+      icon: GhIcon,
+    },
+  ];
   return (
     <form onSubmit={handleSubmit(submitLogIn)}>
       <Zoom in={true} style={{ transitionDelay: "200ms" }}>
-        <MuiCard sx={{ minWidth: 380, maxWidth: 380, marginTop: "6em" }}>
+        <MuiCard
+          sx={{
+            minWidth: 380,
+            maxWidth: 380,
+            mt: 8,
+            py: 2,
+          }}
+        >
           <Box
             sx={{
               margin: "1em",
@@ -88,11 +109,6 @@ function LoginForm() {
               />
             </Avatar>
           </Box>
-          {!registeredEmail && !verifiedEmail ? (
-            <Box sx={{ textAlign: "center", mb: -2, fontSize: "12px" }}>
-              <i>Email: 2151150056@ut.edu.vn | Password: 12345678a</i>
-            </Box>
-          ) : null}
           <Box
             sx={{
               marginTop: "1em",
@@ -153,6 +169,22 @@ function LoginForm() {
                     message: EMAIL_RULE_MESSAGE,
                   },
                 })}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "&:hover fieldset": {
+                      borderColor: (theme) => theme.trello.mainColorLight,
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: (theme) => theme.trello.mainColorLight,
+                      borderWidth: "1px",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    "&.Mui-focused": {
+                      color: (theme) => theme.trello.mainColorLight,
+                    },
+                  },
+                }}
               />
               {/* errors bên trong là errors của react hook form */}
               <FieldErrorAlert errors={errors} fieldName={"email"} />
@@ -171,6 +203,22 @@ function LoginForm() {
                     message: PASSWORD_RULE_MESSAGE,
                   },
                 })}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "&:hover fieldset": {
+                      borderColor: (theme) => theme.trello.mainColorLight,
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: (theme) => theme.trello.mainColorLight,
+                      borderWidth: "1px",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    "&.Mui-focused": {
+                      color: (theme) => theme.trello.mainColorLight,
+                    },
+                  },
+                }}
               />
               {/* errors bên trong là errors của react hook form */}
               <FieldErrorAlert errors={errors} fieldName={"password"} />
@@ -184,24 +232,94 @@ function LoginForm() {
               color="primary"
               size="large"
               fullWidth
+              sx={{
+                fontSize: "1rem",
+                backgroundColor: (theme) => theme.trello.mainColorLight,
+              }}
             >
               Login
             </Button>
-          </CardActions>
-          <Box sx={{ padding: "0 1em 1em 1em", textAlign: "center" }}>
-            <Typography>New to Trello MERN Stack Advanced?</Typography>
+          </CardActions>{" "}
+          <Box
+            sx={{
+              padding: "0 1em 1em 1em",
+              textAlign: "center",
+              display: "flex",
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: "1rem",
+                fontWeight: "500",
+                color: (theme) => theme.trello.textColorPrimary,
+              }}
+            >
+              &nbsp; Don't have acount?{" "}
+            </Typography>
             <Link
               to="/register"
               state={{ emailWantToRegister: watch("email") }}
               style={{ textDecoration: "none" }}
             >
               <Typography
-                sx={{ color: "primary.main", "&:hover": { color: "#ffbb39" } }}
+                sx={{
+                  fontSize: "1rem",
+                  fontWeight: "500",
+                  color: "rgb(218, 28, 45)",
+                  "&:hover": { color: "rgba(171, 5, 19, 1)" },
+                }}
               >
-                Create account!
+                &nbsp; Create account!
               </Typography>
             </Link>
           </Box>
+          <Divider sx={{ mx: 2, mb: 1 }}>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ fontSize: "1rem" }}
+            >
+              Or continue with
+            </Typography>
+          </Divider>
+          {/* <Divider sx={{ mx: 2, mb: 1 }} /> */}
+          {socialLogins.map((i) => (
+            <CardActions sx={{ px: 2 }} key={i.label}>
+              <Button
+                disableRipple
+                onClick={() => {
+                  window.location.href = i.url;
+                }}
+                variant="outlined"
+                size="large"
+                fullWidth
+                startIcon={
+                  <SvgIcon
+                    component={i.icon}
+                    inheritViewBox
+                    fontSize="large"
+                    sx={{ width: "25px", height: "25px" }}
+                  />
+                }
+                sx={{
+                  borderColor: (theme) => theme.trello.mainColorLight,
+
+                  fontWeight: 600,
+                  fontSize: "1rem",
+                  color: (theme) => theme.trello.textColorPrimary,
+                  lineHeight: 1.75,
+                  borderRadius: 1,
+                  transition: "all 0.3s ease",
+                  // "&:hover": {
+                  //   backgroundColor: "#1976d2",
+                  //   boxShadow: "0 6px 16px rgba(0, 0, 0, 0.2)",
+                  // },
+                }}
+              >
+                {i.label}
+              </Button>
+            </CardActions>
+          ))}
         </MuiCard>
       </Zoom>
     </form>

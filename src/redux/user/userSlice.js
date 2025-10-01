@@ -46,7 +46,11 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   // Reducers Nơi xử lý dữ liệu đồng bộ
-  reducers: {},
+  reducers: {
+    setCurrentUser: (state, action) => {
+      state.currentUser = action.payload;
+    },
+  },
 
   // extraReducers: Nơi xử lý dữ liệu bất đồng bộ
   extraReducers: (builder) => {
@@ -76,7 +80,7 @@ export const userSlice = createSlice({
 // Action creators are generated for each case reducer function
 // Actions: là nơi dành cho các components bên dưới gọi bằng dispatch() tới nó để cặp nhật lại dữ liệu thông qua reducer (chạy đồng bộ)
 // Để ý ở trên thì không thấy properties actions đâu cả, bởi vì những cái actions này đơn giản là được thằng redux tạo tự động theo tên của reducer
-// export const {  } = userSlice.actions;
+export const { setCurrentUser } = userSlice.actions;
 
 // Selectors: Là nơi dành cho các components bên dưới gọi bằng hook ueSelector() để lấy dữ liệu từ trong kho redux store ra sử dụng
 export const selectorCurrentUser = (state) => {

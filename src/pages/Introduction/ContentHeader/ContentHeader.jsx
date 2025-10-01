@@ -19,6 +19,9 @@ import {
   FIELD_REQUIRED_MESSAGE,
 } from "~/utils/validators";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { useSelector } from "react-redux";
+import { selectorCurrentUser } from "~/redux/user/userSlice";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 const ContentHeader = () => {
   const {
     register,
@@ -26,10 +29,12 @@ const ContentHeader = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const user = useSelector(selectorCurrentUser);
   const handleRegister = (data) => {
     const { email } = data;
     return navigate("/register", { state: { email } });
   };
+
   return (
     <Box
       sx={{
@@ -51,6 +56,18 @@ const ContentHeader = () => {
           margin: "0 auto",
         }}
       >
+        <Typography
+          variant="h5"
+          sx={{
+            textAlign: "center",
+            fontWeight: 600,
+            padding: "4rem 0 0 0",
+
+            color: (theme) => theme.trello.textColorPrimary,
+          }}
+        >
+          🎉 Welcome {user?.displayName}
+        </Typography>
         <Box
           sx={{
             display: "flex",
@@ -59,11 +76,12 @@ const ContentHeader = () => {
             flexDirection: { xs: "column", md: "row" },
           }}
         >
+          {/* Left */}
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
-              padding: { xs: "3rem 2rem 2rem 2rem", md: "8rem 1rem" },
+              padding: { xs: "3rem 2rem 2rem 2rem", md: "6rem 1rem" },
             }}
           >
             <Box
@@ -79,7 +97,7 @@ const ContentHeader = () => {
                   fontWeight: 600,
                   fontSize: { xs: "2rem", md: "3rem" },
                   textAlign: { xs: "center", md: "left" },
-                  color: "#091e42",
+                  color: (theme) => theme.trello.textColorPrimary,
                 }}
               >
                 Trello brings all your tasks, teammates, and tools together
@@ -91,7 +109,7 @@ const ContentHeader = () => {
                   mt: 2,
                   fontSize: { xs: "1.25rem", md: "1.5rem" },
                   textAlign: { xs: "center", md: "left" },
-                  color: "#091e42",
+                  color: (theme) => theme.trello.textColorPrimary,
                 }}
               >
                 Keep everything in the same place—even if your team isn't.
@@ -111,46 +129,50 @@ const ContentHeader = () => {
                     xs: "center",
                     md: "flex-start",
                   },
+                  ...(user && { justifyContent: "center" }),
                 }}
               >
-                <TextField
-                  fullWidth
-                  sx={{
-                    flex: { xs: 0, sm: 0.6, md: 1 },
-                    maxWidth: "300px",
-                    display: {
-                      xs: "none",
-                      sm: "flex",
-                    },
-                  }}
-                  label="Enter Email..."
-                  type="email"
-                  {...register("email", {
-                    validate: (value) => {
-                      if (!value) return true;
-                      return EMAIL_RULE.test(value) || EMAIL_RULE_MESSAGE;
-                    },
-                  })}
-                />
+                {!user ? (
+                  <TextField
+                    fullWidth
+                    sx={{
+                      flex: { xs: 0, sm: 0.6, md: 1 },
+                      maxWidth: "300px",
+                      display: {
+                        xs: "none",
+                        sm: "flex",
+                      },
+                    }}
+                    label="Enter Email..."
+                    type="email"
+                    {...register("email", {
+                      validate: (value) => {
+                        if (!value) return true;
+                        return EMAIL_RULE.test(value) || EMAIL_RULE_MESSAGE;
+                      },
+                    })}
+                  />
+                ) : null}
                 <Button
-                  type="submit"
+                  type={!user ? "submit" : "button"}
                   variant="contained"
                   sx={{
                     padding: "0.8rem 1rem",
-
                     bgcolor: (theme) => theme.trello.subColorLight,
                     border: "none",
                     color: (theme) => theme.trello.mainColorDark,
                     fontSize: "1rem",
                     "&:hover": { bgcolor: "#017273" },
                   }}
+                  endIcon={<ArrowForwardIcon />}
                 >
-                  Sign up – it’s free
+                  {!user ? "Sign up – it’s free" : "Start Using Trello"}
                 </Button>
               </Stack>
             </form>
           </Box>
 
+          {/* Right */}
           <Box
             component="img"
             src={IntroductionTrello}
