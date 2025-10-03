@@ -16,10 +16,9 @@ import { Link } from "react-router-dom";
 import Notifications from "./Notifications/Notifications";
 import AutoCompleteSearchBoard from "./SearchBoards/AutoCompleteSearchBoard";
 
-const AppBar = (props) => {
-  const { resolvedMode } = props;
+const AppBar = () => {
   const [open, setOpen] = useState(false);
-  const isLg1024 = useMediaQuery("(min-width:1024px)");
+
   const isMdDown = useMediaQuery((theme) => theme.breakpoints.down("md"));
   return (
     <Box
@@ -33,10 +32,10 @@ const AppBar = (props) => {
         justifyContent: "space-between",
         gap: 2,
         // overflowX: "auto",
-        backgroundColor:
-          resolvedMode === "dark"
+        backgroundColor: (theme) =>
+          theme.palette.mode === "dark"
             ? "#1c2a40"
-            : (theme) => theme.trello.mainColorLight,
+            : theme.trello.mainColorLight,
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -49,12 +48,7 @@ const AppBar = (props) => {
           }}
           size="large"
         />
-        <MobileMenuDrawer
-          open={open}
-          setOpen={setOpen}
-          resolvedMode={resolvedMode}
-          isMdDown={isMdDown}
-        />
+        <MobileMenuDrawer open={open} setOpen={setOpen} isMdDown={isMdDown} />
         <Link to="/boards">
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
             <SvgIcon

@@ -24,10 +24,10 @@ function Auth() {
         minHeight: "100vh",
         alignItems: "center",
         justifyContent: "flex-start",
-        background: 'url("src/assets/auth/login-register-bg.jpg")',
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        bgcolor: "rgb(229,250,255)",
+        // backgroundRepeat: "no-repeat",
+        // backgroundSize: "cover",
+        // backgroundPosition: "center",
         boxShadow: "inset 0 0 0 2000px rgba(0, 0, 0, 0.2)",
       }}
     >

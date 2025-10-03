@@ -6,14 +6,11 @@ import Popover from "@mui/material/Popover";
 import AddIcon from "@mui/icons-material/Add";
 import Badge from "@mui/material/Badge";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { useOutletContext } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectorCurrentActiveBoard } from "~/redux/activeBoard/activeBoardSlice";
 import { CARD_MEMBER_ACTIONS } from "~/utils/constants";
 
 function CardUserGroup({ cardMemberIds = [], onUpdateCardMembers }) {
-  const { resolvedMode } = useOutletContext();
-
   // lấy activeboard từ redux để lấy được toàn bộ thông tin của những thành viên trong board thông qua field: FE_allUsers
   const board = useSelector(selectorCurrentActiveBoard);
   /**
@@ -81,12 +78,17 @@ function CardUserGroup({ cardMemberIds = [], onUpdateCardMembers }) {
             fontSize: "14px",
             fontWeight: "600",
             borderRadius: "50%",
-            color: resolvedMode === "dark" ? "#90caf9" : "#172b4d",
+            color: (theme) =>
+              theme.palette.mode === "dark" ? "#90caf9" : "#172b4d",
             bgcolor: (theme) =>
-              resolvedMode === "dark" ? "#2f3542" : theme.palette.grey[200],
+              theme.palette.mode === "dark"
+                ? "#2f3542"
+                : theme.palette.grey[200],
             "&:hover": {
-              color: resolvedMode === "dark" ? "#000000de" : "#0c66e4",
-              bgcolor: resolvedMode === "dark" ? "#90caf9" : "#e9f2ff",
+              color: (theme) =>
+                theme.palette.mode === "dark" ? "#000000de" : "#0c66e4",
+              bgcolor: (theme) =>
+                theme.palette.mode === "dark" ? "#90caf9" : "#e9f2ff",
             },
           }}
         >

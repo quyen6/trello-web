@@ -67,7 +67,20 @@ function RegisterForm() {
   return (
     <form onSubmit={handleSubmit(submitRegister)}>
       <Zoom in={true} style={{ transitionDelay: "200ms" }}>
-        <MuiCard sx={{ minWidth: 380, maxWidth: 380, marginTop: "4em", py: 2 }}>
+        <MuiCard
+          sx={{
+            minWidth: 350,
+            maxWidth: 350,
+            marginTop: "4em",
+            py: 2,
+            bgcolor: "#fff",
+
+            "& .MuiInputBase-input, & .MuiInputLabel-root": {
+              color: "#212121", // màu chữ của input + label
+              borderColor: "#212121",
+            },
+          }}
+        >
           <Box
             sx={{
               margin: "1em",
@@ -76,10 +89,10 @@ function RegisterForm() {
               gap: 1,
             }}
           >
-            <Avatar sx={{ bgcolor: "primary.main" }}>
-              <LockIcon />
+            <Avatar sx={{ bgcolor: "#1976d2" }}>
+              <LockIcon sx={{ color: "white" }} />
             </Avatar>
-            <Avatar sx={{ bgcolor: "primary.main" }}>
+            <Avatar sx={{ bgcolor: "#1976d2" }}>
               <SvgIcon
                 component={TrelloIcon}
                 inheritViewBox
@@ -117,17 +130,21 @@ function RegisterForm() {
                 })}
                 sx={{
                   "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#c4c4c4", // màu mặc định khi chưa hover/focus
+                    },
                     "&:hover fieldset": {
-                      borderColor: (theme) => theme.trello.mainColorLight,
+                      borderColor: "rgb(0, 134, 137)",
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: (theme) => theme.trello.mainColorLight,
+                      borderColor: "rgb(0, 134, 137)",
                       borderWidth: "1px",
                     },
                   },
+
                   "& .MuiInputLabel-root": {
                     "&.Mui-focused": {
-                      color: (theme) => theme.trello.mainColorLight,
+                      color: "rgb(0, 134, 137)",
                     },
                   },
                 }}
@@ -150,17 +167,20 @@ function RegisterForm() {
                 })}
                 sx={{
                   "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#c4c4c4", // màu mặc định khi chưa hover/focus
+                    },
                     "&:hover fieldset": {
-                      borderColor: (theme) => theme.trello.mainColorLight,
+                      borderColor: "rgb(0, 134, 137)",
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: (theme) => theme.trello.mainColorLight,
+                      borderColor: "rgb(0, 134, 137)",
                       borderWidth: "1px",
                     },
                   },
                   "& .MuiInputLabel-root": {
                     "&.Mui-focused": {
-                      color: (theme) => theme.trello.mainColorLight,
+                      color: "rgb(0, 134, 137)",
                     },
                   },
                 }}
@@ -183,17 +203,20 @@ function RegisterForm() {
                 })}
                 sx={{
                   "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#c4c4c4", // màu mặc định khi chưa hover/focus
+                    },
                     "&:hover fieldset": {
-                      borderColor: (theme) => theme.trello.mainColorLight,
+                      borderColor: "rgb(0, 134, 137)",
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: (theme) => theme.trello.mainColorLight,
+                      borderColor: "rgb(0, 134, 137)",
                       borderWidth: "1px",
                     },
                   },
                   "& .MuiInputLabel-root": {
                     "&.Mui-focused": {
-                      color: (theme) => theme.trello.mainColorLight,
+                      color: "rgb(0, 134, 137)",
                     },
                   },
                 }}
@@ -212,7 +235,8 @@ function RegisterForm() {
               fullWidth
               sx={{
                 fontSize: "1rem",
-                backgroundColor: (theme) => theme.trello.mainColorLight,
+                backgroundColor: "rgb(0, 134, 137)",
+                color: "#fff",
               }}
             >
               Sign up
@@ -229,7 +253,7 @@ function RegisterForm() {
               sx={{
                 fontSize: "1rem",
                 fontWeight: "500",
-                color: (theme) => theme.trello.textColorPrimary,
+                color: "#091e42",
               }}
             >
               &nbsp; Already have an account!{" "}
@@ -251,10 +275,19 @@ function RegisterForm() {
               </Typography>
             </Link>
           </Box>
-          <Divider sx={{ mx: 2, mb: 1 }}>
+          <Divider
+            sx={{
+              mx: 2,
+              mb: 1,
+
+              "&::before, &::after": {
+                borderColor: "#c4c4c4",
+              },
+            }}
+          >
             <Typography
               variant="body2"
-              color="text.secondary"
+              color="#212121"
               sx={{ fontSize: "1rem" }}
             >
               Or continue with
@@ -280,11 +313,11 @@ function RegisterForm() {
                   />
                 }
                 sx={{
-                  borderColor: (theme) => theme.trello.mainColorLight,
+                  borderColor: "rgb(0, 134, 137)",
 
                   fontWeight: 600,
                   fontSize: "1rem",
-                  color: (theme) => theme.trello.textColorPrimary,
+                  color: "#091e42",
                   lineHeight: 1.75,
                   borderRadius: 1,
                   transition: "all 0.3s ease",

@@ -39,6 +39,7 @@ function Settings() {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChangeTab}>
             <Tab
+              disableRipple
               label="Account"
               value={TABS.ACCOUNT}
               icon={<PersonIcon />}
@@ -47,6 +48,7 @@ function Settings() {
               to="/settings/account"
             />
             <Tab
+              disableRipple
               label="Security"
               value={TABS.SECURITY}
               icon={<SecurityIcon />}

@@ -17,7 +17,6 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 import { styled } from "@mui/material/styles";
-import { useOutletContext } from "react-router-dom";
 import { createNewBoardAPI } from "~/apis";
 
 // BOARD_TYPES tương tự bên model phía Back-end (nếu cần dùng nhiều nơi thì hãy đưa ra file constants, không thì cứ để ở đây)
@@ -26,30 +25,29 @@ const BOARD_TYPES = {
   PRIVATE: "private",
 };
 
+const SidebarItem = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+  cursor: "pointer",
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  padding: "12px 16px",
+  borderRadius: "8px",
+  color: theme.trello.textColorLightDark(theme),
+  "&:hover": {
+    backgroundColor:
+      theme.palette.mode === "dark" ? "#576c816a" : theme.palette.grey[300],
+  },
+  "&.active": {
+    color: theme.palette.mode === "dark" ? "#90caf9" : "#0c66e4",
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#e9f2ff",
+  },
+}));
 /**
  * Bản chất của cái component SidebarCreateBoardModal này chúng ta sẽ trả về một cái SidebarItem để hiển thị ở màn Board List cho phù hợp giao diện bên đó, đồng thời nó cũng chứa thêm một cái Modal để xử lý riêng form create board nhé.
  * Note: Modal là một low-component mà bọn MUI sử dụng bên trong những thứ như Dialog, Drawer, Menu, Popover. Ở đây dĩ nhiên chúng ta có thể sử dụng Dialog cũng không thành vấn đề gì, nhưng sẽ sử dụng Modal để dễ linh hoạt tùy biến giao diện từ con số 0 cho phù hợp với mọi nhu cầu nhé.
  */
 function SidebarCreateBoardModal({ afterCreateNewBoard }) {
-  const { resolvedMode } = useOutletContext();
-  const SidebarItem = styled(Box)(({ theme }) => ({
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-    cursor: "pointer",
-    backgroundColor: resolvedMode === "dark" ? "#1A2027" : "#fff",
-    padding: "12px 16px",
-    borderRadius: "8px",
-    "&:hover": {
-      backgroundColor:
-        resolvedMode === "dark" ? "#576c816a" : theme.palette.grey[300],
-    },
-    "&.active": {
-      color: resolvedMode === "dark" ? "#90caf9" : "#0c66e4",
-      backgroundColor: resolvedMode === "dark" ? "#1A2027" : "#e9f2ff",
-    },
-  }));
-
   const {
     control,
     register,

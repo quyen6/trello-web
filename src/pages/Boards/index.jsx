@@ -16,7 +16,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import { Link, useLocation, useOutletContext } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import randomColor from "randomcolor";
 import SidebarCreateBoardModal from "./create";
 
@@ -24,27 +24,26 @@ import { styled } from "@mui/material/styles";
 import { fetchBoardsAPI } from "~/apis";
 import { DEFAULT_ITEM_PER_PAGE, DEFAULT_PAGE } from "~/utils/constants";
 
+const SidebarItem = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+  cursor: "pointer",
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  color: theme.trello.textColorLightDark(theme),
+  padding: "12px 16px",
+  borderRadius: "8px",
+  "&:hover": {
+    backgroundColor:
+      theme.palette.mode === "dark" ? "#576c816a" : theme.palette.grey[300],
+  },
+  "&.active": {
+    color: theme.palette.mode === "dark" ? "#000" : "#0c66e4",
+    backgroundColor: "#e9f2ff",
+  },
+}));
 function Boards() {
-  const { resolvedMode, colorTextMain } = useOutletContext();
   // Styles của mấy cái Sidebar item menu, anh gom lại ra đây cho gọn.
-  const SidebarItem = styled(Box)(({ theme }) => ({
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-    cursor: "pointer",
-    backgroundColor: resolvedMode === "dark" ? "#1A2027" : "#fff",
-    color: colorTextMain,
-    padding: "12px 16px",
-    borderRadius: "8px",
-    "&:hover": {
-      backgroundColor:
-        resolvedMode === "dark" ? "#576c816a" : theme.palette.grey[300],
-    },
-    "&.active": {
-      color: resolvedMode === "dark" ? "#000" : "#0c66e4",
-      backgroundColor: "#e9f2ff",
-    },
-  }));
 
   // Số lượng bản ghi boards hiển thị tối đa trên 1 page tùy dự án (thường sẽ là 12 cái)
   const [boards, setBoards] = useState(null);
@@ -94,8 +93,9 @@ function Boards() {
       disableGutters
       maxWidth={false}
       sx={{
-        backgroundColor: resolvedMode === "dark" ? "#34495e" : "#fff",
-        color: colorTextMain,
+        backgroundColor: (theme) =>
+          theme.palette.mode === "dark" ? "#34495e" : "#fff",
+        color: (theme) => theme.trello.textColorLightDark,
         height: (theme) => `calc(100vh - ${theme.trello.appBarHeight})`,
       }}
     >
@@ -119,8 +119,8 @@ function Boards() {
             <Divider
               sx={{
                 my: 1,
-                borderColor:
-                  resolvedMode === "dark" ? "#ffffff58" : "#0000001f",
+                borderColor: (theme) =>
+                  theme.palette.mode === "dark" ? "#ffffff58" : "#0000001f",
               }}
             />
             <Stack direction="column" spacing={1}>
@@ -218,12 +218,6 @@ function Boards() {
                         item.page === DEFAULT_PAGE ? "" : `?page=${item.page}`
                       }`}
                       {...item}
-                      sx={{
-                        color: resolvedMode === "dark" ? "white" : "",
-                        "&.css-1tjqu55-MuiPaginationItem-root": {
-                          color: resolvedMode === "dark" ? "white" : "",
-                        },
-                      }}
                     />
                   )}
                 />

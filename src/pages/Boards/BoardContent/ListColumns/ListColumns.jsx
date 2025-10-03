@@ -21,13 +21,13 @@ import {
   updateCurrentActiveBoard,
   selectorCurrentActiveBoard,
 } from "~/redux/activeBoard/activeBoardSlice";
-import { useOutletContext } from "react-router-dom";
+
 const ListColumns = (props) => {
   const dispatch = useDispatch();
   // Không dùng State của component nữa mà chuyển qua State của Redux
   const board = useSelector(selectorCurrentActiveBoard);
   const { columns } = props;
-  const { resolvedMode, colorTextMain } = useOutletContext();
+
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
   const toggleOpenNewColumnForm = () => {
     setOpenNewColumnForm(!openNewColumnForm);
@@ -88,8 +88,8 @@ const ListColumns = (props) => {
           overflowY: "hidden",
           "&::-webkit-scrollbar-track": { m: 2 },
           "&::-webkit-scrollbar-thumb:hover": {
-            backgroundColor:
-              resolvedMode === "dark"
+            backgroundColor: (theme) =>
+              theme.palette.mode === "dark"
                 ? "#eee"
                 : (theme) => theme.trello.subColorLight,
           },
@@ -97,11 +97,7 @@ const ListColumns = (props) => {
       >
         {/* Box Column 01*/}
         {columns?.map((column) => (
-          <Column
-            resolvedMode={resolvedMode}
-            key={column?._id}
-            column={column}
-          />
+          <Column key={column?._id} column={column} />
         ))}
 
         {/* Box Add new column CTA */}
@@ -114,10 +110,10 @@ const ListColumns = (props) => {
               mx: 2,
               borderRadius: "4px",
               height: "fit-content",
-              bgcolor:
-                resolvedMode === "dark"
+              bgcolor: (theme) =>
+                theme.palette.mode === "dark"
                   ? "#ffffff3d"
-                  : (theme) => theme.trello.subColorLight,
+                  : theme.trello.subColorLight,
             }}
           >
             <Button
@@ -142,7 +138,8 @@ const ListColumns = (props) => {
               p: 1,
               borderRadius: "6px",
               height: "fit-content",
-              bgcolor: resolvedMode === "dark" ? "#ffffff3d" : "#bae2e2",
+              bgcolor: (theme) =>
+                theme.palette.mode === "dark" ? "#ffffff3d" : "#bae2e2",
               display: "flex",
               flexDirection: "column",
               gap: 1,
@@ -160,7 +157,12 @@ const ListColumns = (props) => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon sx={{ color: colorTextMain }} />
+                    <SearchIcon
+                      sx={{
+                        color: (theme) =>
+                          theme.trello.textColorLightDark(theme),
+                      }}
+                    />
                   </InputAdornment>
                 ),
                 endAdornment: (
@@ -179,32 +181,32 @@ const ListColumns = (props) => {
               sx={{
                 minWidth: 100,
                 "& label": {
-                  color: colorTextMain,
+                  color: (theme) => theme.trello.textColorLightDark(theme),
                 },
                 "& input": {
-                  color: colorTextMain,
+                  color: (theme) => theme.trello.textColorLightDark(theme),
                 },
                 "& label.Mui-focused": {
-                  color: colorTextMain,
+                  color: (theme) => theme.trello.textColorLightDark(theme),
                 },
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": {
-                    borderColor:
-                      resolvedMode === "dark"
+                    borderColor: (theme) =>
+                      theme.palette.mode === "dark"
                         ? "#ffffff3d"
                         : (theme) => theme.trello.subColorLight,
                     // borderWidth: "0.5px !important",
                   },
                   "&:hover fieldset": {
-                    borderColor:
-                      resolvedMode === "dark"
+                    borderColor: (theme) =>
+                      theme.palette.mode === "dark"
                         ? "#ffffff3d"
                         : (theme) => theme.trello.subColorLight,
                     // borderWidth: "1px !important",
                   },
                   "&.Mui-focused fieldset": {
-                    borderColor:
-                      resolvedMode === "dark"
+                    borderColor: (theme) =>
+                      theme.palette.mode === "dark"
                         ? "#ffffff3d"
                         : (theme) => theme.trello.subColorLight,
                     // borderWidth: "1px !important",
@@ -221,8 +223,8 @@ const ListColumns = (props) => {
                 sx={{
                   boxShadow: "none",
                   border: " 0.5px solid #ffffff3d",
-                  bgcolor:
-                    resolvedMode === "dark"
+                  bgcolor: (theme) =>
+                    theme.palette.mode === "dark"
                       ? (theme) => theme.trello.subColorDark
                       : (theme) => theme.trello.subColorLight,
                 }}
@@ -232,7 +234,7 @@ const ListColumns = (props) => {
               <CloseIcon
                 onClick={toggleOpenNewColumnForm}
                 sx={{
-                  color: colorTextMain,
+                  color: (theme) => theme.trello.textColorLightDark(theme),
                   fontSize: "large",
                   cursor: "pointer",
                 }}

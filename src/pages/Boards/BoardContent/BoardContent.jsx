@@ -25,7 +25,6 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { arrayMove } from "@dnd-kit/sortable";
 import _, { isEmpty } from "lodash";
 import { generatePlaceholderCard } from "~/utils/formatter";
-import { useOutletContext } from "react-router-dom";
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: "ACTIVE_DRAG_ITEM_TYPE_COLUMN",
@@ -39,7 +38,6 @@ const BoardContent = (props) => {
     moveCardInTheSameColumn,
     moveCardToDifferentColumn,
   } = props;
-  const { resolvedMode } = useOutletContext();
   const [orderedColumns, setOrderedColumns] = useState([]);
 
   // cùng 1 thời điểm thì chỉ có 1 phần tử đc kéo (column hoặc card)
@@ -418,7 +416,8 @@ const BoardContent = (props) => {
         sx={{
           width: "100%",
           height: (theme) => theme.trello.boardContentHeight,
-          backgroundColor: resolvedMode === "dark" ? "#34495e" : "#f5f7fa",
+          backgroundColor: (theme) =>
+            theme.palette.mode === "dark" ? "#34495e" : "#f5f7fa",
           p: "10px 0",
         }}
       >

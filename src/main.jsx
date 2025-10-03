@@ -27,11 +27,10 @@ injectStore(store);
 
 createRoot(document.getElementById("root")).render(
   <>
-    <InitColorSchemeScript attribute="class" defaultMode="light" />
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <BrowserRouter basename="/" future={{ v7_startTransition: true }}>
-          <ThemeProvider theme={theme} attribute="class">
+          <ThemeProvider theme={theme}>
             <ConfirmProvider
               defaultOptions={{
                 allowClose: false,

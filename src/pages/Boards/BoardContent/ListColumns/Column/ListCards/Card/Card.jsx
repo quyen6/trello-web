@@ -11,7 +11,7 @@ import ModeCommentIcon from "@mui/icons-material/ModeComment";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useOutletContext } from "react-router-dom";
+
 import { useDispatch } from "react-redux";
 import {
   showModalActiveCard,
@@ -20,7 +20,7 @@ import {
 const Card = (props) => {
   const dispatch = useDispatch();
   const { card } = props;
-  const { resolvedMode } = useOutletContext();
+
   const {
     attributes,
     listeners,
@@ -67,8 +67,14 @@ const Card = (props) => {
           overflow: "unset",
           display: card?.FE_PlaceholderCard ? "none" : "block",
           border: "2px solid transparent",
-          "&:hover": {
-            borderColor: resolvedMode === "dark" ? "pink" : "rgb(0,137,134)",
+          transition: "border-color 0.3s ease-in-out",
+          "&:hover ": {
+            borderColor: (theme) =>
+              theme.palette.mode === "dark" ? "pink" : "rgb(0,137,134)",
+          },
+          "&:hover .hover-actions": {
+            width: "24px", // kích thước checkbox
+            opacity: 1,
           },
         }}
       >
@@ -83,23 +89,22 @@ const Card = (props) => {
             alignItems: "center",
             gap: 1,
             // position: "relative",
-            "&:hover .hover-actions": {
-              display: "block",
-            },
           }}
         >
           <Checkbox
+            onClick={(e) => e.stopPropagation(e)}
             className="hover-actions"
             {...label}
-            defaultChecked
             color="success"
             size="small"
             sx={{
               "&.MuiCheckbox-root": {
                 padding: 0,
               },
-              display: "none",
-              transition: "display 0.2s ease",
+              width: 0, // ban đầu 0
+              opacity: 0, // ẩn
+              overflow: "hidden", // tránh tràn
+              transition: "all 0.3s ease",
             }}
           />
           <Typography>{card?.title}</Typography>
