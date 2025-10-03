@@ -83,10 +83,14 @@ function LoginForm() {
       <Zoom in={true} style={{ transitionDelay: "200ms" }}>
         <MuiCard
           sx={{
-            minWidth: 380,
-            maxWidth: 380,
+            minWidth: 350,
+            maxWidth: 350,
             mt: 8,
             py: 2,
+            bgcolor: "#fff",
+            "& .MuiInputBase-input, & .MuiInputLabel-root": {
+              color: "#212121", // màu chữ của input + label
+            },
           }}
         >
           <Box
@@ -97,10 +101,10 @@ function LoginForm() {
               gap: 1,
             }}
           >
-            <Avatar sx={{ bgcolor: "primary.main" }}>
-              <LockIcon />
+            <Avatar sx={{ bgcolor: "#1976d2" }}>
+              <LockIcon sx={{ color: "white" }} />
             </Avatar>
-            <Avatar sx={{ bgcolor: "primary.main" }}>
+            <Avatar sx={{ bgcolor: "#1976d2" }}>
               <SvgIcon
                 component={TrelloIcon}
                 inheritViewBox
@@ -171,17 +175,20 @@ function LoginForm() {
                 })}
                 sx={{
                   "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#c4c4c4", // màu mặc định khi chưa hover/focus
+                    },
                     "&:hover fieldset": {
-                      borderColor: (theme) => theme.trello.mainColorLight,
+                      borderColor: "rgb(0, 134, 137)",
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: (theme) => theme.trello.mainColorLight,
+                      borderColor: "rgb(0, 134, 137)",
                       borderWidth: "1px",
                     },
                   },
                   "& .MuiInputLabel-root": {
                     "&.Mui-focused": {
-                      color: (theme) => theme.trello.mainColorLight,
+                      color: "rgb(0, 134, 137)",
                     },
                   },
                 }}
@@ -205,17 +212,20 @@ function LoginForm() {
                 })}
                 sx={{
                   "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#c4c4c4", // màu mặc định khi chưa hover/focus
+                    },
                     "&:hover fieldset": {
-                      borderColor: (theme) => theme.trello.mainColorLight,
+                      borderColor: "rgb(0, 134, 137)",
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: (theme) => theme.trello.mainColorLight,
+                      borderColor: "rgb(0, 134, 137)",
                       borderWidth: "1px",
                     },
                   },
                   "& .MuiInputLabel-root": {
                     "&.Mui-focused": {
-                      color: (theme) => theme.trello.mainColorLight,
+                      color: "rgb(0, 134, 137)",
                     },
                   },
                 }}
@@ -234,7 +244,8 @@ function LoginForm() {
               fullWidth
               sx={{
                 fontSize: "1rem",
-                backgroundColor: (theme) => theme.trello.mainColorLight,
+                backgroundColor: "rgb(0, 134, 137)",
+                color: "#fff",
               }}
             >
               Login
@@ -273,10 +284,18 @@ function LoginForm() {
               </Typography>
             </Link>
           </Box>
-          <Divider sx={{ mx: 2, mb: 1 }}>
+          <Divider
+            sx={{
+              mx: 2,
+              mb: 1,
+              "&::before, &::after": {
+                borderColor: "#c4c4c4",
+              },
+            }}
+          >
             <Typography
               variant="body2"
-              color="text.secondary"
+              color="#212121"
               sx={{ fontSize: "1rem" }}
             >
               Or continue with
@@ -302,7 +321,7 @@ function LoginForm() {
                   />
                 }
                 sx={{
-                  borderColor: (theme) => theme.trello.mainColorLight,
+                  borderColor: "rgb(0, 134, 137)",
 
                   fontWeight: 600,
                   fontSize: "1rem",

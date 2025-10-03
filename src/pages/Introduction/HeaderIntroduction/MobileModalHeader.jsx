@@ -87,6 +87,7 @@ const MobileModalHeader = ({ mobileHeader, setMobileHeader }) => {
             width: "auto",
             marginTop: (theme) => theme.trello.introductionHeaderHeight,
             height: "100vh",
+            bgcolor: "#fff",
           }}
           role="presentation"
         >
@@ -102,7 +103,11 @@ const MobileModalHeader = ({ mobileHeader, setMobileHeader }) => {
               {["Inbox", "Starred", "Send email", "Drafts"].map(
                 (text, index) => (
                   <Box key={index}>
-                    <Divider />
+                    <Divider
+                      sx={{
+                        borderColor: "rgba(0,0,0,0.12)",
+                      }}
+                    />
                     <ListItem
                       key={text}
                       sx={{
@@ -129,7 +134,10 @@ const MobileModalHeader = ({ mobileHeader, setMobileHeader }) => {
                             minWidth: "35px",
                           }}
                         >
-                          <ArrowForwardIos fontSize="1rem" />
+                          <ArrowForwardIos
+                            fontSize="1rem"
+                            sx={{ color: "rgba(0,0,0,0.54)" }}
+                          />
                         </ListItemIcon>
                       </ListItemButton>
                     </ListItem>

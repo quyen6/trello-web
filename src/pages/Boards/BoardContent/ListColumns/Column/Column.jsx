@@ -37,11 +37,10 @@ import {
   selectorCurrentActiveBoard,
   updateCurrentActiveBoard,
 } from "~/redux/activeBoard/activeBoardSlice";
-import { useOutletContext } from "react-router-dom";
 import ToggleFocusInput from "~/components/Form/ToggleFocusInput";
 const Column = (props) => {
   const { column } = props;
-  const { resolvedMode, colorTextMain } = useOutletContext();
+
   const dispatch = useDispatch();
   // Không dùng State của component nữa mà chuyển qua State của Redux
   const board = useSelector(selectorCurrentActiveBoard);
@@ -173,8 +172,11 @@ const Column = (props) => {
         sx={{
           minWidth: "300px",
           maxWidth: "300px",
-          bgcolor: resolvedMode === "dark" ? (theme)=>theme.trello.subColorDark : "#bae2e2",
-          color: colorTextMain,
+          bgcolor: (theme) =>
+            theme.palette.mode === "dark"
+              ? theme.trello.subColorDark
+              : "#bae2e2",
+          color: (theme) => theme.trello.textColorLightDark(theme),
           ml: 2,
           borderRadius: "6px",
           height: "fit-content",
@@ -202,7 +204,7 @@ const Column = (props) => {
               <KeyboardArrowDownIcon
                 sx={{
                   cursor: "pointer",
-                  color: colorTextMain,
+                  color: (theme) => theme.trello.textColorLightDark(theme),
                 }}
                 id="basic-column-dropdown"
                 aria-controls={open ? "basic-menu-column-dropdown" : undefined}
@@ -304,7 +306,8 @@ const Column = (props) => {
               <Button
                 sx={{
                   "&.MuiButton-text": {
-                    color: resolvedMode === "dark" ? "white" : "",
+                    color: (theme) =>
+                      theme.palette.mode === "dark" ? "white" : "",
                   },
                 }}
                 startIcon={<AddCardIcon />}
@@ -339,7 +342,8 @@ const Column = (props) => {
                     <InputAdornment position="start">
                       <SearchIcon
                         sx={{
-                          color: colorTextMain,
+                          color: (theme) =>
+                            theme.trello.textColorLightDark(theme),
                         }}
                       />
                     </InputAdornment>
@@ -360,32 +364,32 @@ const Column = (props) => {
                 sx={{
                   minWidth: 100,
                   "& label": {
-                    color: colorTextMain,
+                    color: (theme) => theme.trello.textColorLightDark(theme),
                   },
                   "& input": {
-                    color: colorTextMain,
+                    color: (theme) => theme.trello.textColorLightDark(theme),
                   },
                   "& label.Mui-focused": {
-                    color: colorTextMain,
+                    color: (theme) => theme.trello.textColorLightDark(theme),
                   },
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
-                      borderColor:
-                        resolvedMode === "dark"
+                      borderColor: (theme) =>
+                        theme.palette.mode === "dark"
                           ? "#ffffff3d"
                           : (theme) => theme.trello.subColorLight,
                       // borderWidth: "0.5px !important",
                     },
                     "&:hover fieldset": {
-                      borderColor:
-                        resolvedMode === "dark"
+                      borderColor: (theme) =>
+                        theme.palette.mode === "dark"
                           ? "#ffffff3d"
                           : (theme) => theme.trello.subColorLight,
                       // borderWidth: "1px !important",
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor:
-                        resolvedMode === "dark"
+                      borderColor: (theme) =>
+                        theme.palette.mode === "dark"
                           ? "#ffffff3d"
                           : (theme) => theme.trello.subColorLight,
                       // borderWidth: "1px !important",
@@ -402,8 +406,8 @@ const Column = (props) => {
                   sx={{
                     boxShadow: "none",
                     border: " 0.5px solid #ffffff3d",
-                    bgcolor:
-                      resolvedMode === "dark"
+                    bgcolor: (theme) =>
+                      theme.palette.mode === "dark"
                         ? "#34495e"
                         : (theme) => theme.trello.subColorLight,
                   }}
@@ -413,7 +417,7 @@ const Column = (props) => {
                 <CloseIcon
                   onClick={toggleOpenNewCardForm}
                   sx={{
-                    color: colorTextMain,
+                    color: (theme) => theme.trello.textColorLightDark(theme),
                     fontSize: "large",
                     cursor: "pointer",
                   }}

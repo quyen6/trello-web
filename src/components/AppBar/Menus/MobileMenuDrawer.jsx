@@ -3,7 +3,7 @@ import ModeSwitcher from "~/components/ModeSwitcher/ModeSwitcher";
 
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 const MobileMenuDrawer = (props) => {
-  const { resolvedMode, isMdDown } = props;
+  const { isMdDown } = props;
   const { open, setOpen } = props;
   const isSmUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
 
@@ -26,8 +26,8 @@ const MobileMenuDrawer = (props) => {
               display: "flex",
               flexDirection: "column",
               gap: 1,
-              backgroundColor:
-                resolvedMode === "light"
+              backgroundColor: (theme) =>
+                theme.palette.mode === "light"
                   ? (theme) => theme.trello.mainColorLight
                   : "#2d3436",
             }}

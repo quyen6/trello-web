@@ -7,10 +7,8 @@ import Tooltip from "@mui/material/Tooltip";
 
 import { useSelector } from "react-redux";
 import { selectorCurrentUser } from "~/redux/user/userSlice";
-import { useOutletContext } from "react-router-dom";
 
 function CardActivitySection({ cardComments = [], onAddCardComment }) {
-  const { resolvedMode, colorTextMain } = useOutletContext();
   const currentUser = useSelector(selectorCurrentUser);
 
   const handleAddCardComment = (event) => {
@@ -56,20 +54,23 @@ function CardActivitySection({ cardComments = [], onAddCardComment }) {
           onKeyDown={handleAddCardComment}
           sx={{
             "& .MuiInputBase-input::placeholder": {
-              color: resolvedMode === "dark" ? "#ccc" : "#666",
+              color: (theme) =>
+                theme.palette.mode === "dark" ? "#ccc" : "#666",
             },
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
-                borderColor: resolvedMode === "dark" ? "#ccc" : "#666", // border mặc định
+                borderColor: (theme) =>
+                  theme.palette.mode === "dark" ? "#ccc" : "#666", // border mặc định
               },
               "&:hover fieldset": {
-                borderColor:
-                  resolvedMode === "dark"
+                borderColor: (theme) =>
+                  theme.palette.mode === "dark"
                     ? (theme) => theme.trello.mainColorDark
                     : "#000", // khi hover
               },
               "&.Mui-focused fieldset": {
-                borderColor: resolvedMode === "dark" ? "#90caf9" : "#1976d2", // khi focus
+                borderColor: (theme) =>
+                  theme.palette.mode === "dark" ? "#90caf9" : "#1976d2", // khi focus
               },
             },
           }}
@@ -104,7 +105,7 @@ function CardActivitySection({ cardComments = [], onAddCardComment }) {
           <Box
             sx={{
               width: "inherit",
-              color: colorTextMain,
+              color: (theme) => theme.trello.textColorLightDark(theme),
             }}
           >
             <Typography variant="span" sx={{ fontWeight: "bold", mr: 1 }}>
@@ -118,7 +119,8 @@ function CardActivitySection({ cardComments = [], onAddCardComment }) {
             <Box
               sx={{
                 display: "block",
-                bgcolor: resolvedMode === "dark" ? "#33485D" : "white",
+                bgcolor: (theme) =>
+                  theme.palette.mode === "dark" ? "#33485D" : "white",
                 p: "8px 12px",
                 mt: "4px",
                 border: "0.5px solid rgba(0, 0, 0, 0.2)",

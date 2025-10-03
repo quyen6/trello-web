@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 
 import { useEffect, useState } from "react";
 import HeaderIntroduction from "./HeaderIntroduction/HeaderIntroduction";
-import ContentHeader from "./ContentHeader/ContentHeader";
+import ContentIntroduction from "./ContentIntroduction/ContentIntroduction";
 const Introduction = () => {
   const [boxShadowHeaderIntroduction, setBoxShadowHeaderIntroduction] =
     useState(false);
@@ -29,7 +29,7 @@ const Introduction = () => {
       />
 
       {/* Content */}
-      <ContentHeader />
+      <ContentIntroduction />
     </Box>
   );
 };

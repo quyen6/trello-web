@@ -11,12 +11,15 @@ const PageLoadingSpinner = ({ caption }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        bgcolor: resolvedMode === "dark" ? "#34495e" : "",
-        color: resolvedMode === "dark" ? "white" : "",
+        bgcolor: (theme) => (theme.palette.mode === "dark" ? "#34495e" : ""),
+        color: (theme) => (theme.palette.mode === "dark" ? "white" : ""),
       }}
     >
       <CircularProgress
-        sx={{ mr: 2, color: resolvedMode === "dark" ? "white" : "" }}
+        sx={{
+          mr: 2,
+          color: (theme) => (theme.palette.mode === "dark" ? "white" : ""),
+        }}
       />
       <i>{caption}</i>
     </Box>

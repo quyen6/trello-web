@@ -13,12 +13,10 @@ import {
   EMAIL_RULE_MESSAGE,
 } from "~/utils/validators";
 import FieldErrorAlert from "~/components/Form/FieldErrorAlert";
-import { useOutletContext } from "react-router-dom";
 import { inviteUserToBoardAPI } from "~/apis";
 import { socketIoInstane } from "~/socketClient";
 
 function InviteBoardUser({ boardId }) {
-  const { resolvedMode } = useOutletContext();
   /**
    * Xử lý Popover để ẩn hoặc hiện một popup nhỏ, tương tự docs để tham khảo ở đây:
    * https://mui.com/material-ui/react-popover/
@@ -61,14 +59,14 @@ function InviteBoardUser({ boardId }) {
           variant="outlined"
           startIcon={<PersonAddIcon />}
           sx={{
-            color:
-              resolvedMode === "dark"
+            color: (theme) =>
+              theme.palette.mode === "dark"
                 ? "white"
-                : (theme) => theme.trello.mainColorLight,
-            borderColor:
-              resolvedMode === "dark"
+                : theme.trello.mainColorLight,
+            borderColor: (theme) =>
+              theme.palette.mode === "dark"
                 ? "white"
-                : (theme) => theme.trello.mainColorLight,
+                : theme.trello.mainColorLight,
             // "&:hover": { borderColor: "white" },
           }}
         >

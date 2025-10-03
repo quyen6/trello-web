@@ -7,6 +7,7 @@ import {
   TextField,
   Tooltip,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +23,8 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useSelector } from "react-redux";
 import { selectorCurrentUser } from "~/redux/user/userSlice";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-const ContentHeader = () => {
+const ContentIntroduction = () => {
+  const isMdDown = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const {
     register,
     handleSubmit,
@@ -33,6 +35,17 @@ const ContentHeader = () => {
   const handleRegister = (data) => {
     const { email } = data;
     return navigate("/register", { state: { email } });
+  };
+  const wiggle = {
+    "@keyframes wiggle": {
+      "0%": { transform: "rotate(0deg)" },
+      "10%": { transform: "rotate(4deg)" },
+      "20%": { transform: "rotate(-4deg)" },
+      "30%": { transform: "rotate(4deg)" },
+      "40%": { transform: "rotate(-4deg)" },
+      "50%": { transform: "rotate(0deg)" }, // kết thúc lắc
+      "100%": { transform: "rotate(0deg)" },
+    },
   };
 
   return (
@@ -83,7 +96,10 @@ const ContentHeader = () => {
             sx={{
               display: "flex",
               flexDirection: "column",
-              padding: { xs: "3rem 2rem 2rem 2rem", md: "6rem 1rem" },
+              padding: {
+                xs: "3rem 2rem 2rem 2rem",
+                md: user ? "6rem 1rem" : "9rem 1rem",
+              },
             }}
           >
             <Box
@@ -131,30 +147,54 @@ const ContentHeader = () => {
                     xs: "center",
                     md: "flex-start",
                   },
-                  ...(user && { justifyContent: "center" }),
                 }}
               >
-                {!user ? (
-                  <TextField
-                    fullWidth
-                    sx={{
-                      flex: { xs: 0, sm: 0.6, md: 1 },
-                      maxWidth: "300px",
-                      display: {
-                        xs: "none",
-                        sm: "flex",
+                <TextField
+                  fullWidth
+                  sx={{
+                    flex: { xs: 0, sm: 0.6, md: 1 },
+                    maxWidth: "300px",
+                    display: {
+                      xs: "none",
+                      sm: "flex",
+                    },
+                    opacity: !isMdDown ? (user ? 0 : 1) : undefined,
+                    visibility: !isMdDown
+                      ? user
+                        ? "hidden"
+                        : "unset"
+                      : undefined,
+
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "#c4c4c4", // màu mặc định khi chưa hover/focus
                       },
-                    }}
-                    label="Enter Email..."
-                    type="email"
-                    {...register("email", {
-                      validate: (value) => {
-                        if (!value) return true;
-                        return EMAIL_RULE.test(value) || EMAIL_RULE_MESSAGE;
+                      "&:hover fieldset": {
+                        borderColor: "rgb(0, 134, 137)",
                       },
-                    })}
-                  />
-                ) : null}
+                      "&.Mui-focused fieldset": {
+                        borderColor: "rgb(0, 134, 137)",
+                        borderWidth: "1px",
+                      },
+                    },
+
+                    "& .MuiInputLabel-root": {
+                      color: "#212121",
+                      "&.Mui-focused": {
+                        color: "rgb(0, 134, 137)",
+                      },
+                    },
+                  }}
+                  label="Enter Email..."
+                  type="email"
+                  {...register("email", {
+                    validate: (value) => {
+                      if (!value) return true;
+                      return EMAIL_RULE.test(value) || EMAIL_RULE_MESSAGE;
+                    },
+                  })}
+                />
+
                 <Button
                   type={!user ? "submit" : "button"}
                   variant="contained"
@@ -165,8 +205,11 @@ const ContentHeader = () => {
                     color: (theme) => theme.trello.mainColorDark,
                     fontSize: "1rem",
                     "&:hover": { bgcolor: "#017273" },
+                    ...wiggle,
+                    animation: "wiggle 3s ease-in-out infinite",
                   }}
-                  endIcon={<ArrowForwardIcon />}
+                  endIcon={user ? <ArrowForwardIcon /> : null}
+                  onClick={user ? () => navigate("/boards") : null}
                 >
                   {!user ? "Sign up – it’s free" : "Start Using Trello"}
                 </Button>
@@ -196,4 +239,4 @@ const ContentHeader = () => {
   );
 };
 
-export default ContentHeader;
+export default ContentIntroduction;

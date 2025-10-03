@@ -1,4 +1,4 @@
-import { extendTheme } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
 
 const APP_BAR_HEIGHT = "58px";
 const INTRODUCTION_HEADER_HEIGHT = "56px";
@@ -13,8 +13,11 @@ const SUB_COLOR_DARK = "#1c2a4094";
 const TEXT_COLOR_PRIMARY = "#091e42";
 //
 const MOBILE_INTRODUCTION_CONTENT_HEIGHT = `calc(100vh - ${INTRODUCTION_HEADER_HEIGHT})`;
-
-const theme = extendTheme({
+const TEXT_COLOR_LIGHT_DARK = (theme) =>
+  theme.palette.mode === "dark"
+    ? theme.trello.mainColorDark
+    : theme.trello.textColorPrimary;
+const theme = createTheme({
   trello: {
     appBarHeight: APP_BAR_HEIGHT,
     introductionHeaderHeight: INTRODUCTION_HEADER_HEIGHT,
@@ -27,22 +30,44 @@ const theme = extendTheme({
     mainColorDark: MAIN_COLOR_DARK,
     subColorDark: SUB_COLOR_DARK,
     textColorPrimary: TEXT_COLOR_PRIMARY,
+    textColorLightDark: TEXT_COLOR_LIGHT_DARK,
     //
     mobileIntroductionContentHeight: MOBILE_INTRODUCTION_CONTENT_HEIGHT,
   },
-  // colorSchemes: {
-  //   light: {
-  //     palette: {
-  //       mode: "light",
-  //     },
-  //   },
-  //   dark: {
-  //     palette: {
-  //       mode: "dark",
-  //     },
-  //   },
-  // },
-  colorSchemeSelector: "class",
+  colorSchemes: {
+    light: {
+      palette: {
+        mode: "light",
+        background: {
+          body: "#ffffff", // màu nền chung
+        },
+        text: {
+          primary: "#212121",
+          secondary: "#555",
+        },
+        color: {
+          primary: "rgb(0, 134, 137)",
+          secondary: "#bae2e2",
+          third: "#01a3a4",
+        },
+      },
+    },
+    dark: {
+      palette: {
+        mode: "dark",
+        background: {
+          body: "#34495e", // màu nền chung
+        },
+        text: {
+          primary: "#ffffff",
+        },
+        color: {
+          primary: "#1c2a40",
+          secondary: "",
+        },
+      },
+    },
+  },
 
   // ... other properties
   components: {

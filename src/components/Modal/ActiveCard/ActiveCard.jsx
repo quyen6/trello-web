@@ -47,6 +47,26 @@ import { selectorCurrentUser } from "~/redux/user/userSlice";
 import { CARD_MEMBER_ACTIONS } from "~/utils/constants";
 import { PersonRemoveAlt1Outlined } from "@mui/icons-material";
 
+const SidebarItem = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  gap: "6px",
+  cursor: "pointer",
+  fontSize: "14px",
+  fontWeight: "600",
+  color: theme.palette.mode === "dark" ? "#90caf9" : "#172b4d",
+  backgroundColor: theme.palette.mode === "dark" ? "#2f3542" : "#091e420f",
+  padding: "10px",
+  borderRadius: "4px",
+  "&:hover": {
+    backgroundColor:
+      theme.palette.mode === "dark" ? "#33485D" : theme.palette.grey[300],
+    "&.active": {
+      color: theme.palette.mode === "dark" ? "#000000de" : "#0c66e4",
+      backgroundColor: theme.palette.mode === "dark" ? "#90caf9" : "#e9f2ff",
+    },
+  },
+}));
 /**
  * Note: Modal là một low-component mà bọn MUI sử dụng bên trong những thứ như Dialog, Drawer, Menu, Popover. Ở đây dĩ nhiên chúng ta có thể sử dụng Dialog cũng không thành vấn đề gì, nhưng sẽ sử dụng Modal để dễ linh hoạt tùy biến giao diện từ con số 0 cho phù hợp với mọi nhu cầu nhé.
  */
@@ -55,27 +75,6 @@ function ActiveCard() {
   const activeCard = useSelector(selectorActiveCard);
   const isShowModalActiveCard = useSelector(selectorIsShowModalActiveCard);
   const currentUser = useSelector(selectorCurrentUser);
-  const { resolvedMode, colorTextMain } = useOutletContext();
-  const SidebarItem = styled(Box)(({ theme }) => ({
-    display: "flex",
-    alignItems: "center",
-    gap: "6px",
-    cursor: "pointer",
-    fontSize: "14px",
-    fontWeight: "600",
-    color: resolvedMode === "dark" ? "#90caf9" : "#172b4d",
-    backgroundColor: resolvedMode === "dark" ? "#2f3542" : "#091e420f",
-    padding: "10px",
-    borderRadius: "4px",
-    "&:hover": {
-      backgroundColor:
-        resolvedMode === "dark" ? "#33485D" : theme.palette.grey[300],
-      "&.active": {
-        color: resolvedMode === "dark" ? "#000000de" : "#0c66e4",
-        backgroundColor: resolvedMode === "dark" ? "#90caf9" : "#e9f2ff",
-      },
-    },
-  }));
 
   // Khoong dungf State để quản lý đóng mở Modal nữa, đã check bên isShowModalActiveCard trong Redux
   // const [isOpen, setIsOpen] = useState(true);
@@ -148,7 +147,8 @@ function ActiveCard() {
           outline: 0,
           padding: "40px 20px 20px",
           margin: "50px auto",
-          backgroundColor: resolvedMode === "dark" ? "#1c2a40ff" : "#fff",
+          backgroundColor: (theme) =>
+            theme.palette.mode === "dark" ? "#1c2a40ff" : "#fff",
         }}
       >
         <Box
@@ -192,7 +192,9 @@ function ActiveCard() {
           }}
         >
           <CreditCardIcon
-            sx={{ color: resolvedMode === "dark" ? "white" : "" }}
+            sx={{
+              color: (theme) => (theme.palette.mode === "dark" ? "white" : ""),
+            }}
           />
 
           {/* Feature 01: Xử lý tiêu đề của Card */}
@@ -226,7 +228,7 @@ function ActiveCard() {
                   display: "flex",
                   alignItems: "center",
                   gap: 1.5,
-                  color: colorTextMain,
+                  color: (theme) => theme.trello.textColorLightDark(theme),
                 }}
               >
                 <SubjectRoundedIcon />
@@ -251,7 +253,7 @@ function ActiveCard() {
                   display: "flex",
                   alignItems: "center",
                   gap: 1.5,
-                  color: colorTextMain,
+                  color: (theme) => theme.trello.textColorLightDark(theme),
                 }}
               >
                 <DvrOutlinedIcon />
