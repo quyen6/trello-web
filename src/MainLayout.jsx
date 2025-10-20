@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import AppBar from "./components/AppBar/AppBar";
 import { Outlet } from "react-router-dom";
 
@@ -8,7 +8,14 @@ const MainLayout = () => {
       {/* AppBar xuất hiện xuyên suốt */}
       <AppBar />
       {/* Chỗ này render các page con */}
-      <Outlet />
+      <Box
+        sx={{
+          backgroundColor: (theme) =>
+            theme.palette.mode === "dark" ? "#34495e" : "#f5f7fa",
+        }}
+      >
+        <Outlet />
+      </Box>
     </Container>
   );
 };

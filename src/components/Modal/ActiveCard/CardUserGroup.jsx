@@ -21,7 +21,7 @@ function CardUserGroup({ cardMemberIds = [], onUpdateCardMembers }) {
   //   cardMemberIds.includes(u._id)
   // );
   const FE_CardMembers_2 = cardMemberIds.map((id) => {
-    return board.FE_allUsers.find((u) => u._id === id);
+    return board.members.find((u) => u._id === id);
   });
 
   /**
@@ -113,7 +113,7 @@ function CardUserGroup({ cardMemberIds = [], onUpdateCardMembers }) {
             gap: 1.5,
           }}
         >
-          {board.FE_allUsers.map((user, index) => (
+          {board.members.map((user, index) => (
             <Tooltip title={user?.displayName} key={index}>
               {/* Cách làm Avatar kèm badge icon: https://mui.com/material-ui/react-avatar/#with-badge */}
               <Badge

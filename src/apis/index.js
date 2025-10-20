@@ -43,6 +43,12 @@ export const createNewBoardAPI = async (data) => {
 
   return respone.data;
 };
+export const deleteBoard = async (boardId) => {
+  const respone = await authorizedAxiosInstance.delete(
+    `${API_ROOT}/v1/boards/${boardId}`
+  );
+  return respone.data;
+};
 
 /* Columns */
 export const createNewColumnAPI = async (newColumnData) => {
@@ -128,5 +134,14 @@ export const inviteUserToBoardAPI = async (data) => {
 // OAuth Google
 export const oauthLogin = async () => {
   const response = await authorizedAxiosInstance.get(`${API_ROOT}/v1/auth/me`);
+  return response.data;
+};
+
+// Kick member from board
+export const updateRoleUserOrRemoveUser = async (boardId, memberId, option) => {
+  const response = await authorizedAxiosInstance.put(
+    `${API_ROOT}/v1/boards/${boardId}/members/${memberId}`,
+    { option }
+  );
   return response.data;
 };

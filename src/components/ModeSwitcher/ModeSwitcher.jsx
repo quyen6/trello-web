@@ -11,12 +11,10 @@ import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
 
 const ModeSwitcher = () => {
   const { mode, setMode } = useColorScheme();
-  console.log("🚀 ~ ModeSwitcher ~ mode:", mode);
+  if (!mode) return null;
   const handleSetMode = (event) => {
     setMode(event.target.value);
   };
-
-  if (!mode) return null;
 
   return (
     <FormControl sx={{ m: 0, minWidth: 100 }} size="small">
@@ -65,7 +63,7 @@ const ModeSwitcher = () => {
             <span sx={{ fontSize: "1.2rem" }}>Dark</span>
           </Box>
         </MenuItem>
-        {/* <MenuItem value="system">
+        <MenuItem value="system">
           <Box
             sx={{
               display: "flex",
@@ -76,7 +74,7 @@ const ModeSwitcher = () => {
             <SettingsBrightnessIcon fontSize="small" /> &nbsp;{" "}
             <span sx={{ fontSize: "1.2rem" }}>System</span>
           </Box>
-        </MenuItem> */}
+        </MenuItem>
       </Select>
     </FormControl>
   );

@@ -3,6 +3,7 @@ import authorizedAxiosInstance from "~/utils/authorizeAxios";
 import { API_ROOT } from "~/utils/constants";
 import { generatePlaceholderCard } from "~/utils/formatter";
 import { isEmpty } from "lodash";
+import axios from "axios";
 // Khởi tạo giá trị  State của 1 cái Slice trong Redux
 const initialState = {
   currentActiveBoard: null,
@@ -11,12 +12,26 @@ const initialState = {
 // Các hành động gọi API (bất đồng bộ) và cập nhật dữ liệu vào Redux, dùng Middleware createAsyncThunk đi kèm với extraReducers
 export const fetchBoardDetailsAPI = createAsyncThunk(
   "activeBoard/fetchBoardDetailsAPI",
-  async (boardId) => {
-    const respone = await authorizedAxiosInstance.get(
-      `${API_ROOT}/v1/boards/${boardId}`
-    );
-    return respone.data;
+  async (boardId, { rejectWithValue }) => {
+    try {
+      const response = await authorizedAxiosInstance.get(
+        `${API_ROOT}/v1/boards/${boardId}`
+      );
+      return response.data;
+    } catch (error) {
+      // Lỗi trả từ BE
+      if (error.response) {
+        return rejectWithValue(error.response.data); // dùng để xử lý lỗi, gửi request để join board
+      }
+      return rejectWithValue({ message: "Network error" });
+    }
   }
+  // async (boardId) => {
+  //   const respone = await authorizedAxiosInstance.get(
+  //     `${API_ROOT}/v1/boards/${boardId}`
+  //   );
+  //   return respone.data;
+  // }
 );
 
 // Khởi tạo 1 Slice trong kho lưu trữ - Redux Store
@@ -70,7 +85,7 @@ export const activeBoardSlice = createSlice({
       let board = action.payload;
 
       // Thành viên trong Board là tất cả thành viên từ 2 mảng owners và members
-      board.FE_allUsers = board.owners.concat(board.members);
+      // board.FE_allUsers = board.owners.concat(board.members);
 
       board.columns.forEach((column) => {
         // Khi f5 trang web thì cần xử lý vấn đề kéo thả vào 1 column rỗng

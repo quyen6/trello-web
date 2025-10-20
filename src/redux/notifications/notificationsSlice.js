@@ -18,10 +18,10 @@ export const fetchInvitationsAPI = createAsyncThunk(
 );
 export const updateBoardInvitationAPI = createAsyncThunk(
   "notifications/updateBoardInvitationAPI",
-  async ({ status, invitationId }) => {
+  async ({ status, invitationId, inviteeRole }) => {
     const respone = await authorizedAxiosInstance.put(
       `${API_ROOT}/v1/invitations/board/${invitationId}`,
-      { status }
+      { status, inviteeRole }
     );
     return respone.data;
   }

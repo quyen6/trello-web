@@ -38,9 +38,16 @@ import {
   updateCurrentActiveBoard,
 } from "~/redux/activeBoard/activeBoardSlice";
 import ToggleFocusInput from "~/components/Form/ToggleFocusInput";
+import { usePermission } from "~/customHooks/usePermission";
+import { ROLE_USER } from "~/utils/constants";
+import { permission } from "~/config/rbacConfig";
+import { selectorCurrentUser } from "~/redux/user/userSlice";
+import { socketIoInstane } from "~/socketClient";
+
 const Column = (props) => {
   const { column } = props;
-
+  // console.log("🚀 ~ Column ~ column:", column);
+  const currentUser = useSelector(selectorCurrentUser);
   const dispatch = useDispatch();
   // Không dùng State của component nữa mà chuyển qua State của Redux
   const board = useSelector(selectorCurrentActiveBoard);
@@ -82,6 +89,7 @@ const Column = (props) => {
     setNewCardTitle("");
   };
   const [newCardTitle, setNewCardTitle] = useState("");
+
   const addNewCard = async () => {
     if (!newCardTitle) {
       toast.error("Please enter Card Title!", { position: "bottom-right" });
@@ -117,6 +125,7 @@ const Column = (props) => {
     }
 
     dispatch(updateCurrentActiveBoard(newBoard));
+    socketIoInstane.emit("FE_CREATE_NEW_CARD", newBoard);
     // Đóng lại trạng thái thêm Card mới và Clear Input
     toggleOpenNewCardForm();
     setNewCardTitle("");
@@ -143,6 +152,7 @@ const Column = (props) => {
           (_id) => _id !== column._id
         );
         dispatch(updateCurrentActiveBoard(newBoard));
+        socketIoInstane.emit("FE_DELETE_COLUMN", newBoard);
         await deleteColumnDetailsAPI(column._id).then((res) => {
           toast.success(res?.deleteResult);
         });
@@ -161,9 +171,12 @@ const Column = (props) => {
       // setBoard(newBoard);
       dispatch(updateCurrentActiveBoard(newBoard));
     });
-
-    //
   };
+  // Xử lý phân quyền
+  const userRole = board.memberIds.find(
+    (m) => m.userId === currentUser._id
+  )?.role;
+  const { hasPermission } = usePermission(userRole);
   return (
     // Bọc div ngoài cùng đẻ fix lỗi lúc kéo column ngắn qua 1 column dài
     <div ref={setNodeRef} style={dndKitColumnStyles} {...attributes}>
@@ -198,6 +211,7 @@ const Column = (props) => {
             value={column?.title}
             onChangedValue={onUpdateColumnTitle}
             data-no-dnd="true"
+            readOnly={!hasPermission(permission.UPDATE_COLUMN)}
           />
           <Box>
             <Tooltip title="More options">

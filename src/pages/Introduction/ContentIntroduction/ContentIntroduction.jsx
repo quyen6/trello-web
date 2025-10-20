@@ -23,6 +23,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useSelector } from "react-redux";
 import { selectorCurrentUser } from "~/redux/user/userSlice";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { FormTextField } from "~/components/Form/FormTextField";
 const ContentIntroduction = () => {
   const isMdDown = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const {
@@ -147,16 +148,33 @@ const ContentIntroduction = () => {
                     xs: "center",
                     md: "flex-start",
                   },
+                  "& .MuiInputBase-input": {
+                    color: "#212121", // màu chữ của input + label
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#c4c4c4",
+                  },
                 }}
               >
-                <TextField
-                  fullWidth
+                <FormTextField
+                  // autoComplete="nope"
+                  name="email"
+                  label="Enter Email..."
+                  type="text"
+                  error={!!errors["email"]}
+                  register={register}
+                  rules={{
+                    validate: (value) => {
+                      if (!value) return true;
+                      return EMAIL_RULE.test(value) || EMAIL_RULE_MESSAGE;
+                    },
+                  }}
                   sx={{
                     flex: { xs: 0, sm: 0.6, md: 1 },
                     maxWidth: "300px",
                     display: {
                       xs: "none",
-                      sm: "flex",
+                      sm: !isMdDown ? "flex" : user ? "none" : "flex",
                     },
                     opacity: !isMdDown ? (user ? 0 : 1) : undefined,
                     visibility: !isMdDown
@@ -164,35 +182,7 @@ const ContentIntroduction = () => {
                         ? "hidden"
                         : "unset"
                       : undefined,
-
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "#c4c4c4", // màu mặc định khi chưa hover/focus
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "rgb(0, 134, 137)",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "rgb(0, 134, 137)",
-                        borderWidth: "1px",
-                      },
-                    },
-
-                    "& .MuiInputLabel-root": {
-                      color: "#212121",
-                      "&.Mui-focused": {
-                        color: "rgb(0, 134, 137)",
-                      },
-                    },
                   }}
-                  label="Enter Email..."
-                  type="email"
-                  {...register("email", {
-                    validate: (value) => {
-                      if (!value) return true;
-                      return EMAIL_RULE.test(value) || EMAIL_RULE_MESSAGE;
-                    },
-                  })}
                 />
 
                 <Button

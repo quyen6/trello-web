@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, extendTheme } from "@mui/material/styles";
 
 const APP_BAR_HEIGHT = "58px";
 const INTRODUCTION_HEADER_HEIGHT = "56px";
