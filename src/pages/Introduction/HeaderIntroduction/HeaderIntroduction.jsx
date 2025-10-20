@@ -249,6 +249,8 @@ const HeaderIntroduction = ({
             </Box>
           ) : (
             <Box
+              component={Link}
+              to="/boards"
               sx={{
                 height: "100%",
                 display: {
@@ -259,6 +261,8 @@ const HeaderIntroduction = ({
                 padding: "0.5rem 1.5rem",
                 bgcolor: "#024647",
                 fontSize: "1.2rem",
+                color: "white",
+                textDecoration: "none",
                 transition: "all 0.3s linear",
                 "&:hover": {
                   opacity: 0.9,
@@ -266,15 +270,7 @@ const HeaderIntroduction = ({
                 },
               }}
             >
-              <Link to="/boards" sx={{ display: "block" }}>
-                <Box
-                  sx={{
-                    color: "white",
-                  }}
-                >
-                  Go to your board
-                </Box>
-              </Link>
+              Go to your board
             </Box>
           )}
         </Box>

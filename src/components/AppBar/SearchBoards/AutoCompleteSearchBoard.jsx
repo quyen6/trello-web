@@ -13,6 +13,7 @@ import { fetchBoardsAPI } from "~/apis";
 import { useDebounceFn } from "~/customHooks/useDebounceFn";
 import { Button } from "@mui/material";
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
+import { useDispatch } from "react-redux";
 
 /**
  * Hướng dẫn & ví dụ cái Autocomplele của MUI ở đây:
@@ -66,7 +67,6 @@ function AutoCompleteSearchBoard() {
       navigate(`/boards/${selectedBoard._id}`);
     }
   };
-
   return (
     <>
       <Autocomplete
@@ -139,19 +139,6 @@ function AutoCompleteSearchBoard() {
           />
         )}
       />
-      <Button
-        sx={{
-          color: "white",
-          borderColor: "white",
-          "&:hover": {
-            backgroundColor: "rgba(255,255,255,0.08)",
-          },
-        }}
-        variant="outlined"
-        startIcon={<AddToPhotosIcon />}
-      >
-        Create
-      </Button>
     </>
   );
 }

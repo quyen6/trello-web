@@ -26,6 +26,7 @@ import GgIcon from "~/assets/auth/icon-google.svg?react";
 import GhIcon from "~/assets/auth/icon-github.svg?react";
 
 import { API_ROOT } from "~/utils/constants";
+import { FormTextField } from "~/components/Form/FormTextField";
 function RegisterForm() {
   const location = useLocation();
   const emailFromSignup = location.state?.email || "";
@@ -74,10 +75,11 @@ function RegisterForm() {
             marginTop: "4em",
             py: 2,
             bgcolor: "#fff",
-
-            "& .MuiInputBase-input, & .MuiInputLabel-root": {
+            "& .MuiInputBase-input": {
               color: "#212121", // màu chữ của input + label
-              borderColor: "#212121",
+            },
+            "& .MuiInputLabel-root": {
+              color: "#c4c4c4",
             },
           }}
         >
@@ -113,114 +115,61 @@ function RegisterForm() {
           </Box> */}
           <Box sx={{ padding: "0 1em 1em 1em" }}>
             <Box sx={{ marginTop: "1em" }}>
-              <TextField
+              <FormTextField
                 // autoComplete="nope"
+                name="email"
                 autoFocus
-                fullWidth
                 label="Enter Email..."
                 type="text"
-                variant="outlined"
                 error={!!errors["email"]}
-                {...register("email", {
+                register={register}
+                rules={{
                   required: FIELD_REQUIRED_MESSAGE,
                   pattern: {
                     value: EMAIL_RULE,
                     message: EMAIL_RULE_MESSAGE,
                   },
-                })}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "#c4c4c4", // màu mặc định khi chưa hover/focus
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "rgb(0, 134, 137)",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "rgb(0, 134, 137)",
-                      borderWidth: "1px",
-                    },
-                  },
-
-                  "& .MuiInputLabel-root": {
-                    "&.Mui-focused": {
-                      color: "rgb(0, 134, 137)",
-                    },
-                  },
                 }}
               />
+
               <FieldErrorAlert errors={errors} fieldName={"email"} />
             </Box>
             <Box sx={{ marginTop: "1em" }}>
-              <TextField
-                fullWidth
+              <FormTextField
+                // autoComplete="nope"
+                name="password"
                 label="Enter Password..."
                 type="password"
-                variant="outlined"
                 error={!!errors["password"]}
-                {...register("password", {
+                register={register}
+                rules={{
                   required: FIELD_REQUIRED_MESSAGE,
                   pattern: {
                     value: PASSWORD_RULE,
                     message: PASSWORD_RULE_MESSAGE,
                   },
-                })}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "#c4c4c4", // màu mặc định khi chưa hover/focus
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "rgb(0, 134, 137)",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "rgb(0, 134, 137)",
-                      borderWidth: "1px",
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    "&.Mui-focused": {
-                      color: "rgb(0, 134, 137)",
-                    },
-                  },
                 }}
               />
+
               {/* errors bên trong là errors của react hook form */}
               <FieldErrorAlert errors={errors} fieldName={"password"} />
             </Box>
             <Box sx={{ marginTop: "1em" }}>
-              <TextField
-                fullWidth
+              <FormTextField
+                // autoComplete="nope"
+                name="confirmPassword"
                 label="Enter Password Confirmation..."
                 type="password"
-                variant="outlined"
                 error={!!errors["confirmPassword"]}
-                {...register("confirmPassword", {
+                register={register}
+                rules={{
                   validate: (value) => {
                     if (value === watch("password")) return true;
                     return PASSWORD_CONFIRMATION_MESSAGE;
                   },
-                })}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "#c4c4c4", // màu mặc định khi chưa hover/focus
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "rgb(0, 134, 137)",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "rgb(0, 134, 137)",
-                      borderWidth: "1px",
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    "&.Mui-focused": {
-                      color: "rgb(0, 134, 137)",
-                    },
-                  },
                 }}
               />
+
               {/* errors bên trong là errors của react hook form */}
               <FieldErrorAlert errors={errors} fieldName={"confirmPassword"} />
             </Box>

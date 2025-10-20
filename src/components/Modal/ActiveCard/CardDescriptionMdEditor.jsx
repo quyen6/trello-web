@@ -40,25 +40,41 @@ function CardDescriptionMdEditor({ cardDescProp, handleUpdateCardDesc }) {
             />
           </Box>
           <Button
-            sx={{ alignSelf: "flex-end" }}
+            sx={{
+              alignSelf: "flex-end",
+              bgcolor: (theme) =>
+                theme.palette.mode === "dark"
+                  ? theme.trello.mainColorDark
+                  : theme.trello.mainColorLight,
+            }}
             onClick={updateCardDescription}
             className="interceptor-loading"
             type="button"
             variant="contained"
             size="small"
-            color="info"
           >
             Save
           </Button>
         </Box>
       ) : (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
           <Button
-            sx={{ alignSelf: "flex-end" }}
+            sx={{
+              alignSelf: "flex-end",
+              bgcolor: (theme) =>
+                theme.palette.mode === "dark"
+                  ? theme.trello.mainColorDark
+                  : theme.trello.mainColorLight,
+            }}
             onClick={() => setMarkdownEditMode(true)}
             type="button"
             variant="contained"
-            color="info"
             size="small"
             startIcon={<EditNoteIcon />}
           >

@@ -402,6 +402,8 @@ const BoardContent = (props) => {
     },
     [activeDragItemType, orderedColumns]
   );
+
+  // console.log("🚀 ~ BoardContent ~ orderedColumns:", orderedColumns);
   return (
     <DndContext
       sensors={sensors}

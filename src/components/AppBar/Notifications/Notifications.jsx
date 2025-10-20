@@ -73,12 +73,14 @@ function Notifications() {
   }, [dispatch]);
 
   // Caạp nhật trạng thái - status của một lời mời join
-  const updateBoardInvitation = (status, invitationId) => {
-    dispatch(updateBoardInvitationAPI({ status, invitationId })).then((res) => {
-      // console.log("🚀 ~ updateBoardInvitation ~ res:", res);
+  const updateBoardInvitation = (status, invitationId, inviteeRole) => {
+    dispatch(
+      updateBoardInvitationAPI({ status, invitationId, inviteeRole })
+    ).then((res) => {
       if (
         res.payload.boardInvitation.status === BOARD_INVITATION_STATUS.ACCEPTED
       ) {
+        socketIoInstane.emit("FE_USER_JOIN_BOARD", res.payload);
         navigate(`/boards/${res.payload.boardInvitation.boardId}`);
       }
     });
@@ -105,7 +107,12 @@ function Notifications() {
               //   // !notifications || notifications.length === 0 ? "white" : "red",
               //   "white",
               // // color: "yellow",
-              color: newNotification ? "yellow" : "white",
+              color: (theme) =>
+                newNotification
+                  ? theme.palette.mode === "dark"
+                    ? "#ed6c02"
+                    : "#ffa726"
+                  : "white",
             }}
           />
         </Badge>
@@ -174,7 +181,8 @@ function Notifications() {
                       onClick={() =>
                         updateBoardInvitation(
                           BOARD_INVITATION_STATUS.ACCEPTED,
-                          notification._id
+                          notification._id,
+                          notification.inviteeRole
                         )
                       }
                     >
@@ -189,7 +197,8 @@ function Notifications() {
                       onClick={() =>
                         updateBoardInvitation(
                           BOARD_INVITATION_STATUS.REJECTED,
-                          notification._id
+                          notification._id,
+                          notification.inviteeRole
                         )
                       }
                     >

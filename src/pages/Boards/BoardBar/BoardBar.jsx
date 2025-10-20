@@ -10,6 +10,7 @@ import { capitalizeFirstLetter } from "~/utils/formatter";
 
 import BoardUserGroup from "./BoardUserGroup";
 import InviteBoardUser from "./InviteBoardUser";
+
 const MENU_STYLES = {
   color: "#000",
   bgcolor: "#bae2e2",
@@ -179,10 +180,13 @@ const BoardBar = (props) => {
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
         {/*  Xử lý mời user vào làm thành viên của board */}
-        <InviteBoardUser boardId={board._id} />
+        <InviteBoardUser
+          boardId={board._id}
+          boardMembers={board?.members || []}
+        />
 
         {/* Xử ly hiển thị danh sách thành viên của board */}
-        <BoardUserGroup boardUsers={board?.FE_allUsers} />
+        <BoardUserGroup boardUsers={board?.members} />
       </Box>
     </Box>
   );

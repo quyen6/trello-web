@@ -33,7 +33,6 @@ import CardDescriptionMdEditor from "./CardDescriptionMdEditor";
 import CardActivitySection from "./CardActivitySection";
 
 import { styled } from "@mui/material/styles";
-import { useOutletContext } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearAndHideCurrentActiveCard,
@@ -45,7 +44,10 @@ import { updateCardDetailsAPI } from "~/apis";
 import { updateCardInBoard } from "~/redux/activeBoard/activeBoardSlice";
 import { selectorCurrentUser } from "~/redux/user/userSlice";
 import { CARD_MEMBER_ACTIONS } from "~/utils/constants";
-import { PersonRemoveAlt1Outlined } from "@mui/icons-material";
+import { DeleteOutline, PersonRemoveAlt1Outlined } from "@mui/icons-material";
+import theme from "~/theme";
+import { socketIoInstane } from "~/socketClient";
+import { useCallback, useEffect } from "react";
 
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -64,6 +66,10 @@ const SidebarItem = styled(Box)(({ theme }) => ({
     "&.active": {
       color: theme.palette.mode === "dark" ? "#000000de" : "#0c66e4",
       backgroundColor: theme.palette.mode === "dark" ? "#90caf9" : "#e9f2ff",
+    },
+    "&.active_hot": {
+      color: theme.palette.mode === "dark" ? "#000000de" : "#e41e0cff",
+      backgroundColor: theme.palette.mode === "dark" ? "#90caf9" : "#dfa39eff",
     },
   },
 }));
@@ -84,16 +90,22 @@ function ActiveCard() {
   };
 
   // Func dùng chung cho các trường hợp update title, cover, comment,...
-  const callApiUpdateCard = async (updateData) => {
-    const updatedCard = await updateCardDetailsAPI(activeCard._id, updateData);
+  const callApiUpdateCard = useCallback(
+    async (updateData) => {
+      const updatedCard = await updateCardDetailsAPI(
+        activeCard?._id,
+        updateData
+      );
 
-    // B1: Cập nhật card trong Modal hiện tại
-    dispatch(updateCurrentActiveCard(updatedCard));
-    // B2: Cập nhật lại cái bản ghi card  trong activeBoard (nested data)
-    dispatch(updateCardInBoard(updatedCard));
+      // B1: Cập nhật card trong Modal hiện tại
+      dispatch(updateCurrentActiveCard(updatedCard));
+      // B2: Cập nhật lại cái bản ghi card  trong activeBoard (nested data)
+      dispatch(updateCardInBoard(updatedCard));
 
-    return updatedCard;
-  };
+      return updatedCard;
+    },
+    [dispatch, activeCard?._id]
+  );
   const onUpdateCardTitle = (newTitle) => {
     // Gọi API...
     callApiUpdateCard({ title: newTitle.trim() });
@@ -121,9 +133,24 @@ function ActiveCard() {
 
   // Dùng async await ở đây để component cont CardActivitySection chờ và nếu thành công thì clear thẻ input comment
   const onAddCardComment = async (commentToAdd) => {
-    await callApiUpdateCard({ commentToAdd });
+    await callApiUpdateCard({ commentToAdd }).then((res) => {
+      socketIoInstane.emit("FE_COMMENT_CARD", res);
+
+      //
+    });
   };
 
+  useEffect(() => {
+    const commentCard = (updatedCard) => {
+      if (updatedCard?._id === activeCard._id) callApiUpdateCard(updatedCard);
+    };
+
+    socketIoInstane.on(`BE_COMMENT_CARD_${activeCard?._id}`, commentCard);
+    return () =>
+      socketIoInstane.off(`BE_COMMENT_CARD_${activeCard?._id}`, commentCard);
+  }, [dispatch, activeCard?._id, callApiUpdateCard]);
+
+  //
   const onUpdateCardMembers = (incomingMemberInfo) => {
     callApiUpdateCard({ incomingMemberInfo });
   };
@@ -148,7 +175,7 @@ function ActiveCard() {
           padding: "40px 20px 20px",
           margin: "50px auto",
           backgroundColor: (theme) =>
-            theme.palette.mode === "dark" ? "#1c2a40ff" : "#fff",
+            theme.palette.mode === "dark" ? "#1c2a40" : "#fff",
         }}
       >
         <Box
@@ -166,51 +193,77 @@ function ActiveCard() {
           />
         </Box>
 
-        {activeCard?.cover && (
-          <Box sx={{ mb: 4 }}>
-            <img
-              style={{
-                width: "100%",
-                height: "320px",
-                borderRadius: "6px",
-                objectFit: "cover",
-              }}
-              src={activeCard?.cover}
-              alt="card-cover"
-            />
-          </Box>
-        )}
-
         <Box
           sx={{
-            mb: 1,
-            mt: -3,
-            pr: 2.5,
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
+            ...(isShowModalActiveCard &&
+              !activeCard.memberIds.includes(currentUser._id) && {
+                pointerEvents: "none",
+                opacity: 0.6,
+              }),
           }}
         >
-          <CreditCardIcon
+          {activeCard?.cover && (
+            <Box sx={{ mb: 4 }}>
+              <img
+                style={{
+                  width: "100%",
+                  height: "320px",
+                  borderRadius: "6px",
+                  objectFit: "cover",
+                }}
+                src={activeCard?.cover}
+                alt="card-cover"
+              />
+            </Box>
+          )}
+
+          <Box
             sx={{
-              color: (theme) => (theme.palette.mode === "dark" ? "white" : ""),
+              mb: 1,
+              mt: -3,
+              pr: 2.5,
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
             }}
-          />
+          >
+            <CreditCardIcon
+              sx={{
+                color: (theme) =>
+                  theme.palette.mode === "dark" ? "white" : "",
+              }}
+            />
 
-          {/* Feature 01: Xử lý tiêu đề của Card */}
-          <ToggleFocusInput
-            inputFontSize="22px"
-            value={activeCard?.title}
-            onChangedValue={onUpdateCardTitle}
-          />
+            {/* Feature 01: Xử lý tiêu đề của Card */}
+            <ToggleFocusInput
+              inputFontSize="22px"
+              value={activeCard?.title}
+              onChangedValue={onUpdateCardTitle}
+            />
+          </Box>
         </Box>
-
         <Grid container spacing={2} sx={{ mb: 3 }}>
           {/* Left side */}
-          <Grid size={{ xs: 12, sm: 9 }}>
+          <Grid
+            size={{ xs: 12, sm: 9 }}
+            sx={{
+              ...(isShowModalActiveCard &&
+                !activeCard.memberIds.includes(currentUser._id) && {
+                  pointerEvents: "none",
+                  opacity: 0.6,
+                }),
+            }}
+          >
             <Box sx={{ mb: 3 }}>
               <Typography
-                sx={{ fontWeight: "600", color: "primary.main", mb: 1 }}
+                sx={{
+                  fontWeight: "600",
+                  color: (theme) =>
+                    theme.palette.mode === "dark"
+                      ? theme.trello.mainColorDark
+                      : theme.trello.mainColorLight,
+                  mb: 1,
+                }}
               >
                 Members
               </Typography>
@@ -276,7 +329,14 @@ function ActiveCard() {
           {/* Right side */}
           <Grid size={{ xs: 12, sm: 3 }}>
             <Typography
-              sx={{ fontWeight: "600", color: "primary.main", mb: 1 }}
+              sx={{
+                fontWeight: "600",
+                color: (theme) =>
+                  theme.palette.mode === "dark"
+                    ? theme.trello.mainColorDark
+                    : theme.trello.mainColorLight,
+                mb: 1,
+              }}
             >
               Add To Card
             </Typography>
@@ -298,7 +358,7 @@ function ActiveCard() {
                   <PersonOutlineOutlinedIcon fontSize="small" />
                   Join
                 </SidebarItem>
-              ) : (
+              ) : activeCard.length === 1 ? (
                 <SidebarItem
                   className="active"
                   onClick={() =>
@@ -311,45 +371,75 @@ function ActiveCard() {
                   <PersonRemoveAlt1Outlined fontSize="small" />
                   Leave
                 </SidebarItem>
-              )}
+              ) : null}
 
               {/* Feature 06: Xử lý hành động cập nhật ảnh Cover của Card */}
-              <SidebarItem className="active" component="label">
-                <ImageOutlinedIcon fontSize="small" />
-                Cover
-                <VisuallyHiddenInput type="file" onChange={onUploadCardCover} />
-              </SidebarItem>
+              <Stack
+                direction="column"
+                spacing={1}
+                sx={{
+                  ...(isShowModalActiveCard &&
+                    !activeCard.memberIds.includes(currentUser._id) && {
+                      pointerEvents: "none",
+                      opacity: 0.6,
+                    }),
+                }}
+              >
+                <SidebarItem className="active" component="label">
+                  <ImageOutlinedIcon fontSize="small" />
+                  Cover
+                  <VisuallyHiddenInput
+                    type="file"
+                    onChange={onUploadCardCover}
+                  />
+                </SidebarItem>
 
-              <SidebarItem>
-                <AttachFileOutlinedIcon fontSize="small" />
-                Attachment
-              </SidebarItem>
-              <SidebarItem>
-                <LocalOfferOutlinedIcon fontSize="small" />
-                Labels
-              </SidebarItem>
-              <SidebarItem>
-                <TaskAltOutlinedIcon fontSize="small" />
-                Checklist
-              </SidebarItem>
-              <SidebarItem>
-                <WatchLaterOutlinedIcon fontSize="small" />
-                Dates
-              </SidebarItem>
-              <SidebarItem>
-                <AutoFixHighOutlinedIcon fontSize="small" />
-                Custom Fields
-              </SidebarItem>
-            </Stack>
-
+                <SidebarItem>
+                  <AttachFileOutlinedIcon fontSize="small" />
+                  Attachment
+                </SidebarItem>
+                <SidebarItem>
+                  <LocalOfferOutlinedIcon fontSize="small" />
+                  Labels
+                </SidebarItem>
+                <SidebarItem>
+                  <TaskAltOutlinedIcon fontSize="small" />
+                  Checklist
+                </SidebarItem>
+                <SidebarItem>
+                  <WatchLaterOutlinedIcon fontSize="small" />
+                  Dates
+                </SidebarItem>
+                <SidebarItem>
+                  <AutoFixHighOutlinedIcon fontSize="small" />
+                  Custom Fields
+                </SidebarItem>
+              </Stack>
+            </Stack>{" "}
             <Divider sx={{ my: 2 }} />
-
             <Typography
-              sx={{ fontWeight: "600", color: "primary.main", mb: 1 }}
+              sx={{
+                fontWeight: "600",
+                color: (theme) =>
+                  theme.palette.mode === "dark"
+                    ? theme.trello.mainColorDark
+                    : theme.trello.mainColorLight,
+                mb: 1,
+              }}
             >
               Power-Ups
             </Typography>
-            <Stack direction="column" spacing={1}>
+            <Stack
+              direction="column"
+              spacing={1}
+              sx={{
+                ...(isShowModalActiveCard &&
+                  !activeCard.memberIds.includes(currentUser._id) && {
+                    pointerEvents: "none",
+                    opacity: 0.6,
+                  }),
+              }}
+            >
               <SidebarItem>
                 <AspectRatioOutlinedIcon fontSize="small" />
                 Card Size
@@ -363,15 +453,30 @@ function ActiveCard() {
                 Add Power-Ups
               </SidebarItem>
             </Stack>
-
             <Divider sx={{ my: 2 }} />
-
             <Typography
-              sx={{ fontWeight: "600", color: "primary.main", mb: 1 }}
+              sx={{
+                fontWeight: "600",
+                color: (theme) =>
+                  theme.palette.mode === "dark"
+                    ? theme.trello.mainColorDark
+                    : theme.trello.mainColorLight,
+                mb: 1,
+              }}
             >
               Actions
             </Typography>
-            <Stack direction="column" spacing={1}>
+            <Stack
+              direction="column"
+              spacing={1}
+              sx={{
+                ...(isShowModalActiveCard &&
+                  !activeCard.memberIds.includes(currentUser._id) && {
+                    pointerEvents: "none",
+                    opacity: 0.6,
+                  }),
+              }}
+            >
               <SidebarItem>
                 <ArrowForwardOutlinedIcon fontSize="small" />
                 Move
@@ -385,12 +490,12 @@ function ActiveCard() {
                 Make Template
               </SidebarItem>
               <SidebarItem>
-                <ArchiveOutlinedIcon fontSize="small" />
-                Archive
-              </SidebarItem>
-              <SidebarItem>
                 <ShareOutlinedIcon fontSize="small" />
                 Share
+              </SidebarItem>
+              <SidebarItem className="active_hot">
+                <DeleteOutline fontSize="small" />
+                Delete
               </SidebarItem>
             </Stack>
           </Grid>

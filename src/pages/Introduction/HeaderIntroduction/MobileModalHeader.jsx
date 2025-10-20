@@ -203,6 +203,8 @@ const MobileModalHeader = ({ mobileHeader, setMobileHeader }) => {
               </Box>
             ) : (
               <Box
+                component={Link}
+                to="/boards"
                 sx={{
                   height: "100%",
                   padding: "1rem",
@@ -212,7 +214,8 @@ const MobileModalHeader = ({ mobileHeader, setMobileHeader }) => {
                   bgcolor: "#024647",
                   fontSize: "1.2rem",
                   transition: "all 0.3s linear",
-                  color: (theme) => theme.trello.textColorPrimary,
+                  color: "white",
+                  textDecoration: "none",
                   border: "1px solid",
                   borderColor: (theme) => theme.trello.subColorLight,
                   "&:hover": {
@@ -221,15 +224,7 @@ const MobileModalHeader = ({ mobileHeader, setMobileHeader }) => {
                   },
                 }}
               >
-                <Link to="/boards" sx={{ display: "block" }}>
-                  <Box
-                    sx={{
-                      color: "white",
-                    }}
-                  >
-                    Go to your board
-                  </Box>
-                </Link>
+                Go to your board
               </Box>
             )}
           </List>

@@ -17,8 +17,10 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 import { styled } from "@mui/material/styles";
-import { createNewBoardAPI } from "~/apis";
+import { updateBoardDetailsAPI } from "~/apis";
 import { FormTextField } from "~/components/Form/FormTextField";
+import { toast } from "react-toastify";
+import { useConfirm } from "material-ui-confirm";
 
 // BOARD_TYPES tương tự bên model phía Back-end (nếu cần dùng nhiều nơi thì hãy đưa ra file constants, không thì cứ để ở đây)
 const BOARD_TYPES = {
@@ -48,7 +50,12 @@ const SidebarItem = styled(Box)(({ theme }) => ({
  * Bản chất của cái component SidebarCreateBoardModal này chúng ta sẽ trả về một cái SidebarItem để hiển thị ở màn Board List cho phù hợp giao diện bên đó, đồng thời nó cũng chứa thêm một cái Modal để xử lý riêng form create board nhé.
  * Note: Modal là một low-component mà bọn MUI sử dụng bên trong những thứ như Dialog, Drawer, Menu, Popover. Ở đây dĩ nhiên chúng ta có thể sử dụng Dialog cũng không thành vấn đề gì, nhưng sẽ sử dụng Modal để dễ linh hoạt tùy biến giao diện từ con số 0 cho phù hợp với mọi nhu cầu nhé.
  */
-function SidebarCreateBoardModal({ afterCreateNewBoard, openRenameModal }) {
+function SidebarRenameBoardModal({
+  afterSettingBoard,
+  openRenameModal,
+  setOpenRenameModal,
+  board,
+}) {
   const {
     control,
     register,
@@ -57,35 +64,31 @@ function SidebarCreateBoardModal({ afterCreateNewBoard, openRenameModal }) {
     formState: { errors },
   } = useForm();
 
-  const [isOpen, setIsOpen] = useState(false);
-  const handleOpenModal = () => setIsOpen(true);
+  //   const [openRenameModal, setIsOpen] = useState(false);
+
   const handleCloseModal = () => {
-    setIsOpen(false);
+    setOpenRenameModal(false);
     // Reset lại toàn bộ form khi đóng Modal
     reset();
   };
 
-  const submitCreateNewBoard = (data) => {
-    // console.log("🚀 ~ submitCreateNewBoard ~ data:", data);
+  const submitSettingBoard = (data) => {
     // const { title, description, type } = data;
-    createNewBoardAPI(data).then(() => {
+    updateBoardDetailsAPI(board._id, data).then(() => {
       // đóng Modal
       handleCloseModal();
       // Thông báo đến component cha để xử lý
-      afterCreateNewBoard();
+      afterSettingBoard();
+      toast.success("Updated successfully!");
     });
   };
 
-  // <>...</> nhắc lại cho bạn anof chưa biết hoặc quên nhé: nó là React Fragment, dùng để bọc các phần tử lại mà không cần chỉ định DOM Node cụ thể nào cả.
+  const confirmChangeTypeBoard = useConfirm();
+
   return (
     <>
-      <SidebarItem onClick={handleOpenModal}>
-        <LibraryAddIcon fontSize="small" />
-        Create a new board
-      </SidebarItem>
-
       <Modal
-        open={isOpen}
+        open={openRenameModal}
         // onClose={handleCloseModal} // chỉ sử dụng onClose trong trường hợp muốn đóng Modal bằng nút ESC hoặc click ra ngoài Modal
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -128,11 +131,11 @@ function SidebarCreateBoardModal({ afterCreateNewBoard, openRenameModal }) {
             <LibraryAddIcon />
             <Typography variant="h6" component="h2">
               {" "}
-              Create a new board
+              Setting board
             </Typography>
           </Box>
           <Box id="modal-modal-description" sx={{ my: 2 }}>
-            <form onSubmit={handleSubmit(submitCreateNewBoard)}>
+            <form onSubmit={handleSubmit(submitSettingBoard)}>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                 <Box>
                   <FormTextField
@@ -141,6 +144,7 @@ function SidebarCreateBoardModal({ afterCreateNewBoard, openRenameModal }) {
                     autoFocus
                     label="Title"
                     type="text"
+                    defaultValue={board?.title}
                     error={!!errors["title"]}
                     register={register}
                     rules={{
@@ -172,6 +176,7 @@ function SidebarCreateBoardModal({ afterCreateNewBoard, openRenameModal }) {
                     name="description"
                     label="Description"
                     type="text"
+                    defaultValue={board?.description}
                     error={!!errors["description"]}
                     register={register}
                     rules={{
@@ -204,13 +209,26 @@ function SidebarCreateBoardModal({ afterCreateNewBoard, openRenameModal }) {
                  */}
                 <Controller
                   name="type"
-                  defaultValue={BOARD_TYPES.PUBLIC}
+                  defaultValue={board?.type}
                   control={control}
                   render={({ field }) => (
                     <RadioGroup
                       {...field}
                       row
-                      onChange={(event, value) => field.onChange(value)}
+                      onChange={async (event, value) => {
+                        if (value === field.value) return;
+
+                        await confirmChangeTypeBoard({
+                          title: "Change Type Board?",
+                          description:
+                            value === BOARD_TYPES.PUBLIC
+                              ? "Switch this board to Public? Everyone will be able to see it."
+                              : "Switch this board to Private? Only members will have access.",
+                          confirmationText: "Yes",
+                          cancellationText: "Cancel",
+                        });
+                        field.onChange(value);
+                      }}
                       value={field.value}
                     >
                       <FormControlLabel
@@ -236,7 +254,7 @@ function SidebarCreateBoardModal({ afterCreateNewBoard, openRenameModal }) {
                     variant="contained"
                     color="primary"
                   >
-                    Create
+                    Change
                   </Button>
                 </Box>
               </Box>
@@ -248,4 +266,4 @@ function SidebarCreateBoardModal({ afterCreateNewBoard, openRenameModal }) {
   );
 }
 
-export default SidebarCreateBoardModal;
+export default SidebarRenameBoardModal;

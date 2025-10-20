@@ -23,7 +23,7 @@ function CardActivitySection({ cardComments = [], onAddCardComment }) {
         userDisplayName: currentUser?.displayName,
         content: event.target.value.trim(),
       };
-      console.log(commentToAdd);
+
       // Gọi lên component cha
       onAddCardComment(commentToAdd).then(() => (event.target.value = ""));
     }

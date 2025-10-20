@@ -7,6 +7,7 @@ import {
 } from "@dnd-kit/sortable";
 const ListCards = (props) => {
   const { cards } = props;
+  // console.log("🚀 ~ ListCards ~ cards:", cards);
   return (
     <SortableContext
       items={cards?.map((c) => c._id)}

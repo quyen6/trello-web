@@ -806,7 +806,7 @@ export default function NotFound() {
               mystery. But you can click the button below to go back to the
               homepage.
             </p>
-            <Link to="/">
+            <Link to="/" replace>
               {" "}
               <button className="btn green">HOME</button>
             </Link>

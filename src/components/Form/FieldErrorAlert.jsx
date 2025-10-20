@@ -6,7 +6,12 @@ function FieldErrorAlert({ errors, fieldName }) {
   return (
     <Alert
       severity="error"
-      sx={{ mt: "0.7em", ".MuiAlert-message": { overflow: "hidden" } }}
+      sx={{
+        mt: "0.7em",
+        ".MuiAlert-message": { overflow: "hidden" },
+        color: "rgb(95, 33, 32)",
+        bgcolor: "rgb(253, 237, 237)",
+      }}
     >
       {errors[fieldName]?.message}
     </Alert>

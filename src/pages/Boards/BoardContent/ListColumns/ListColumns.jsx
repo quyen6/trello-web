@@ -21,6 +21,7 @@ import {
   updateCurrentActiveBoard,
   selectorCurrentActiveBoard,
 } from "~/redux/activeBoard/activeBoardSlice";
+import { socketIoInstane } from "~/socketClient";
 
 const ListColumns = (props) => {
   const dispatch = useDispatch();
@@ -68,6 +69,7 @@ const ListColumns = (props) => {
 
     // Cập nhật lại dữ liệu Board trong Redux Store
     dispatch(updateCurrentActiveBoard(newBoard));
+    socketIoInstane.emit("FE_CREATE_NEW_COLUMN", newBoard);
     toggleOpenNewColumnForm();
     setNewColumnTitle("");
   };

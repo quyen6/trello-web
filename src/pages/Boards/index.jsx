@@ -17,13 +17,31 @@ import CardMedia from "@mui/material/CardMedia";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import { Link, useLocation } from "react-router-dom";
-import randomColor from "randomcolor";
 import SidebarCreateBoardModal from "./create";
 
 import { styled } from "@mui/material/styles";
-import { fetchBoardsAPI } from "~/apis";
+import { deleteBoard, fetchBoardsAPI, updateBoardDetailsAPI } from "~/apis";
 import { DEFAULT_ITEM_PER_PAGE, DEFAULT_PAGE } from "~/utils/constants";
-
+import { Button, Menu } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ColorLensIcon from "@mui/icons-material/ColorLens";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectorCurrentActiveBoard,
+  updateCurrentActiveBoard,
+} from "~/redux/activeBoard/activeBoardSlice";
+import { useConfirm } from "material-ui-confirm";
+import { toast } from "react-toastify";
+import { MuiColorInput } from "mui-color-input";
+import SidebarRenameBoardModal from "~/components/Modal/RenameBoard/RenameBoard";
+import { usePermission } from "~/customHooks/usePermission";
+import { selectorCurrentUser } from "~/redux/user/userSlice";
+import { permission } from "~/config/rbacConfig";
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -43,8 +61,9 @@ const SidebarItem = styled(Box)(({ theme }) => ({
   },
 }));
 function Boards() {
-  // Styles của mấy cái Sidebar item menu, anh gom lại ra đây cho gọn.
-
+  const dispatch = useDispatch();
+  const activeBoard = useSelector(selectorCurrentActiveBoard);
+  const currentUser = useSelector(selectorCurrentUser);
   // Số lượng bản ghi boards hiển thị tối đa trên 1 page tùy dự án (thường sẽ là 12 cái)
   const [boards, setBoards] = useState(null);
   // Tổng toàn bộ số lượng bản ghi boards có trong Database mà phía BE trả về để FE dùng tính toán phân trang
@@ -75,15 +94,79 @@ function Boards() {
 
     // Gọi API lấy danh sách boards ở đây...
     // ...
+
     fetchBoardsAPI(location.search).then(updateStateData);
   }, [location.search]);
 
-  const afterCreateNewBoard = () => {
+  const afterCreateOrDeleteNewBoard = () => {
     // Fetch lại danh sách board trong useEffect
     fetchBoardsAPI(location.search).then(updateStateData);
   };
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [subAnchorEl, setSubAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const openSubMenu = Boolean(subAnchorEl);
 
+  const [color, setColor] = useState("#0088ff");
+  const [previewColorBoardId, setPreviewColorBoardId] = useState(null);
+  const [openRenameModal, setOpenRenameModal] = useState(false);
+  const handleClose = () => {
+    setAnchorEl(null);
+    dispatch(updateCurrentActiveBoard(null));
+  };
+  const handleOpenMenuSettingBoard = (e, board) => {
+    setAnchorEl(e.currentTarget);
+    dispatch(updateCurrentActiveBoard(board));
+    setColor(board.backgroundColor || "#0088ff");
+    setPreviewColorBoardId(board._id);
+  };
+
+  const confirmDeleteColumn = useConfirm();
+  const handleDeleteBoard = () => {
+    setAnchorEl(null);
+    confirmDeleteColumn({
+      title: "Delete Board?",
+      description:
+        "This action will permanently delete your Board and data's Board! Are you sure?",
+    })
+      .then(async () => {
+        await deleteBoard(activeBoard._id).then((res) => {
+          dispatch(updateCurrentActiveBoard(null));
+          toast.success(res?.deleteResult);
+          afterCreateOrDeleteNewBoard();
+        });
+      })
+      .catch(() => {});
+  };
+  const changeBackgroundBoard = async () => {
+    if (!previewColorBoardId) return;
+
+    await updateBoardDetailsAPI(previewColorBoardId, {
+      backgroundColor: color,
+    });
+
+    toast.success("Background color updated!");
+
+    setSubAnchorEl(null);
+    setAnchorEl(null);
+    afterCreateOrDeleteNewBoard();
+    dispatch(updateCurrentActiveBoard(null));
+  };
+
+  const handleSettingBoard = async () => {
+    setAnchorEl(null);
+    setOpenRenameModal(true);
+  };
+  // Xử lý phân quyền
+  const userRole = activeBoard?.memberIds.find(
+    (m) => m.userId === currentUser._id
+  )?.role;
+
+  const { hasPermission } = usePermission(userRole);
+
+  // const { hasPermission } = usePermission(cu?.role);
   // Lúc chưa tồn tại boards > đang chờ gọi api thì hiện loading
+  // console.log("🚀 ~ Boards ~ boards:", boards);
   if (!boards) {
     return <PageLoadingSpinner caption="Loading Boards..." />;
   }
@@ -125,7 +208,7 @@ function Boards() {
             />
             <Stack direction="column" spacing={1}>
               <SidebarCreateBoardModal
-                afterCreateNewBoard={afterCreateNewBoard}
+                afterCreateNewBoard={afterCreateOrDeleteNewBoard}
               />
             </Stack>
           </Grid>
@@ -151,8 +234,143 @@ function Boards() {
                       {/* Ý tưởng mở rộng về sau làm ảnh Cover cho board nhé */}
                       {/* <CardMedia component="img" height="100" image="https://picsum.photos/100" /> */}
                       <Box
-                        sx={{ height: "50px", backgroundColor: randomColor() }}
-                      ></Box>
+                        sx={{
+                          height: "50px",
+                          backgroundColor: b.backgroundColor || "#0088ff",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-end",
+                        }}
+                      >
+                        <Button
+                          disableRipple
+                          id="basic-button"
+                          aria-controls={open ? "basic-menu" : undefined}
+                          aria-haspopup="true"
+                          aria-expanded={open ? "true" : undefined}
+                          onClick={(e) => handleOpenMenuSettingBoard(e, b)}
+                          size="medium"
+                          sx={{
+                            minWidth: 0, // bỏ padding mặc định
+                            width: 32,
+                            height: 32,
+                            p: 0,
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            "&:hover": {
+                              backgroundColor: "transparent",
+                            },
+                          }}
+                        >
+                          <MoreVertIcon
+                            fontSize="medium"
+                            sx={{
+                              color: (theme) =>
+                                theme.trello.textColorLightDark(theme),
+                            }}
+                          />
+                        </Button>
+                        <Menu
+                          id="basic-menu"
+                          anchorEl={anchorEl}
+                          open={open}
+                          onClose={handleClose}
+                          slotProps={{
+                            list: {
+                              "aria-labelledby": "basic-button",
+                            },
+                          }}
+                        >
+                          <MenuItem
+                            onClick={handleSettingBoard}
+                            disabled={!hasPermission(permission.UPDATE_BOARD)}
+                          >
+                            <ListItemIcon>
+                              <DriveFileRenameOutlineIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Setting Board</ListItemText>
+                          </MenuItem>
+                          <MenuItem
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (subAnchorEl) setSubAnchorEl(null);
+                              else setSubAnchorEl(e.currentTarget);
+                            }}
+                            disabled={!hasPermission(permission.UPDATE_BOARD)}
+                          >
+                            <ListItemIcon>
+                              <ColorLensIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>
+                              Change Background
+                              <Menu
+                                id="basic-submenu"
+                                anchorEl={subAnchorEl}
+                                open={openSubMenu}
+                                onClose={() => {
+                                  setSubAnchorEl(null);
+                                }}
+                                anchorOrigin={{
+                                  vertical: "top",
+                                  horizontal: "right",
+                                }}
+                                transformOrigin={{
+                                  vertical: "top",
+                                  horizontal: "left",
+                                }}
+                                disableAutoFocusItem
+                              >
+                                <Box
+                                  onClick={(e) => e.stopPropagation()}
+                                  sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    p: 1,
+                                  }}
+                                >
+                                  <MuiColorInput
+                                    format="hex"
+                                    value={color}
+                                    onChange={(newColor) => {
+                                      setColor(newColor);
+                                      // đổi màu realtime
+                                      setBoards((prev) =>
+                                        prev.map((b) =>
+                                          b._id === previewColorBoardId
+                                            ? {
+                                                ...b,
+                                                backgroundColor: newColor,
+                                              }
+                                            : b
+                                        )
+                                      );
+                                    }}
+                                  />
+                                  <Button
+                                    size="small"
+                                    variant="contained"
+                                    sx={{ mt: 1 }}
+                                    onClick={() => changeBackgroundBoard()}
+                                  >
+                                    Apply
+                                  </Button>
+                                </Box>
+                              </Menu>
+                            </ListItemText>
+                          </MenuItem>
+                          <Divider />
+                          <MenuItem
+                            onClick={handleDeleteBoard}
+                            disabled={!hasPermission(permission.DELETE_BOARD)}
+                          >
+                            <ListItemIcon>
+                              <DeleteIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Delete Board</ListItemText>
+                          </MenuItem>
+                        </Menu>
+                      </Box>
 
                       <CardContent sx={{ p: 1.5, "&:last-child": { p: 1.5 } }}>
                         <Typography gutterBottom variant="h6" component="div">
@@ -223,6 +441,14 @@ function Boards() {
                 />
               </Box>
             )}
+
+            <SidebarRenameBoardModal
+              onClose={() => setOpenRenameModal(false)}
+              openRenameModal={openRenameModal}
+              setOpenRenameModal={setOpenRenameModal}
+              board={activeBoard}
+              afterSettingBoard={afterCreateOrDeleteNewBoard}
+            />
           </Grid>
         </Grid>
       </Box>

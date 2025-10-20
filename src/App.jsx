@@ -25,9 +25,8 @@ import AuthSuccess from "./pages/Auth/AuthSuccess";
  * https://www.robinwieruch.de/react-router-private-routes/
  */
 const ProtectedRoute = ({ user }) => {
-  const outletContext = useOutletContext(); // lấy từ MainLayout // Fix lấy  resolvedMode truyền từ <Outlet/> MainLayout
   if (!user) return <Navigate to="/login" replace={true} />;
-  return <Outlet context={outletContext} />; // Fix lấy  resolvedMode truyền từ <Outlet/> MainLayout
+  return <Outlet />;
 };
 
 function App() {

@@ -30,6 +30,7 @@ import { toast } from "react-toastify";
 import GgIcon from "~/assets/auth/icon-google.svg?react";
 import GhIcon from "~/assets/auth/icon-github.svg?react";
 import { API_ROOT } from "~/utils/constants";
+import { FormTextField } from "~/components/Form/FormTextField";
 function LoginForm() {
   const dispatch = useDispatch();
   // Không dùng State của component nữa mà chuyển qua State của Redux
@@ -88,8 +89,11 @@ function LoginForm() {
             mt: 8,
             py: 2,
             bgcolor: "#fff",
-            "& .MuiInputBase-input, & .MuiInputLabel-root": {
+            "& .MuiInputBase-input": {
               color: "#212121", // màu chữ của input + label
+            },
+            "& .MuiInputLabel-root": {
+              color: "#c4c4c4",
             },
           }}
         >
@@ -158,38 +162,19 @@ function LoginForm() {
           </Box>
           <Box sx={{ padding: "0 1em 1em 1em" }}>
             <Box sx={{ marginTop: "1em" }}>
-              <TextField
+              <FormTextField
                 // autoComplete="nope"
+                name="email"
                 autoFocus
-                fullWidth
                 label="Enter Email..."
                 type="text"
-                variant="outlined"
                 error={!!errors["email"]}
-                {...register("email", {
+                register={register}
+                rules={{
                   required: FIELD_REQUIRED_MESSAGE,
                   pattern: {
                     value: EMAIL_RULE,
                     message: EMAIL_RULE_MESSAGE,
-                  },
-                })}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "#c4c4c4", // màu mặc định khi chưa hover/focus
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "rgb(0, 134, 137)",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "rgb(0, 134, 137)",
-                      borderWidth: "1px",
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    "&.Mui-focused": {
-                      color: "rgb(0, 134, 137)",
-                    },
                   },
                 }}
               />
@@ -197,36 +182,18 @@ function LoginForm() {
               <FieldErrorAlert errors={errors} fieldName={"email"} />
             </Box>
             <Box sx={{ marginTop: "1em" }}>
-              <TextField
-                fullWidth
+              <FormTextField
+                // autoComplete="nope"
+                name="password"
                 label="Enter Password..."
                 type="password"
-                variant="outlined"
                 error={!!errors["password"]}
-                {...register("password", {
+                register={register}
+                rules={{
                   required: FIELD_REQUIRED_MESSAGE,
                   pattern: {
                     value: PASSWORD_RULE,
                     message: PASSWORD_RULE_MESSAGE,
-                  },
-                })}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "#c4c4c4", // màu mặc định khi chưa hover/focus
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "rgb(0, 134, 137)",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "rgb(0, 134, 137)",
-                      borderWidth: "1px",
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    "&.Mui-focused": {
-                      color: "rgb(0, 134, 137)",
-                    },
                   },
                 }}
               />
